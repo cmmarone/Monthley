@@ -20,6 +20,11 @@ namespace Monthley.Services
 
         public bool CreateIncome(IncomeCreate model)
         {
+            if (model.LastPayDate == null)
+                model.LastPayDate = new DateTime(2100, 13, 31);
+            if (model.PayFreqType == PayFreqType.Once)
+                model.LastPayDate = model.InitialPayDate;
+
             var sourceService = CreateSourceService();
             if (!sourceService.CreateSource(model))
                 return false;
@@ -44,8 +49,62 @@ namespace Monthley.Services
                 return context.SaveChanges() == 1;
             }
         }
+
+        public IEnumerable<IncomeListItem> GetIncomes()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var incomes = context.Incomes.Where(e => e.UserId == _userId);
+
+                var incomeList = new List<IncomeListItem>();
+                foreach (var entity in incomes)
+                {
+                    // getting Frequency
+                    string frequency;
+                    switch (entity.PayFreqType)
+                    {
+                        case PayFreqType.ByWeek:
+                            if (entity.FrequencyFactor == 1)
+                                frequency = "Weekly";
+                            else
+                                frequency = $"Every {entity.FrequencyFactor} weeks";
+                            break;
+                        case PayFreqType.ByMonth:
+                            if (entity.FrequencyFactor == 1)
+                                frequency = "Monthly";
+                            else
+                                frequency = $"Every {entity.FrequencyFactor} months";
+                            break;
+                        default:
+                            frequency = "Once";
+                            break;
+                    }
+
+                    // getting NextPayDate
+                    PayDay[] datesArray = entity.PayDays.OrderBy(d => d.Date).ToArray();
+                    DateTime nextPayDate = (datesArray.FirstOrDefault(d => d.Date >= DateTime.Now)).Date;
+
+                    var incomeListItem = new IncomeListItem
+                    {
+                        Id = entity.Id,
+                        SourceType = entity.Source.Type.ToString(),
+                        SourceName = entity.Source.Name,
+                        Amount = entity.Amount,
+                        Frequency = frequency,
+                        NextPayDate = nextPayDate
+                    };
+                    incomeList.Add(incomeListItem);
+                }
+                return incomeList.OrderBy(e => e.SourceType);
+            }
+        }
         public bool UpdateIncome(IncomeEdit model)
         {
+            if (model.LastPayDate == null)
+                model.LastPayDate = new DateTime(2100, 13, 31);
+            if (model.PayFreqType == PayFreqType.Once)
+                model.LastPayDate = model.InitialPayDate;
+
             var sourceService = CreateSourceService();
             if (!sourceService.UpdateSource(model))
                 return false;

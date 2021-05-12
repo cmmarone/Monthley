@@ -28,23 +28,6 @@ namespace Monthley.Models.ExpenseModels
 
         public DateTime InitialDueDate { get; set; }
 
-        public bool HasEndDate { get; set; }
-
-        private DateTime _endDate;
-        public DateTime EndDate
-        {
-            get
-            {
-                return _endDate;
-            }
-            set
-            {
-                if (!HasEndDate)
-                    _endDate = new DateTime(2100, 12, 31);
-                if (ExpenseFreqType == ExpenseFreqType.Once)
-                    _endDate = InitialDueDate;
-                else _endDate = value;
-            }
-        }
+        public DateTime EndDate { get; set; }
     }
 }

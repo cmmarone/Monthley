@@ -64,7 +64,7 @@ namespace Monthley.Services
 
                     decimal net = disposableRemaining + endingBalance;
 
-                    var monthDetail = new MonthListItem
+                    var monthListItem = new MonthListItem
                     {
                         Id = entity.Id,
                         Name = name,
@@ -73,7 +73,7 @@ namespace Monthley.Services
                         DisposableRemaining = disposableRemaining,
                         Net = net
                     };
-                    monthList.Add(monthDetail);
+                    monthList.Add(monthListItem);
                 }
                 return monthList.OrderBy(m => m.YearNum).ThenBy(m => m.MonthNum);
             }

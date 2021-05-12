@@ -28,23 +28,6 @@ namespace Monthley.Models.IncomeModels
 
         public DateTime InitialPayDate { get; set; }
 
-        public bool HasEndDate { get; set; }
-
-        private DateTime _lastPayDate;
-        public DateTime LastPayDate
-        {
-            get
-            {
-                return _lastPayDate;
-            }
-            set
-            {
-                if (!HasEndDate)
-                    _lastPayDate = new DateTime(2100, 12, 31);
-                if (PayFreqType == PayFreqType.Once)
-                    _lastPayDate = InitialPayDate;
-                else _lastPayDate = value;
-            }
-        }
+        public DateTime LastPayDate { get; set; }
     }
 }

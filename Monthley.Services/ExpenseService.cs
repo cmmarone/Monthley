@@ -20,6 +20,11 @@ namespace Monthley.Services
 
         public bool CreateExpense(ExpenseCreate model)
         {
+            if (model.EndDate == null)
+                model.EndDate = new DateTime(2100, 13, 31);
+            if (model.ExpenseFreqType == ExpenseFreqType.Once)
+                model.EndDate = model.InitialDueDate;
+
             var categoryService = CreateCategoryService();
             if (!categoryService.CreateCategory(model))
                 return false;
@@ -49,24 +54,58 @@ namespace Monthley.Services
         {
             using (var context = new ApplicationDbContext())
             {
-                var expenses = context.Expenses.Where(e => e.UserId == _userId)
-                    .Select(e => new ExpenseListItem
+                var expenses = context.Expenses.Where(e => e.UserId == _userId);
+
+                var expenseList = new List<ExpenseListItem>();
+                foreach (var entity in expenses)
+                {
+                    // getting Frequency
+                    string frequency;
+                    switch (entity.ExpenseFreqType)
                     {
-                        Id = e.Id,
-                        Amount = e.Amount,
-                        ExpenseFreqType = e.ExpenseFreqType,
-                        FrequencyFactor = e.FrequencyFactor,
-                        InitialDueDate = e.InitialDueDate,
-                        EndDate = e.EndDate,
-                        DueDates = e.DueDates,
-                        Category = e.Category,
-                    });
-                return expenses.ToArray();
+                        case ExpenseFreqType.ByWeek:
+                            if (entity.FrequencyFactor == 1)
+                                frequency = "Weekly";
+                            else
+                                frequency = $"Every {entity.FrequencyFactor} weeks";
+                            break;
+                        case ExpenseFreqType.ByMonth:
+                            if (entity.FrequencyFactor == 1)
+                                frequency = "Monthly";
+                            else 
+                                frequency = $"Every {entity.FrequencyFactor} months";
+                            break;
+                        default:
+                            frequency = "Once";
+                            break;
+                    }
+
+                    // getting NextDueDate
+                    DueDate[] datesArray = entity.DueDates.OrderBy(d => d.Date).ToArray();
+                    DateTime nextDueDate = (datesArray.FirstOrDefault(d => d.Date >= DateTime.Now)).Date;
+
+                    var expenseListItem = new ExpenseListItem
+                    {
+                        Id = entity.Id,
+                        CategoryType = entity.Category.Type.ToString(),
+                        CategoryName = entity.Category.Name,
+                        Amount = entity.Amount,
+                        Frequency = frequency,
+                        NextDueDate = nextDueDate
+                    };
+                    expenseList.Add(expenseListItem);
+                }
+                return expenseList.OrderBy(e => e.CategoryType);
             }
         }
 
         public bool UpdateExpense(ExpenseEdit model)
         {
+            if (model.EndDate == null)
+                model.EndDate = new DateTime(2100, 13, 31);
+            if (model.ExpenseFreqType == ExpenseFreqType.Once)
+                model.EndDate = model.InitialDueDate;
+
             var categoryService = CreateCategoryService();
             if (!categoryService.UpdateCategory(model))
                 return false;

@@ -26,14 +26,14 @@ namespace Monthley.Services
                 for (var date = model.InitialDueDate;
                     (DateTime.Compare(date, model.EndDate)) <= 0;
                     date = date.AddMonths(1 * model.FrequencyFactor))
-                            dueDates.Add(date);
+                    dueDates.Add(date);
             }
             else if (model.ExpenseFreqType == ExpenseFreqType.ByWeek)
             {
                 for (var date = model.InitialDueDate;
-                     (DateTime.Compare(date, model.EndDate)) <= 0; 
+                     (DateTime.Compare(date, model.EndDate)) <= 0;
                      date = date.AddDays(7 * model.FrequencyFactor))
-                            dueDates.Add(date);
+                    dueDates.Add(date);
             }
             else
                 dueDates.Add(model.InitialDueDate);
@@ -67,14 +67,14 @@ namespace Monthley.Services
                 for (var date = model.InitialDueDate;
                     (DateTime.Compare(date, model.EndDate)) <= 0;
                     date = date.AddMonths(1 * model.FrequencyFactor))
-                    dueDates.Add(date);
+                            dueDates.Add(date);
             }
             else if (model.ExpenseFreqType == ExpenseFreqType.ByWeek)
             {
                 for (var date = model.InitialDueDate;
                      (DateTime.Compare(date, model.EndDate)) <= 0;
                      date = date.AddDays(7 * model.FrequencyFactor))
-                    dueDates.Add(date);
+                            dueDates.Add(date);
             }
             else
                 dueDates.Add(model.InitialDueDate);

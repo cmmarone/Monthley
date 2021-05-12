@@ -8,6 +8,11 @@ namespace Monthley.Models.IncomeModels
 {
     public class IncomeListItem
     {
-
+        public int Id { get; set; }
+        public string SourceType { get; set; }
+        public string SourceName { get; set; }
+        public decimal Amount { get; set; }
+        public string Frequency { get; set; }
+        public DateTime NextPayDate { get; set; }
     }
 }
