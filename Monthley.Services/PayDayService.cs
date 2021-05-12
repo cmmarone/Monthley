@@ -56,7 +56,7 @@ namespace Monthley.Services
             }
         }
 
-        public bool EditPayDays(IncomeEdit model)
+        public bool UpdatePayDays(IncomeEdit model)
         {
             if (!DeletePayDays(model.Id))
                 return false;

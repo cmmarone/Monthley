@@ -22,7 +22,7 @@ namespace Monthley.Services
             {
                 var months = context.Months.Where(e => e.UserId == _userId)
                     .Select(e => new MonthDetail
-                    {
+                    { 
                         Id = e.Id,
                         MonthNum = e.MonthNum,
                         YearNum = e.YearNum,

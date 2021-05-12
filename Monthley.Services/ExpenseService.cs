@@ -45,6 +45,50 @@ namespace Monthley.Services
             }
         }
 
+        public IEnumerable<ExpenseListItem> GetExpenses()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var expenses = context.Expenses.Where(e => e.UserId == _userId)
+                    .Select(e => new ExpenseListItem
+                    {
+                        Id = e.Id,
+                        Amount = e.Amount,
+                        ExpenseFreqType = e.ExpenseFreqType,
+                        FrequencyFactor = e.FrequencyFactor,
+                        InitialDueDate = e.InitialDueDate,
+                        EndDate = e.EndDate,
+                        DueDates = e.DueDates,
+                        Category = e.Category,
+                    });
+                return expenses.ToArray();
+            }
+        }
+
+        public bool UpdateExpense(ExpenseEdit model)
+        {
+            var categoryService = CreateCategoryService();
+            if (!categoryService.UpdateCategory(model))
+                return false;
+
+            var dueDateService = CreateDueDateService();
+            if (!dueDateService.UpdateDueDates(model))
+                return false;
+
+            using (var context = new ApplicationDbContext())
+            {
+                var expenseEntity = context.Expenses.Single(e => e.Id == model.Id && e.UserId == _userId);
+
+                expenseEntity.Amount = model.Amount;
+                expenseEntity.ExpenseFreqType = model.ExpenseFreqType;
+                expenseEntity.FrequencyFactor = model.FrequencyFactor;
+                expenseEntity.InitialDueDate = model.InitialDueDate;
+                expenseEntity.EndDate = model.EndDate;
+
+                return context.SaveChanges() == 1;
+            }
+        }
+
         public bool DeleteExpense(int id)
         {
             var categoryService = CreateCategoryService();
@@ -59,30 +103,6 @@ namespace Monthley.Services
             {
                 var expenseEntity = context.Expenses.Single(e => e.Id == id && e.UserId == _userId);
                 context.Expenses.Remove(expenseEntity);
-                return context.SaveChanges() == 1;
-            }
-        }
-
-        public bool UpdateExpense(ExpenseEdit model)
-        {
-            var categoryService = CreateCategoryService();
-            if (!categoryService.EditCategory(model))
-                return false;
-
-            var dueDateService = CreateDueDateService();
-            if (!dueDateService.EditDueDates(model))
-                return false;
-
-            using (var context = new ApplicationDbContext())
-            {
-                var expenseEntity = context.Expenses.Single(e => e.Id == model.Id && e.UserId == _userId);
-
-                expenseEntity.Amount = model.Amount;
-                expenseEntity.ExpenseFreqType = model.ExpenseFreqType;
-                expenseEntity.FrequencyFactor = model.FrequencyFactor;
-                expenseEntity.InitialDueDate = model.InitialDueDate;
-                expenseEntity.EndDate = model.EndDate;
-
                 return context.SaveChanges() == 1;
             }
         }

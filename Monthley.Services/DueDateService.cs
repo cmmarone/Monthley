@@ -56,7 +56,7 @@ namespace Monthley.Services
             }
         }
 
-        public bool EditDueDates(ExpenseEdit model)
+        public bool UpdateDueDates(ExpenseEdit model)
         {
             if (!DeleteDueDates(model.Id))
                 return false;

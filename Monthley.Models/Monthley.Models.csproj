@@ -56,8 +56,10 @@
   <ItemGroup>
     <Compile Include="ExpenseModels\ExpenseCreate.cs" />
     <Compile Include="ExpenseModels\ExpenseEdit.cs" />
+    <Compile Include="ExpenseModels\ExpenseListItem.cs" />
     <Compile Include="IncomeModels\IncomeCreate.cs" />
     <Compile Include="IncomeModels\IncomeEdit.cs" />
+    <Compile Include="IncomeModels\IncomeListItem.cs" />
     <Compile Include="MonthModels\MonthDetail.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -70,6 +72,10 @@
       <Project>{a48dd02a-7ec7-47f5-9a14-8f1ac8f3faf2}</Project>
       <Name>Monthley.Data</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="PaymentMadeModels\" />
+    <Folder Include="PaymentReceivedModels\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

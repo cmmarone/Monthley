@@ -44,6 +44,29 @@ namespace Monthley.Services
                 return context.SaveChanges() == 1;
             }
         }
+        public bool UpdateIncome(IncomeEdit model)
+        {
+            var sourceService = CreateSourceService();
+            if (!sourceService.UpdateSource(model))
+                return false;
+
+            var payDayService = CreatePayDayService();
+            if (!payDayService.UpdatePayDays(model))
+                return false;
+
+            using (var context = new ApplicationDbContext())
+            {
+                var incomeEntity = context.Incomes.Single(i => i.Id == model.Id && i.UserId == _userId);
+
+                incomeEntity.Amount = model.Amount;
+                incomeEntity.PayFreqType = model.PayFreqType;
+                incomeEntity.FrequencyFactor = model.FrequencyFactor;
+                incomeEntity.InitialPayDate = model.InitialPayDate;
+                incomeEntity.LastPayDate = model.LastPayDate;
+
+                return context.SaveChanges() == 1;
+            }
+        }
 
         public bool DeleteIncome(int id)
         {
@@ -59,30 +82,6 @@ namespace Monthley.Services
             {
                 var incomeEntity = context.Incomes.Single(i => i.Id == id && i.UserId == _userId);
                 context.Incomes.Remove(incomeEntity);
-                return context.SaveChanges() == 1;
-            }
-        }
-
-        public bool UpdateIncome(IncomeEdit model)
-        {
-            var sourceService = CreateSourceService();
-            if (!sourceService.EditSource(model))
-                return false;
-
-            var payDayService = CreatePayDayService();
-            if (!payDayService.EditPayDays(model))
-                return false;
-
-            using (var context = new ApplicationDbContext())
-            {
-                var incomeEntity = context.Incomes.Single(i => i.Id == model.Id && i.UserId == _userId);
-
-                incomeEntity.Amount = model.Amount;
-                incomeEntity.PayFreqType = model.PayFreqType;
-                incomeEntity.FrequencyFactor = model.FrequencyFactor;
-                incomeEntity.InitialPayDate = model.InitialPayDate;
-                incomeEntity.LastPayDate = model.LastPayDate;
-
                 return context.SaveChanges() == 1;
             }
         }

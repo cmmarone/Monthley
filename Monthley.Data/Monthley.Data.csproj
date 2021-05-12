@@ -64,11 +64,21 @@
     <Compile Include="Entities\PaymentReceived.cs" />
     <Compile Include="Entities\Source.cs" />
     <Compile Include="IdentityModels.cs" />
+    <Compile Include="Migrations\202105111338534_initialMigration.cs" />
+    <Compile Include="Migrations\202105111338534_initialMigration.Designer.cs">
+      <DependentUpon>202105111338534_initialMigration.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Migrations\202105111338534_initialMigration.resx">
+      <DependentUpon>202105111338534_initialMigration.cs</DependentUpon>
+    </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

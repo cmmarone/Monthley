@@ -34,7 +34,7 @@ namespace Monthley.Services
             }
         }
 
-        public bool EditSource(IncomeEdit model)
+        public bool UpdateSource(IncomeEdit model)
         {
             using (var context = new ApplicationDbContext())
             {

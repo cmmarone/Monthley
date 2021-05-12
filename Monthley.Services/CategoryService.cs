@@ -34,7 +34,7 @@ namespace Monthley.Services
             }
         }
 
-        public bool EditCategory(ExpenseEdit model)
+        public bool UpdateCategory(ExpenseEdit model)
         {
             using (var context = new ApplicationDbContext())
             {
