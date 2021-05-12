@@ -12,8 +12,10 @@ namespace Monthley.Data.Entities
         [Key]
         public int Id { get; set; }
 
+        [Required]
         public int MonthNum { get; set; }
 
+        [Required]
         public int YearNum { get; set; }
 
         [Required]

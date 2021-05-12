@@ -16,6 +16,7 @@ namespace Monthley.Data.Entities
         [Required]
         public string Name { get; set; }
 
+        [Required]
         public CategoryType Type { get; set; }
 
         [Required]
