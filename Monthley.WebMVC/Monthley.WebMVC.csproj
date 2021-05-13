@@ -170,8 +170,11 @@
     <Compile Include="Controllers\AccountController.cs" />
     <Compile Include="Controllers\ExpenseController.cs" />
     <Compile Include="Controllers\HomeController.cs" />
+    <Compile Include="Controllers\IncomeController.cs" />
     <Compile Include="Controllers\ManageController.cs" />
     <Compile Include="Controllers\MonthController.cs" />
+    <Compile Include="Controllers\PaymentMadeController.cs" />
+    <Compile Include="Controllers\PaymentReceivedController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
@@ -240,7 +243,10 @@
   <ItemGroup>
     <Folder Include="App_Data\" />
     <Folder Include="Views\Expense\" />
+    <Folder Include="Views\Income\" />
     <Folder Include="Views\Month\" />
+    <Folder Include="Views\PaymentMade\" />
+    <Folder Include="Views\PaymentReceived\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="fonts\glyphicons-halflings-regular.woff2" />

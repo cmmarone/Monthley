@@ -99,6 +99,25 @@ namespace Monthley.Services
             }
         }
 
+        public ExpenseDetail GetExpenseById(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var expenseEntity = ctx.Expenses.Single(e => e.Id == id && e.UserId == _userId);
+                return new ExpenseDetail
+                {
+                    Id = expenseEntity.Id,
+                    CategoryName = expenseEntity.Category.Name,
+                    CategoryType = expenseEntity.Category.Type,
+                    Amount = expenseEntity.Amount,
+                    ExpenseFreqType = expenseEntity.ExpenseFreqType,
+                    FrequencyFactor = expenseEntity.FrequencyFactor,
+                    InitialDueDate = expenseEntity.InitialDueDate,
+                    EndDate = expenseEntity.EndDate
+                };
+            }
+        }
+
         public bool UpdateExpense(ExpenseEdit model)
         {
             if (model.EndDate == null)

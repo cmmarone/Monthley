@@ -35,6 +35,22 @@ namespace Monthley.Services
             }
         }
 
+        public PaymentMadeDetail GetPaymentMadeById(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.PaymentsMade.Single(e => e.Id == id && e.UserId == _userId);
+                return new PaymentMadeDetail
+                {
+                    Id = entity.Id,
+                    CategoryId = entity.CategoryId,
+                    MonthId = entity.MonthId,
+                    Amount = entity.Amount,
+                    PaymentDate = entity.PaymentDate
+                };
+            }
+        }
+
         public bool UpdatePaymentMade(PaymentMadeEdit model)
         {
             using (var context = new ApplicationDbContext())
@@ -50,7 +66,7 @@ namespace Monthley.Services
             }
         }
 
-        public bool DeleteExpense(int id)
+        public bool DeletePaymentMade(int id)
         {
             using (var context = new ApplicationDbContext())
             {

@@ -98,6 +98,26 @@ namespace Monthley.Services
                 return incomeList.OrderBy(e => e.SourceType);
             }
         }
+
+        public IncomeDetail GetIncomeById(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var incomeEntity = ctx.Incomes.Single(e => e.Id == id && e.UserId == _userId);
+                return new IncomeDetail
+                {
+                    Id = incomeEntity.Id,
+                    SourceName = incomeEntity.Source.Name,
+                    SourceType = incomeEntity.Source.Type,
+                    Amount = incomeEntity.Amount,
+                    PayFreqType = incomeEntity.PayFreqType,
+                    FrequencyFactor = incomeEntity.FrequencyFactor,
+                    InitialPayDate = incomeEntity.InitialPayDate,
+                    LastPayDate = incomeEntity.LastPayDate
+                };
+            }
+        }
+
         public bool UpdateIncome(IncomeEdit model)
         {
             if (model.LastPayDate == null)

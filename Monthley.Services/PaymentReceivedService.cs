@@ -35,6 +35,22 @@ namespace Monthley.Services
             }
         }
 
+        public PaymentReceivedDetail GetPaymentReceivedById(int id)
+        {
+            using (var ctx = new ApplicationDbContext())
+            {
+                var entity = ctx.PaymentsReceived.Single(e => e.Id == id && e.UserId == _userId);
+                return new PaymentReceivedDetail
+                {
+                    Id = entity.Id,
+                    SourceId = entity.SourceId,
+                    MonthId = entity.MonthId,
+                    Amount = entity.Amount,
+                    PaymentDate = entity.PaymentDate
+                };
+            }
+        }
+
         public bool UpdatePaymentReceived(PaymentReceivedEdit model)
         {
             using (var context = new ApplicationDbContext())
@@ -50,7 +66,7 @@ namespace Monthley.Services
             }
         }
 
-        public bool DeleteExpense(int id)
+        public bool DeletePaymentReceived(int id)
         {
             using (var context = new ApplicationDbContext())
             {
