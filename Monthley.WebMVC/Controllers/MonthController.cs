@@ -38,8 +38,8 @@ namespace Monthley.WebMVC.Controllers
         public ActionResult Transactions(int id)
         {
             var service = CreateMonthService();
-            var monthDetailModel = service.GetMonthById(id);
-            return View(monthDetailModel);
+            var transactionList = service.GetTransactionsForMonth(id);
+            return View(transactionList);
         }
 
         private MonthService CreateMonthService()

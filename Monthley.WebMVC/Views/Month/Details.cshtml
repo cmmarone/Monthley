@@ -1,0 +1,150 @@
+﻿@model Monthley.Models.MonthModels.MonthDetail
+
+@{
+    ViewBag.Title = "Details";
+}
+
+<h2>Details</h2>
+
+<div>
+    <h4>MonthDetail</h4>
+    <hr />
+    <dl class="dl-horizontal">
+        <dt>
+            @Html.DisplayNameFor(model => model.Name)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Name)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.MonthNum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.MonthNum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.YearNum)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.YearNum)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalIncome)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalIncome)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalBills)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalBills)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalSaving)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalSaving)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalOneTimeExpenses)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalOneTimeExpenses)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.BudgetedExpenses)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.BudgetedExpenses)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.TotalExpenses)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.TotalExpenses)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DisposableRemaining)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DisposableRemaining)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.EndingBalance)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.EndingBalance)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.Net)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.Net)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.DueDates)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.DueDates)
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PayDays)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PayDays)
+            )
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentsMade)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentsMade)
+            )
+        </dd>
+
+        <dt>
+            @Html.DisplayNameFor(model => model.PaymentsReceived)
+        </dt>
+
+        <dd>
+            @Html.DisplayFor(model => model.PaymentsReceived)
+            )
+        </dd>
+
+
+    </dl>
+</div>
+<p>
+    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+    @Html.ActionLink("Back to List", "Index")
+</p>

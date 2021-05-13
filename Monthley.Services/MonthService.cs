@@ -29,7 +29,7 @@ namespace Monthley.Services
                     // getting Name
                     var dateTime = new DateTime(entity.YearNum, entity.MonthNum, 1);
                     var name = $"{dateTime.ToString("MMMM")} {dateTime.ToString("yyyy")}";
-                    
+
                     // getting DisposableRemaining
                     decimal totalIncome = 0;
                     foreach (var payDay in entity.PayDays)
@@ -174,8 +174,42 @@ namespace Monthley.Services
                     TotalExpenses = totalExpenses,
                     DisposableRemaining = disposableRemaining,
                     EndingBalance = endingBalance,
-                    Net = net
+                    Net = net,
+                    PaymentsMade = entity.PaymentsMade
                 };
+            }
+        }
+
+        public IEnumerable<TransactionListItem> GetTransactionsForMonth(int monthId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var monthEntity = context.Months.Single(e => e.Id == monthId && e.UserId == _userId);
+
+                var transactionList = new List<TransactionListItem>();
+                foreach (var paymentMade in monthEntity.PaymentsMade)
+                {
+                    var transaction = new TransactionListItem()
+                    {
+                        CategoryOrSourceName = paymentMade.Category.Name,
+                        Type = paymentMade.Category.Type.ToString(),
+                        Amount = paymentMade.Amount,
+                        TransactionDate = paymentMade.PaymentDate
+                    };
+                    transactionList.Add(transaction);
+                }
+                foreach (var paymentReceived in monthEntity.PaymentsReceived)
+                {
+                    var transaction = new TransactionListItem()
+                    {
+                        CategoryOrSourceName = paymentReceived.Source.Name,
+                        Type = paymentReceived.Source.Type.ToString(),
+                        Amount = paymentReceived.Amount,
+                        TransactionDate = paymentReceived.PaymentDate
+                    };
+                    transactionList.Add(transaction);
+                }
+                return transactionList.OrderByDescending(t => t.TransactionDate);
             }
         }
     }

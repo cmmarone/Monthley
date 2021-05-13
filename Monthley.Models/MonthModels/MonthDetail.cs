@@ -34,5 +34,7 @@ namespace Monthley.Models.MonthModels
         public decimal EndingBalance { get; set; } // display in view only for past months
 
         public decimal Net { get; set; } // display in view only for past months
+
+        public ICollection<PaymentMade> PaymentsMade { get; set; }
     }
 }
