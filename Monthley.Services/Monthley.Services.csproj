@@ -60,6 +60,8 @@
     <Compile Include="IncomeService.cs" />
     <Compile Include="MonthService.cs" />
     <Compile Include="PayDayService.cs" />
+    <Compile Include="PaymentMadeService.cs" />
+    <Compile Include="PaymentReceivedService.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="SourceService.cs" />
   </ItemGroup>

@@ -26,6 +26,22 @@ namespace Monthley.WebMVC.Controllers
             return View(monthDetailModel);
         }
 
+        // GET: Month/ExpenseDetails/{id}
+        public ActionResult ExpenseDetails(int id)
+        {
+            var service = CreateMonthService();
+            var monthDetailModel = service.GetMonthById(id);
+            return View(monthDetailModel);
+        }
+
+        //GET: Month/Transactions/{id}
+        public ActionResult Transactions(int id)
+        {
+            var service = CreateMonthService();
+            var monthDetailModel = service.GetMonthById(id);
+            return View(monthDetailModel);
+        }
+
         private MonthService CreateMonthService()
         {
             var userId = Guid.Parse(User.Identity.GetUserId());

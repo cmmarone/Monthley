@@ -62,6 +62,10 @@
     <Compile Include="IncomeModels\IncomeListItem.cs" />
     <Compile Include="MonthModels\MonthDetail.cs" />
     <Compile Include="MonthModels\MonthListItem.cs" />
+    <Compile Include="PaymentMadeModels\PaymentMadeCreate.cs" />
+    <Compile Include="PaymentMadeModels\PaymentMadeEdit.cs" />
+    <Compile Include="PaymentReceivedModels\PaymentReceivedCreate.cs" />
+    <Compile Include="PaymentReceivedModels\PaymentReceivedEdit.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
@@ -74,9 +78,6 @@
       <Name>Monthley.Data</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="PaymentMadeModels\" />
-    <Folder Include="PaymentReceivedModels\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
