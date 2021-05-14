@@ -21,7 +21,7 @@ namespace Monthley.Services
         public bool CreateIncome(IncomeCreate model)
         {
             if (model.LastPayDate == null)
-                model.LastPayDate = new DateTime(2100, 13, 31);
+                model.LastPayDate = new DateTime(2100, 12, 31);
             if (model.PayFreqType == PayFreqType.Once)
                 model.LastPayDate = model.InitialPayDate;
 

@@ -21,7 +21,7 @@ namespace Monthley.Services
         public bool CreateExpense(ExpenseCreate model)
         {
             if (model.EndDate == null)
-                model.EndDate = new DateTime(2100, 13, 31);
+                model.EndDate = new DateTime(2100, 12, 31);
             if (model.ExpenseFreqType == ExpenseFreqType.Once)
                 model.EndDate = model.InitialDueDate;
 

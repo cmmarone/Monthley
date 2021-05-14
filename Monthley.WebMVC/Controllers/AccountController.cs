@@ -158,24 +158,24 @@ namespace Monthley.WebMVC.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+                    SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
 
                     // ------BEGIN monTHLey "SEEDING"----------------------------------->
 
                     /* Upon new user registration success, seed entities in the database with 
                              a Guid property value belonging to the new user */
 
-                    var userId = Guid.Parse(User.Identity.GetUserId());
+                    var userId = Guid.Parse(user.Id);
 
                     // seed all month entities
                     var monthService = new MonthService(userId);
                     monthService.SeedMonthsForNewUser();
 
-                    // seed a "Miscellaneous" Category
+                    //// seed a "Miscellaneous" Category
                     var categoryService = new CategoryService(userId);
                     categoryService.SeedCategoryForNewUser();
 
-                    // seed a "Unplanned" Source
+                    //// seed a "Unplanned" Source
                     var sourceService = new SourceService(userId);
                     sourceService.SeedSourceForNewUser();
 
