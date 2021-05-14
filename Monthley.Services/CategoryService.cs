@@ -18,6 +18,21 @@ namespace Monthley.Services
             _userId = userId;
         }
 
+        public bool SeedCategoryForNewUser()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var category = new Category()
+                {
+                    Name = "Miscellaneous",
+                    Type = CategoryType.Unbudgeted,
+                    UserId = _userId
+                };
+                context.Categories.Add(category);
+                return context.SaveChanges() == 1;
+            }
+        }
+
         public bool CreateCategory(ExpenseCreate model)
         {
             var categoryEntity = new Category()

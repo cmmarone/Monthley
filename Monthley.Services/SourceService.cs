@@ -18,6 +18,21 @@ namespace Monthley.Services
             _userId = userId;
         }
 
+        public bool SeedSourceForNewUser()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var source = new Source()
+                {
+                    Name = "Unplanned",
+                    Type = SourceType.Unbudgeted,
+                    UserId = _userId
+                };
+                context.Sources.Add(source);
+                return context.SaveChanges() == 1;
+            }
+        }
+
         public bool CreateSource(IncomeCreate model)
         {
             var sourceEntity = new Source()

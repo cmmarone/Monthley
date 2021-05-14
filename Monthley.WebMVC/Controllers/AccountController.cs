@@ -9,6 +9,8 @@ using Microsoft.AspNet.Identity;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Monthley.Data;
+using Monthley.Data.Entities;
+using Monthley.Services;
 using Monthley.WebMVC.Models;
 
 namespace Monthley.WebMVC.Controllers
@@ -23,7 +25,7 @@ namespace Monthley.WebMVC.Controllers
         {
         }
 
-        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager )
+        public AccountController(ApplicationUserManager userManager, ApplicationSignInManager signInManager)
         {
             UserManager = userManager;
             SignInManager = signInManager;
@@ -35,9 +37,9 @@ namespace Monthley.WebMVC.Controllers
             {
                 return _signInManager ?? HttpContext.GetOwinContext().Get<ApplicationSignInManager>();
             }
-            private set 
-            { 
-                _signInManager = value; 
+            private set
+            {
+                _signInManager = value;
             }
         }
 
@@ -121,7 +123,7 @@ namespace Monthley.WebMVC.Controllers
             // If a user enters incorrect codes for a specified amount of time then the user account 
             // will be locked out for a specified amount of time. 
             // You can configure the account lockout settings in IdentityConfig
-            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent:  model.RememberMe, rememberBrowser: model.RememberBrowser);
+            var result = await SignInManager.TwoFactorSignInAsync(model.Provider, model.Code, isPersistent: model.RememberMe, rememberBrowser: model.RememberBrowser);
             switch (result)
             {
                 case SignInStatus.Success:
@@ -156,8 +158,30 @@ namespace Monthley.WebMVC.Controllers
                 var result = await UserManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
-                    await SignInManager.SignInAsync(user, isPersistent:false, rememberBrowser:false);
-                    
+                    await SignInManager.SignInAsync(user, isPersistent: false, rememberBrowser: false);
+
+                    // ------BEGIN monTHLey "SEEDING"----------------------------------->
+
+                    /* Upon new user registration success, seed entities in the database with 
+                             a Guid property value belonging to the new user */
+
+                    var userId = Guid.Parse(User.Identity.GetUserId());
+
+                    // seed all month entities
+                    var monthService = new MonthService(userId);
+                    monthService.SeedMonthsForNewUser();
+
+                    // seed a "Miscellaneous" Category
+                    var categoryService = new CategoryService(userId);
+                    categoryService.SeedCategoryForNewUser();
+
+                    // seed a "Unplanned" Source
+                    var sourceService = new SourceService(userId);
+                    sourceService.SeedSourceForNewUser();
+
+                    // <-------------------------------------------END monTHLey "SEEDING"
+
+
                     // For more information on how to enable account confirmation and password reset please visit https://go.microsoft.com/fwlink/?LinkID=320771
                     // Send an email with this link
                     // string code = await UserManager.GenerateEmailConfirmationTokenAsync(user.Id);

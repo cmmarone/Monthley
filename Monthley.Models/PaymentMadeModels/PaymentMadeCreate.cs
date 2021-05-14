@@ -21,8 +21,5 @@ namespace Monthley.Models.PaymentMadeModels
 
         [Required]
         public DateTime PaymentDate { get; set; }
-
-        [Required]
-        public Guid UserId { get; set; }
     }
 }

@@ -72,7 +72,7 @@ namespace Monthley.Services
                         case ExpenseFreqType.ByMonth:
                             if (entity.FrequencyFactor == 1)
                                 frequency = "Monthly";
-                            else 
+                            else
                                 frequency = $"Every {entity.FrequencyFactor} months";
                             break;
                         default:
@@ -116,6 +116,12 @@ namespace Monthley.Services
                     EndDate = expenseEntity.EndDate
                 };
             }
+        }
+
+        public ExpenseListItem GetExpenseListItemById(int id)
+        {
+            var expenseListItems = GetExpenses();
+            return expenseListItems.FirstOrDefault(e => e.Id == id);
         }
 
         public bool UpdateExpense(ExpenseEdit model)

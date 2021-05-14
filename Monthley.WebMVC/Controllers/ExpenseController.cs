@@ -93,7 +93,7 @@ namespace Monthley.WebMVC.Controllers
         public ActionResult Delete(int id)
         {
             var service = CreateExpenseService();
-            var model = service.GetExpenseById(id);
+            var model = service.GetExpenseListItemById(id);
 
             return View(model);
         }

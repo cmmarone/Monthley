@@ -13,10 +13,7 @@ namespace Monthley.Data.Entities
         public int Id { get; set; }
 
         [Required]
-        public int MonthNum { get; set; }
-
-        [Required]
-        public int YearNum { get; set; }
+        public DateTime BeginDate { get; set; }
 
         [Required]
         public Guid UserId { get; set; }

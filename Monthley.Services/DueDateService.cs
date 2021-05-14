@@ -45,7 +45,7 @@ namespace Monthley.Services
                     var dueDateEntity = new DueDate()
                     {
                         ExpenseId = (context.Categories.Single(c => c.Name == model.CategoryName && c.UserId == _userId)).Id,
-                        MonthId = (context.Months.Single(m => m.MonthNum == date.Month && m.YearNum == date.Year && m.UserId == _userId)).Id,
+                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == _userId)).Id,
                         Date = date,
                         Amount = model.Amount,
                         UserId = _userId
@@ -86,7 +86,7 @@ namespace Monthley.Services
                     var dueDateEntity = new DueDate()
                     {
                         ExpenseId = model.Id,
-                        MonthId = (context.Months.Single(m => m.MonthNum == date.Month && m.YearNum == date.Year && m.UserId == _userId)).Id,
+                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == _userId)).Id,
                         Date = date,
                         Amount = model.Amount,
                         UserId = _userId

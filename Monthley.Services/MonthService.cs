@@ -17,6 +17,32 @@ namespace Monthley.Services
             _userId = userId;
         }
 
+        public bool SeedMonthsForNewUser()
+        {
+            List<DateTime> dtList = new List<DateTime>();
+            var endDate = new DateTime(2100, 12, 1);
+            for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1); 
+                (DateTime.Compare(date, endDate) <= 0); 
+                date = date.AddMonths(1))
+            {
+                dtList.Add(date);
+            }
+
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var beginDate in dtList)
+                {
+                    var month = new Month()
+                    {
+                        BeginDate = beginDate,
+                        UserId = _userId
+                    };
+                    context.Months.Add(month);
+                }
+                return context.SaveChanges() == dtList.Count();
+            }
+        }
+
         public IEnumerable<MonthListItem> GetMonths()
         {
             using (var context = new ApplicationDbContext())
@@ -27,8 +53,7 @@ namespace Monthley.Services
                 foreach (var entity in months)
                 {
                     // getting Name
-                    var dateTime = new DateTime(entity.YearNum, entity.MonthNum, 1);
-                    var name = $"{dateTime.ToString("MMMM")} {dateTime.ToString("yyyy")}";
+                    var name = $"{entity.BeginDate.ToString("MMMM")} {entity.BeginDate.ToString("yyyy")}";
 
                     // getting DisposableRemaining
                     decimal totalIncome = 0;
@@ -58,8 +83,7 @@ namespace Monthley.Services
                     }
                     decimal expenseBalance = actualExpenses;
                     decimal endingBalance = expenseBalance + incomeBalance;
-                    var firstDayPast = new DateTime(entity.YearNum, (entity.MonthNum + 1), 1);
-                    if (DateTime.Compare(firstDayPast, DateTime.Now) > 0)
+                    if (DateTime.Compare(entity.BeginDate.AddMonths(1), DateTime.Now) > 0)
                         endingBalance = 0;
 
                     decimal net = disposableRemaining + endingBalance;
@@ -68,14 +92,13 @@ namespace Monthley.Services
                     {
                         Id = entity.Id,
                         Name = name,
-                        MonthNum = entity.MonthNum,
-                        YearNum = entity.YearNum,
+                        BeginDate = entity.BeginDate,
                         DisposableRemaining = disposableRemaining,
                         Net = net
                     };
                     monthList.Add(monthListItem);
                 }
-                return monthList.OrderBy(m => m.YearNum).ThenBy(m => m.MonthNum);
+                return monthList.OrderBy(m => m.BeginDate);
             }
         }
 
@@ -86,8 +109,7 @@ namespace Monthley.Services
                 var entity = context.Months.Single(e => e.Id == id && e.UserId == _userId);
 
                 // getting Name
-                var dateTime = new DateTime(entity.YearNum, entity.MonthNum, 1);
-                var name = $"{dateTime.ToString("MMMM")} {dateTime.ToString("yyyy")}";
+                var name = $"{entity.BeginDate.ToString("MMMM")} {entity.BeginDate.ToString("yyyy")}";
 
                 // getting TotalIncome
                 decimal totalIncome = 0;
@@ -152,9 +174,7 @@ namespace Monthley.Services
                 decimal expenseBalance = actualExpenses;
 
                 decimal endingBalance = expenseBalance + incomeBalance;
-
-                var firstDayPast = new DateTime(entity.YearNum, (entity.MonthNum + 1), 1);
-                if (DateTime.Compare(firstDayPast, DateTime.Now) > 0)
+                if (DateTime.Compare(entity.BeginDate.AddMonths(1), DateTime.Now) > 0)
                     endingBalance = 0;
 
                 // getting Net                 
@@ -164,8 +184,7 @@ namespace Monthley.Services
                 {
                     Id = entity.Id,
                     Name = name,
-                    MonthNum = entity.MonthNum,
-                    YearNum = entity.YearNum,
+                    BeginDate = entity.BeginDate,
                     TotalIncome = totalIncome,
                     TotalBills = totalBills,
                     TotalSaving = totalSaving,

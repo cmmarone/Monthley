@@ -93,10 +93,10 @@ namespace Monthley.WebMVC.Controllers
         public ActionResult Delete(int id)
         {
             var service = CreateIncomeService();
-            var model = service.GetIncomeById(id);
+            var model = service.GetIncomeListItemById(id);
 
             return View(model);
-        }
+        } 
 
         // POST: Income/Delete/{id}
         [HttpPost]

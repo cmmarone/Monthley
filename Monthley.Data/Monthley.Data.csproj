@@ -72,6 +72,10 @@
     <Compile Include="Migrations\202105131549092_AnythingNew.Designer.cs">
       <DependentUpon>202105131549092_AnythingNew.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202105141446557_adjustedMonth.cs" />
+    <Compile Include="Migrations\202105141446557_adjustedMonth.Designer.cs">
+      <DependentUpon>202105141446557_adjustedMonth.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -85,6 +89,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202105131549092_AnythingNew.resx">
       <DependentUpon>202105131549092_AnythingNew.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202105141446557_adjustedMonth.resx">
+      <DependentUpon>202105141446557_adjustedMonth.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />

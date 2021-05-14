@@ -118,6 +118,12 @@ namespace Monthley.Services
             }
         }
 
+        public IncomeListItem GetIncomeListItemById(int id)
+        {
+            var incomeListItems = GetIncomes();
+            return incomeListItems.FirstOrDefault(i => i.Id == id);
+        }
+
         public bool UpdateIncome(IncomeEdit model)
         {
             if (model.LastPayDate == null)

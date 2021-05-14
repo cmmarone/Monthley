@@ -13,9 +13,7 @@ namespace Monthley.Models.MonthModels
 
         public string Name { get; set; }
 
-        public int MonthNum { get; set; }
-
-        public int YearNum { get; set; }
+        public DateTime BeginDate { get; set; }
 
         public decimal TotalIncome { get; set; }
 
