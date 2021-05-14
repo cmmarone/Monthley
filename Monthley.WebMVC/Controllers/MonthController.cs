@@ -8,6 +8,7 @@ using System.Web.Mvc;
 
 namespace Monthley.WebMVC.Controllers
 {
+    [Authorize]
     public class MonthController : Controller
     {
         // GET: Month/Index

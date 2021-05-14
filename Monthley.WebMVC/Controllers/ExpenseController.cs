@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Monthley.WebMVC.Controllers
 {
+    [Authorize]
     public class ExpenseController : Controller
     {
         // GET: Expense/Index

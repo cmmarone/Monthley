@@ -9,6 +9,7 @@ using System.Web.Mvc;
 
 namespace Monthley.WebMVC.Controllers
 {
+    [Authorize]
     public class PaymentMadeController : Controller
     {
         // GET: PaymentMade/Create
