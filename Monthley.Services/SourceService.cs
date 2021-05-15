@@ -38,7 +38,7 @@ namespace Monthley.Services
             var sourceEntity = new Source()
             {
                 Name = model.SourceName,
-                Type = model.SourceType,
+                Type = SourceType.Budgeted,
                 UserId = _userId
             };
 
@@ -55,8 +55,10 @@ namespace Monthley.Services
             {
                 var sourceEntity = context.Sources.Single(s => s.Id == model.Id && s.UserId == _userId);
 
+                if (sourceEntity.Name == model.SourceName)
+                    return true;
+
                 sourceEntity.Name = model.SourceName;
-                sourceEntity.Type = model.SourceType;
 
                 return context.SaveChanges() == 1;
             }

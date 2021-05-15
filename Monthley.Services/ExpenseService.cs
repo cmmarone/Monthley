@@ -29,10 +29,6 @@ namespace Monthley.Services
             if (!categoryService.CreateCategory(model))
                 return false;
 
-            var dueDateService = CreateDueDateService();
-            if (!dueDateService.CreateDueDates(model))
-                return false;
-
             using (var context = new ApplicationDbContext())
             {
                 var expenseEntity = new Expense()
@@ -46,15 +42,22 @@ namespace Monthley.Services
                     UserId = _userId
                 };
                 context.Expenses.Add(expenseEntity);
-                return context.SaveChanges() == 1;
+                if (!(context.SaveChanges() == 1))
+                    return false;
             }
+
+            var dueDateService = CreateDueDateService();
+            if (!dueDateService.CreateDueDates(model))
+                return false;
+
+            return true;
         }
 
         public IEnumerable<ExpenseListItem> GetExpenses()
         {
             using (var context = new ApplicationDbContext())
             {
-                var expenses = context.Expenses.Where(e => e.UserId == _userId);
+                var expenses = context.Expenses.Where(e => e.UserId == _userId).ToList();
 
                 var expenseList = new List<ExpenseListItem>();
                 foreach (var entity in expenses)
@@ -91,11 +94,11 @@ namespace Monthley.Services
                         CategoryName = entity.Category.Name,
                         Amount = entity.Amount,
                         Frequency = frequency,
-                        NextDueDate = nextDueDate
+                        NextDueDate = nextDueDate.ToString("D")
                     };
                     expenseList.Add(expenseListItem);
                 }
-                return expenseList.OrderBy(e => e.CategoryType);
+                return expenseList.OrderBy(e => e.CategoryName);
             }
         }
 
@@ -135,13 +138,16 @@ namespace Monthley.Services
             if (!categoryService.UpdateCategory(model))
                 return false;
 
-            var dueDateService = CreateDueDateService();
-            if (!dueDateService.UpdateDueDates(model))
-                return false;
-
             using (var context = new ApplicationDbContext())
             {
                 var expenseEntity = context.Expenses.Single(e => e.Id == model.Id && e.UserId == _userId);
+
+                if (expenseEntity.Amount == model.Amount
+                    && expenseEntity.ExpenseFreqType == model.ExpenseFreqType
+                    && expenseEntity.FrequencyFactor == model.FrequencyFactor
+                    && expenseEntity.InitialDueDate == model.InitialDueDate
+                    && expenseEntity.EndDate == model.EndDate)
+                    return true;
 
                 expenseEntity.Amount = model.Amount;
                 expenseEntity.ExpenseFreqType = model.ExpenseFreqType;
@@ -149,16 +155,19 @@ namespace Monthley.Services
                 expenseEntity.InitialDueDate = model.InitialDueDate;
                 expenseEntity.EndDate = model.EndDate;
 
-                return context.SaveChanges() == 1;
+                if (!(context.SaveChanges() == 1))
+                    return false;
             }
+
+            var dueDateService = CreateDueDateService();
+            if (!dueDateService.UpdateDueDates(model))
+                return false;
+
+            return true;
         }
 
         public bool DeleteExpense(int id)
         {
-            var categoryService = CreateCategoryService();
-            if (!categoryService.DeleteCategory(id))
-                return false;
-
             var dueDateService = CreateDueDateService();
             if (!dueDateService.DeleteDueDates(id))
                 return false;
@@ -167,8 +176,15 @@ namespace Monthley.Services
             {
                 var expenseEntity = context.Expenses.Single(e => e.Id == id && e.UserId == _userId);
                 context.Expenses.Remove(expenseEntity);
-                return context.SaveChanges() == 1;
+                if (!(context.SaveChanges() == 1))
+                    return false;
             }
+
+            var categoryService = CreateCategoryService();
+            if (!categoryService.DeleteCategory(id))
+                return false;
+
+            return true;
         }
 
         private CategoryService CreateCategoryService()

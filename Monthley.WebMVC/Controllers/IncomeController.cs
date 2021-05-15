@@ -54,7 +54,6 @@ namespace Monthley.WebMVC.Controllers
             {
                 Id = incomeDetail.Id,
                 SourceName = incomeDetail.SourceName,
-                SourceType = incomeDetail.SourceType,
                 Amount = incomeDetail.Amount,
                 PayFreqType = incomeDetail.PayFreqType,
                 FrequencyFactor = incomeDetail.FrequencyFactor,

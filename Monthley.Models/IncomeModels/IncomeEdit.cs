@@ -14,8 +14,6 @@ namespace Monthley.Models.IncomeModels
         // hitch-hiker properties for SourceService---------------->
         public string SourceName { get; set; }
 
-        public SourceType SourceType { get; set; }
-
         // for IncomeService------------------>
         // Income Id prop [PK, FK to Source table] will be set in the service by LINQ-querying the 
         // Source context and finding the entity that was just created by SourceService using the 

@@ -29,10 +29,6 @@ namespace Monthley.Services
             if (!sourceService.CreateSource(model))
                 return false;
 
-            var payDayService = CreatePayDayService();
-            if (!payDayService.CreatePayDays(model))
-                return false;
-
             using (var context = new ApplicationDbContext())
             {
                 var incomeEntity = new Income()
@@ -46,15 +42,22 @@ namespace Monthley.Services
                     UserId = _userId
                 };
                 context.Incomes.Add(incomeEntity);
-                return context.SaveChanges() == 1;
+                if (!(context.SaveChanges() == 1))
+                    return false;
             }
+
+            var payDayService = CreatePayDayService();
+            if (!payDayService.CreatePayDays(model))
+                return false;
+
+            return true;
         }
 
         public IEnumerable<IncomeListItem> GetIncomes()
         {
             using (var context = new ApplicationDbContext())
             {
-                var incomes = context.Incomes.Where(e => e.UserId == _userId);
+                var incomes = context.Incomes.Where(e => e.UserId == _userId).ToList();
 
                 var incomeList = new List<IncomeListItem>();
                 foreach (var entity in incomes)
@@ -87,15 +90,14 @@ namespace Monthley.Services
                     var incomeListItem = new IncomeListItem
                     {
                         Id = entity.Id,
-                        SourceType = entity.Source.Type.ToString(),
                         SourceName = entity.Source.Name,
                         Amount = entity.Amount,
                         Frequency = frequency,
-                        NextPayDate = nextPayDate
+                        NextPayDate = nextPayDate.ToString("D")
                     };
                     incomeList.Add(incomeListItem);
                 }
-                return incomeList.OrderBy(e => e.SourceType);
+                return incomeList.OrderBy(e => e.SourceName);
             }
         }
 
@@ -108,7 +110,6 @@ namespace Monthley.Services
                 {
                     Id = incomeEntity.Id,
                     SourceName = incomeEntity.Source.Name,
-                    SourceType = incomeEntity.Source.Type,
                     Amount = incomeEntity.Amount,
                     PayFreqType = incomeEntity.PayFreqType,
                     FrequencyFactor = incomeEntity.FrequencyFactor,
@@ -135,13 +136,16 @@ namespace Monthley.Services
             if (!sourceService.UpdateSource(model))
                 return false;
 
-            var payDayService = CreatePayDayService();
-            if (!payDayService.UpdatePayDays(model))
-                return false;
-
             using (var context = new ApplicationDbContext())
             {
                 var incomeEntity = context.Incomes.Single(i => i.Id == model.Id && i.UserId == _userId);
+
+                if (incomeEntity.Amount == model.Amount 
+                    && incomeEntity.PayFreqType == model.PayFreqType 
+                    && incomeEntity.FrequencyFactor == model.FrequencyFactor
+                    && incomeEntity.InitialPayDate == model.InitialPayDate
+                    && incomeEntity.LastPayDate == model.LastPayDate)
+                        return true;
 
                 incomeEntity.Amount = model.Amount;
                 incomeEntity.PayFreqType = model.PayFreqType;
@@ -149,16 +153,19 @@ namespace Monthley.Services
                 incomeEntity.InitialPayDate = model.InitialPayDate;
                 incomeEntity.LastPayDate = model.LastPayDate;
 
-                return context.SaveChanges() == 1;
+                if (!(context.SaveChanges() == 1))
+                    return false;
             }
+
+            var payDayService = CreatePayDayService();
+            if (!payDayService.UpdatePayDays(model))
+                return false;
+
+            return true;
         }
 
         public bool DeleteIncome(int id)
         {
-            var sourceService = CreateSourceService();
-            if (!sourceService.DeleteSource(id))
-                return false;
-
             var payDayService = CreatePayDayService();
             if (!payDayService.DeletePayDays(id))
                 return false;
@@ -167,8 +174,15 @@ namespace Monthley.Services
             {
                 var incomeEntity = context.Incomes.Single(i => i.Id == id && i.UserId == _userId);
                 context.Incomes.Remove(incomeEntity);
-                return context.SaveChanges() == 1;
+                if (!(context.SaveChanges() == 1))
+                    return false;
             }
+
+            var sourceService = CreateSourceService();
+            if (!sourceService.DeleteSource(id))
+                return false;
+
+            return true;
         }
 
         private SourceService CreateSourceService()

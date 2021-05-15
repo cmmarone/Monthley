@@ -55,6 +55,9 @@ namespace Monthley.Services
             {
                 var categoryEntity = context.Categories.Single(c => c.Id == model.Id && c.UserId == _userId);
 
+                if (categoryEntity.Name == model.CategoryName && categoryEntity.Type == model.CategoryType)
+                    return true;
+
                 categoryEntity.Name = model.CategoryName;
                 categoryEntity.Type = model.CategoryType;
 

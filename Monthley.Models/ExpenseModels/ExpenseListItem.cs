@@ -14,6 +14,6 @@ namespace Monthley.Models.ExpenseModels
         public string CategoryName { get; set; }
         public decimal Amount { get; set; }
         public string Frequency { get; set; }
-        public DateTime NextDueDate { get; set; }
+        public string NextDueDate { get; set; }
     }
 }

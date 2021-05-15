@@ -12,9 +12,6 @@
 <table class="table">
     <tr>
         <th>
-            @Html.DisplayNameFor(model => model.SourceType)
-        </th>
-        <th>
             @Html.DisplayNameFor(model => model.SourceName)
         </th>
         <th>
@@ -31,9 +28,6 @@
 
 @foreach (var item in Model) {
     <tr>
-        <td>
-            @Html.DisplayFor(modelItem => item.SourceType)
-        </td>
         <td>
             @Html.DisplayFor(modelItem => item.SourceName)
         </td>
