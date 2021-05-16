@@ -28,6 +28,7 @@ namespace Monthley.Models.IncomeModels
         public int FrequencyFactor { get; set; }
 
         [Required]
+        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MMM/yyyy}")]
         public DateTime InitialPayDate { get; set; }
 
         public DateTime LastPayDate { get; set; }

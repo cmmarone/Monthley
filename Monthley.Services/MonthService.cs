@@ -47,7 +47,7 @@ namespace Monthley.Services
         {
             using (var context = new ApplicationDbContext())
             {
-                var months = context.Months.Where(m => m.UserId == _userId);
+                var months = context.Months.Where(m => m.UserId == _userId).ToList();
 
                 var monthList = new List<MonthListItem>();
                 foreach (var entity in months)
