@@ -24,7 +24,7 @@ namespace Monthley.Services
             for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 (DateTime.Compare(date, endDate) <= 0);
                 date = date.AddMonths(1))
-                    dtList.Add(date);
+                dtList.Add(date);
 
             using (var context = new ApplicationDbContext())
             {
@@ -200,21 +200,30 @@ namespace Monthley.Services
         {
             using (var context = new ApplicationDbContext())
             {
-                var monthEntity = context.Months.Single(e => e.Id == id && e.UserId == _userId);
+                var monthEntity = context.Months.Single(m => m.Id == id && m.UserId == _userId);
+                var budgetedExpenses = context.Expenses.Where(c => c.Category.Type == CategoryType.Expense && c.UserId == _userId).ToList();
 
                 var mcsDetails = new List<MonthCategorySpendingDetail>();
-                foreach (var dueDate in monthEntity.DueDates)
+                foreach (var budgetedExpense in budgetedExpenses)
                 {
-                    string name;
-                    decimal amount;
+                    string name = budgetedExpense.Category.Name;
+                    decimal amount = 0;
                     decimal spent = 0;
-                    if (dueDate.Expense.Category.Type == CategoryType.Expense)
+
+                    foreach (var dueDate in monthEntity.DueDates)
                     {
-                        name = dueDate.Expense.Category.Name;
-                        amount = dueDate.Expense.Amount;
-                        var payments = dueDate.Expense.Category.PaymentsMade;
+                        if (dueDate.Expense.Category.Name == budgetedExpense.Category.Name)
+                            amount += dueDate.Amount;
+                    }
+
+                    if (amount > 0)
+                    {
+                        var payments = budgetedExpense.Category.PaymentsMade;
                         foreach (var payment in payments)
-                            spent += payment.Amount;
+                        {
+                            if (payment.MonthId == monthEntity.Id)
+                                spent += payment.Amount;
+                        }
 
                         var mcsDetail = new MonthCategorySpendingDetail
                         {
