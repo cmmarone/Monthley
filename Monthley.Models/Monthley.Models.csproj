@@ -62,6 +62,7 @@
     <Compile Include="IncomeModels\IncomeDetail.cs" />
     <Compile Include="IncomeModels\IncomeEdit.cs" />
     <Compile Include="IncomeModels\IncomeListItem.cs" />
+    <Compile Include="MonthModels\MonthCategorySpendingDetail.cs" />
     <Compile Include="MonthModels\MonthDetail.cs" />
     <Compile Include="MonthModels\MonthListItem.cs" />
     <Compile Include="MonthModels\TransactionListItem.cs" />

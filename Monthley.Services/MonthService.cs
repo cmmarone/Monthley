@@ -21,18 +21,16 @@ namespace Monthley.Services
         {
             List<DateTime> dtList = new List<DateTime>();
             var endDate = new DateTime(2100, 12, 1);
-            for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1); 
-                (DateTime.Compare(date, endDate) <= 0); 
+            for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                (DateTime.Compare(date, endDate) <= 0);
                 date = date.AddMonths(1))
-            {
-                dtList.Add(date);
-            }
+                    dtList.Add(date);
 
             using (var context = new ApplicationDbContext())
             {
                 foreach (var beginDate in dtList)
                 {
-                    var month = new Month()
+                    var month = new Month
                     {
                         BeginDate = beginDate,
                         UserId = _userId
@@ -85,7 +83,6 @@ namespace Monthley.Services
                     decimal endingBalance = expenseBalance + incomeBalance;
                     if (DateTime.Compare(entity.BeginDate.AddMonths(1), DateTime.Now) > 0)
                         endingBalance = 0;
-
                     decimal net = disposableRemaining + endingBalance;
 
                     var monthListItem = new MonthListItem
@@ -196,6 +193,40 @@ namespace Monthley.Services
                     Net = net,
                     PaymentsMade = entity.PaymentsMade
                 };
+            }
+        }
+
+        public IEnumerable<MonthCategorySpendingDetail> GetCategorySpendingForMonth(int id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var monthEntity = context.Months.Single(e => e.Id == id && e.UserId == _userId);
+
+                var mcsDetails = new List<MonthCategorySpendingDetail>();
+                foreach (var dueDate in monthEntity.DueDates)
+                {
+                    string name;
+                    decimal amount;
+                    decimal spent = 0;
+                    if (dueDate.Expense.Category.Type == CategoryType.Expense)
+                    {
+                        name = dueDate.Expense.Category.Name;
+                        amount = dueDate.Expense.Amount;
+                        var payments = dueDate.Expense.Category.PaymentsMade;
+                        foreach (var payment in payments)
+                            spent += payment.Amount;
+
+                        var mcsDetail = new MonthCategorySpendingDetail
+                        {
+                            CategoryName = name,
+                            CategoryBudgetedAmount = amount,
+                            Spent = spent,
+                            SpendableRemaining = (amount - spent)
+                        };
+                        mcsDetails.Add(mcsDetail);
+                    }
+                }
+                return mcsDetails.OrderBy(c => c.CategoryName);
             }
         }
 

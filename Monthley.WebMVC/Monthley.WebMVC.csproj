@@ -299,7 +299,7 @@
     <Content Include="Views\Income\Delete.cshtml" />
     <Content Include="Views\Month\Index.cshtml" />
     <Content Include="Views\Month\Details.cshtml" />
-    <Content Include="Views\Month\ExpenseDetails.cshtml" />
+    <Content Include="Views\Month\CategorySpending.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

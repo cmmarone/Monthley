@@ -27,12 +27,12 @@ namespace Monthley.WebMVC.Controllers
             return View(monthDetailModel);
         }
 
-        // GET: Month/ExpenseDetails/{id}
-        public ActionResult ExpenseDetails(int id)
+        // GET: Month/CategorySpending/{id}
+        public ActionResult CategorySpending(int id)
         {
             var service = CreateMonthService();
-            var monthDetailModel = service.GetMonthById(id);
-            return View(monthDetailModel);
+            var categorySpendingList = service.GetCategorySpendingForMonth(id);
+            return View(categorySpendingList);
         }
 
         //GET: Month/Transactions/{id}
