@@ -11,15 +11,14 @@ namespace Monthley.Models.PaymentReceivedModels
     public class PaymentReceivedCreate
     {
         [Required]
-        public int SourceId { get; set; }
-
-        [Required]
-        public int MonthId { get; set; }
+        public string SourceName { get; set; }
 
         [Required]
         public decimal Amount { get; set; }
 
         [Required]
         public DateTime PaymentDate { get; set; }
+
+        public ICollection<string> SourceEntityNames { get; set; }
     }
 }

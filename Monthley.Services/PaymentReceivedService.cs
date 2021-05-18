@@ -24,8 +24,8 @@ namespace Monthley.Services
             {
                 var paymentReceivedEntity = new PaymentReceived()
                 {
-                    SourceId = model.SourceId,
-                    MonthId = model.MonthId,
+                    SourceId = context.Sources.SingleOrDefault(c => c.Name == model.SourceName && c.UserId == _userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == model.PaymentDate.Month && m.BeginDate.Year == model.PaymentDate.Year && m.UserId == _userId).Id,
                     Amount = model.Amount,
                     PaymentDate = model.PaymentDate,
                     UserId = _userId

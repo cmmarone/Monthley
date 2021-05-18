@@ -99,6 +99,17 @@ namespace Monthley.Services
             }
         }
 
+        public MonthDetail GetCurrentMonthDetail()
+        {
+            var monthBeginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            using (var context = new ApplicationDbContext())
+            {
+                int id = context.Months.SingleOrDefault(m => m.BeginDate == monthBeginDate && m.UserId == _userId).Id;
+                var monthDetail = GetMonthById(id);
+                return monthDetail;
+            }
+        }
+
         public MonthDetail GetMonthById(int id)
         {
             using (var context = new ApplicationDbContext())
@@ -195,6 +206,17 @@ namespace Monthley.Services
                 };
             }
         }
+
+        public int GetMonthId(DateTime dateTime)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                int monthId = context.Months
+                    .SingleOrDefault(m => m.BeginDate.Month == dateTime.Month && m.BeginDate.Year == dateTime.Year && m.UserId == _userId).Id;
+                return monthId;
+            }
+        }
+
 
         public IEnumerable<MonthCategorySpendingDetail> GetCategorySpendingForMonth(int id)
         {

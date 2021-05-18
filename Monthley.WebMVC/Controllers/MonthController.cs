@@ -19,6 +19,14 @@ namespace Monthley.WebMVC.Controllers
             return View(modelList);
         }
 
+        // GET: Month/CurrentBudget
+        public ActionResult CurrentBudget()
+        {
+            var service = CreateMonthService();
+            var monthDetailModel = service.GetCurrentMonthDetail();
+            return View(monthDetailModel);
+        }
+
         // GET: Month/Details/{id}
         public ActionResult Details(int id)
         {

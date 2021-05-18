@@ -300,6 +300,7 @@
     <Content Include="Views\Month\Index.cshtml" />
     <Content Include="Views\Month\Details.cshtml" />
     <Content Include="Views\Month\CategorySpending.cshtml" />
+    <Content Include="Views\Month\CurrentBudget.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

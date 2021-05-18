@@ -1,4 +1,5 @@
-﻿using Monthley.Data.Entities;
+﻿using Monthley.Data;
+using Monthley.Data.Entities;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
@@ -11,15 +12,14 @@ namespace Monthley.Models.PaymentMadeModels
     public class PaymentMadeCreate
     {
         [Required]
-        public int CategoryId { get; set; }
-
-        [Required]
-        public int MonthId { get; set; }
+        public string CategoryName { get; set; }
 
         [Required]
         public decimal Amount { get; set; }
 
         [Required]
         public DateTime PaymentDate { get; set; }
+
+        public ICollection<string> CategoryEntityNames { get; set; }
     }
 }

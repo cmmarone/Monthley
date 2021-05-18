@@ -73,5 +73,17 @@ namespace Monthley.Services
                 return context.SaveChanges() == 1;
             }
         }
+
+        public ICollection<string> GetSourceNames()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var sources = context.Sources.Where(c => c.UserId == _userId);
+                var sourceNames = new List<string>();
+                foreach (var source in sources)
+                    sourceNames.Add(source.Name);
+                return sourceNames;
+            }
+        }
     }
 }

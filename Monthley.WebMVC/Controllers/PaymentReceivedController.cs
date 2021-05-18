@@ -15,7 +15,13 @@ namespace Monthley.WebMVC.Controllers
         // GET: PaymentReceived/Create
         public ActionResult Create()
         {
-            return View();
+            var sourceService = CreateSourceService();
+            var sourceNames = sourceService.GetSourceNames();
+            var paymentReceivedCreate = new PaymentReceivedCreate()
+            {
+                SourceEntityNames = sourceNames
+            };
+            return View(paymentReceivedCreate);
         }
 
         // POST: PaymentReceived/Create
@@ -29,8 +35,10 @@ namespace Monthley.WebMVC.Controllers
 
             if (service.CreatePaymentReceived(model))
             {
+                var monthService = CreateMonthService();
+                var monthId = monthService.GetMonthId(model.PaymentDate);
                 TempData["SaveResult"] = "Your payment was created.";
-                return RedirectToAction("Index");
+                return RedirectToAction($"Details/{monthId}", "Month");
             }
 
             ModelState.AddModelError("", "Payment could not be created.");
@@ -107,6 +115,20 @@ namespace Monthley.WebMVC.Controllers
         {
             var userId = Guid.Parse(User.Identity.GetUserId());
             var service = new PaymentReceivedService(userId);
+            return service;
+        }
+
+        private SourceService CreateSourceService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new SourceService(userId);
+            return service;
+        }
+
+        private MonthService CreateMonthService()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new MonthService(userId);
             return service;
         }
     }

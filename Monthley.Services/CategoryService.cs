@@ -74,5 +74,17 @@ namespace Monthley.Services
                 return context.SaveChanges() == 1;
             }
         }
+
+        public ICollection<string> GetCategoryNames()
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var categories = context.Categories.Where(c => c.UserId == _userId);
+                var categoryNames = new List<string>();
+                foreach (var category in categories)
+                    categoryNames.Add(category.Name);
+                return categoryNames;
+            }
+        }
     }
 }
