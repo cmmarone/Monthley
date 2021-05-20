@@ -1,10 +1,10 @@
 ﻿@model Monthley.Models.PaymentReceivedModels.PaymentReceivedDetail
 
 @{
-    ViewBag.Title = "Delete";
+    ViewBag.Title = "Delete Transaction";
 }
 
-<h2>Delete</h2>
+<h2>Delete an Incoming Transaction</h2>
 
 <h3>Are you sure you want to delete this?</h3>
 <div>
@@ -12,19 +12,11 @@
     <hr />
     <dl class="dl-horizontal">
         <dt>
-            @Html.DisplayNameFor(model => model.SourceId)
+            @Html.DisplayNameFor(model => model.SourceName)
         </dt>
 
         <dd>
-            @Html.DisplayFor(model => model.SourceId)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.MonthId)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.MonthId)
+            @Html.DisplayFor(model => model.SourceName)
         </dd>
 
         <dt>
@@ -45,12 +37,13 @@
 
     </dl>
 
-    @using (Html.BeginForm()) {
+    @using (Html.BeginForm())
+    {
         @Html.AntiForgeryToken()
 
         <div class="form-actions no-color">
             <input type="submit" value="Delete" class="btn btn-default" /> |
-            @Html.ActionLink("Back to List", "Index")
+            @Html.ActionLink("Back to Transactions", "Transactions", "Month", new { id = Model.MonthId }, null)
         </div>
     }
 </div>

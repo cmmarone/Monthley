@@ -43,8 +43,8 @@ namespace Monthley.Services
                 return new PaymentReceivedDetail
                 {
                     Id = entity.Id,
-                    SourceId = entity.SourceId,
                     MonthId = entity.MonthId,
+                    SourceName = entity.Source.Name,
                     Amount = entity.Amount,
                     PaymentDate = entity.PaymentDate
                 };
@@ -58,8 +58,13 @@ namespace Monthley.Services
                 var paymentReceivedEntity = context.PaymentsReceived.Single(e => e.Id == model.Id && e.UserId == _userId);
 
                 paymentReceivedEntity.Id = model.Id;
-                paymentReceivedEntity.SourceId = model.SourceId;
-                paymentReceivedEntity.MonthId = model.MonthId;
+                paymentReceivedEntity.SourceId = context.Sources.SingleOrDefault(c => c.Name == model.SourceName && c.UserId == _userId).Id;
+                paymentReceivedEntity.MonthId = context.Months.SingleOrDefault(m =>
+                    m.BeginDate.Month == model.PaymentDate.Month
+                    && m.BeginDate.Year == model.PaymentDate.Year
+                    && m.UserId == _userId)
+                    .Id;
+                paymentReceivedEntity.Amount = model.Amount;
                 paymentReceivedEntity.PaymentDate = model.PaymentDate;
 
                 return context.SaveChanges() == 1;

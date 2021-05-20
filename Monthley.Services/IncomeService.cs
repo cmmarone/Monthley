@@ -20,14 +20,13 @@ namespace Monthley.Services
 
         public bool CreateIncome(IncomeCreate model)
         {
-            if (model.LastPayDate == null)
-                model.LastPayDate = new DateTime(2100, 12, 31);
-            if (model.PayFreqType == PayFreqType.Once)
-                model.LastPayDate = model.InitialPayDate;
-
             var sourceService = CreateSourceService();
             if (!sourceService.CreateSource(model))
                 return false;
+
+            DateTime lastPayDate = model.LastPayDate ?? new DateTime(2100, 12, 31);
+            if (model.PayFreqType == PayFreqType.Once)
+                lastPayDate = model.InitialPayDate;
 
             using (var context = new ApplicationDbContext())
             {
@@ -38,7 +37,7 @@ namespace Monthley.Services
                     PayFreqType = model.PayFreqType,
                     FrequencyFactor = model.FrequencyFactor,
                     InitialPayDate = model.InitialPayDate,
-                    LastPayDate = model.LastPayDate,
+                    LastPayDate = lastPayDate,
                     UserId = _userId
                 };
                 context.Incomes.Add(incomeEntity);

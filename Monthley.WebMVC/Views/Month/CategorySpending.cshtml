@@ -1,10 +1,10 @@
 ﻿@model IEnumerable<Monthley.Models.MonthModels.MonthCategorySpendingDetail>
 
 @{
-    ViewBag.Title = "CategorySpending";
+    ViewBag.Title = $"{Model.First().MonthName} - Expense Spending";
 }
 
-<h2>CategorySpending</h2>
+<h2>@Html.DisplayFor(model => model.First().MonthName) - Expense Spending</h2>
 
 <p>
     @Html.ActionLink("Create New", "Create")

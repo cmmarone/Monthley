@@ -20,14 +20,13 @@ namespace Monthley.Services
 
         public bool CreateExpense(ExpenseCreate model)
         {
-            if (model.EndDate == null)
-                model.EndDate = new DateTime(2100, 12, 31);
-            if (model.ExpenseFreqType == ExpenseFreqType.Once)
-                model.EndDate = model.InitialDueDate;
-
             var categoryService = CreateCategoryService();
             if (!categoryService.CreateCategory(model))
                 return false;
+
+            DateTime endDate = model.EndDate ?? new DateTime(2100, 12, 31);
+            if (model.ExpenseFreqType == ExpenseFreqType.Once)
+                endDate = model.InitialDueDate;
 
             using (var context = new ApplicationDbContext())
             {
@@ -38,7 +37,7 @@ namespace Monthley.Services
                     ExpenseFreqType = model.ExpenseFreqType,
                     FrequencyFactor = model.FrequencyFactor,
                     InitialDueDate = model.InitialDueDate,
-                    EndDate = model.EndDate,
+                    EndDate = endDate,
                     UserId = _userId
                 };
                 context.Expenses.Add(expenseEntity);

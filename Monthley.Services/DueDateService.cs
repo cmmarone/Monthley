@@ -20,18 +20,22 @@ namespace Monthley.Services
 
         public bool CreateDueDates(ExpenseCreate model)
         {
+            DateTime endDate = model.EndDate ?? new DateTime(2100, 12, 31);
+            if (model.ExpenseFreqType == ExpenseFreqType.Once)
+                endDate = model.InitialDueDate;
+
             var dueDates = new List<DateTime>();
             if (model.ExpenseFreqType == ExpenseFreqType.ByMonth)
             {
                 for (var date = model.InitialDueDate;
-                    (DateTime.Compare(date, model.EndDate)) <= 0;
+                    (DateTime.Compare(date, endDate)) <= 0;
                     date = date.AddMonths(1 * model.FrequencyFactor))
                     dueDates.Add(date);
             }
             else if (model.ExpenseFreqType == ExpenseFreqType.ByWeek)
             {
                 for (var date = model.InitialDueDate;
-                     (DateTime.Compare(date, model.EndDate)) <= 0;
+                     (DateTime.Compare(date, endDate)) <= 0;
                      date = date.AddDays(7 * model.FrequencyFactor))
                     dueDates.Add(date);
             }

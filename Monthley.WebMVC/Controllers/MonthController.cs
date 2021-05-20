@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity;
+using Monthley.Models.MonthModels;
 using Monthley.Services;
 using System;
 using System.Collections.Generic;
@@ -43,7 +44,7 @@ namespace Monthley.WebMVC.Controllers
             return View(categorySpendingList);
         }
 
-        //GET: Month/Transactions/{id}
+        // GET: Month/Transactions/{id}
         public ActionResult Transactions(int id)
         {
             var service = CreateMonthService();

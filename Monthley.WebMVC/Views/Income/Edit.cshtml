@@ -1,10 +1,10 @@
 ﻿@model Monthley.Models.IncomeModels.IncomeEdit
 
 @{
-    ViewBag.Title = "Edit";
+    ViewBag.Title = "Change Income";
 }
 
-<h2>Edit</h2>
+<h2>Change Income</h2>
 
 
 @using (Html.BeginForm())
@@ -12,9 +12,10 @@
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
-        <h4>IncomeEdit</h4>
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+
         @Html.HiddenFor(model => model.Id)
 
         <div class="form-group">

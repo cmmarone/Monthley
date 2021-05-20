@@ -12,9 +12,11 @@ namespace Monthley.Models.ExpenseModels
     {
         // hitch-hiker properties for CategoryService---------------->
         [Required]
+        [Display(Name = "Name")]
         public string CategoryName { get; set; }
 
         [Required]
+        [Display(Name = "Type of Expense")]
         public CategoryType CategoryType { get; set; }
 
         // for ExpenseService------------------>
@@ -22,17 +24,22 @@ namespace Monthley.Models.ExpenseModels
         // Category context and finding the entity that was just created by CategoryService using the 
         // above properties.
         [Required]
+        [Display(Name = "Amount ($)")]
         public decimal Amount { get; set; }
 
         [Required]
+        [Display(Name = "Frequency Type")]
         public ExpenseFreqType ExpenseFreqType { get; set; }
 
         [Required]
+        [Display(Name = "Frequency")]
         public int FrequencyFactor { get; set; }
 
         [Required]
+        [Display(Name = "First Due Date")]
         public DateTime InitialDueDate { get; set; }
 
-        public DateTime EndDate { get; set; }
+        [Display(Name = "Last Due Date")]
+        public DateTime? EndDate { get; set; }
     }
 }

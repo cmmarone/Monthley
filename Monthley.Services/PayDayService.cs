@@ -20,18 +20,22 @@ namespace Monthley.Services
 
         public bool CreatePayDays(IncomeCreate model)
         {
+            DateTime lastPayDate = model.LastPayDate ?? new DateTime(2100, 12, 31);
+            if (model.PayFreqType == PayFreqType.Once)
+                lastPayDate = model.InitialPayDate;
+
             var payDates = new List<DateTime>();
             if (model.PayFreqType == PayFreqType.ByMonth)
             {
                 for (var date = model.InitialPayDate;
-                    (DateTime.Compare(date, model.LastPayDate)) <= 0;
+                    (DateTime.Compare(date, lastPayDate)) <= 0;
                     date = date.AddMonths(1 * model.FrequencyFactor))
                     payDates.Add(date);
             }
             else if (model.PayFreqType == PayFreqType.ByWeek)
             {
                 for (var date = model.InitialPayDate;
-                     (DateTime.Compare(date, model.LastPayDate)) <= 0;
+                     (DateTime.Compare(date, lastPayDate)) <= 0;
                      date = date.AddDays(7 * model.FrequencyFactor))
                     payDates.Add(date);
             }

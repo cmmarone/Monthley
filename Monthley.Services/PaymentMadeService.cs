@@ -40,11 +40,12 @@ namespace Monthley.Services
             using (var ctx = new ApplicationDbContext())
             {
                 var entity = ctx.PaymentsMade.Single(e => e.Id == id && e.UserId == _userId);
+
                 return new PaymentMadeDetail
                 {
                     Id = entity.Id,
-                    CategoryId = entity.CategoryId,
                     MonthId = entity.MonthId,
+                    CategoryName = entity.Category.Name,
                     Amount = entity.Amount,
                     PaymentDate = entity.PaymentDate
                 };
@@ -58,8 +59,13 @@ namespace Monthley.Services
                 var paymentMadeEntity = context.PaymentsMade.Single(e => e.Id == model.Id && e.UserId == _userId);
 
                 paymentMadeEntity.Id = model.Id;
-                paymentMadeEntity.CategoryId = model.CategoryId;
-                paymentMadeEntity.MonthId = model.MonthId;
+                paymentMadeEntity.CategoryId = context.Categories.SingleOrDefault(c => c.Name == model.CategoryName && c.UserId == _userId).Id;
+                paymentMadeEntity.MonthId = context.Months.SingleOrDefault(m =>
+                    m.BeginDate.Month == model.PaymentDate.Month
+                    && m.BeginDate.Year == model.PaymentDate.Year
+                    && m.UserId == _userId)
+                    .Id;
+                paymentMadeEntity.Amount = model.Amount;
                 paymentMadeEntity.PaymentDate = model.PaymentDate;
 
                 return context.SaveChanges() == 1;

@@ -50,13 +50,18 @@ namespace Monthley.WebMVC.Controllers
         {
             var service = CreatePaymentReceivedService();
             var paymentReceivedDetail = service.GetPaymentReceivedById(id);
+            var sourceService = CreateSourceService();
+            var sourceNames = sourceService.GetSourceNames();
+            var monthService = CreateMonthService();
+            var monthId = monthService.GetMonthId(paymentReceivedDetail.PaymentDate);
             var model = new PaymentReceivedEdit
             {
                 Id = paymentReceivedDetail.Id,
-                SourceId = paymentReceivedDetail.SourceId,
                 MonthId = paymentReceivedDetail.MonthId,
+                SourceName = paymentReceivedDetail.SourceName,
                 Amount = paymentReceivedDetail.Amount,
-                PaymentDate = paymentReceivedDetail.PaymentDate
+                PaymentDate = paymentReceivedDetail.PaymentDate,
+                SourceEntityNames = sourceNames
             };
             return View(model);
         }
@@ -79,7 +84,7 @@ namespace Monthley.WebMVC.Controllers
             if (service.UpdatePaymentReceived(model))
             {
                 TempData["SaveResult"] = "Your payment was updated.";
-                return RedirectToAction("Index");
+                return RedirectToAction("Transactions", "Month", new { id = model.MonthId });
             }
 
             ModelState.AddModelError("", "Your payment could not be updated.");
@@ -107,8 +112,9 @@ namespace Monthley.WebMVC.Controllers
             service.DeletePaymentReceived(id);
 
             TempData["SaveResult"] = "Your payment was deleted.";
-
-            return RedirectToAction("Index");
+            var monthService = CreateMonthService();
+            var monthId = monthService.GetMonthId(DateTime.Now);
+            return RedirectToAction("Transactions", "Month", new { id = monthId });
         }
 
         private PaymentReceivedService CreatePaymentReceivedService()

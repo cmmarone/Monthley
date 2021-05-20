@@ -12,6 +12,7 @@ namespace Monthley.Models.IncomeModels
     {
         // hitch-hiker properties for SourceService---------------->
         [Required]
+        [Display(Name = "Name")]
         public string SourceName { get; set; }
 
         // for IncomeService------------------>
@@ -19,18 +20,23 @@ namespace Monthley.Models.IncomeModels
         // Source context and finding the entity that was just created by SourceService using the 
         // above properties.
         [Required]
+        [Display(Name = "Amount ($)")]
         public decimal Amount { get; set; }
 
         [Required]
+        [Display(Name = "Frequency Type")]
         public PayFreqType PayFreqType { get; set; }
 
         [Required]
+        [Display(Name = "Frequency")]
         public int FrequencyFactor { get; set; }
 
         [Required]
+        [Display(Name = "First Pay Date")]
         [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:dd/MMM/yyyy}")]
         public DateTime InitialPayDate { get; set; }
 
-        public DateTime LastPayDate { get; set; }
+        [Display(Name = "Last Pay Date")]
+        public DateTime? LastPayDate { get; set; }
     }
 }

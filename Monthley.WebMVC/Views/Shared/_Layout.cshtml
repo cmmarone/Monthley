@@ -3,7 +3,7 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title - My ASP.NET Application</title>
+    <title>@ViewBag.Title - monTHLey</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
 
@@ -21,14 +21,11 @@
             </div>
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
-                    <li>@Html.ActionLink("Home", "Index", "Home")</li>
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink("Current Budget", "CurrentBudget", "Month")</li>
                         <li>@Html.ActionLink("Expenses", "Index", "Expense")</li>
                         <li>@Html.ActionLink("Incomes", "Index", "Income")</li>
-                        <li>@Html.ActionLink("Make a Payment", "Create", "PaymentMade")</li>
-                        <li>@Html.ActionLink("Receive a Payment", "Create", "PaymentReceived")</li>
                     }
                     <li>@Html.ActionLink("About", "About", "Home")</li>
                     <li>@Html.ActionLink("Contact", "Contact", "Home")</li>
@@ -41,7 +38,7 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year - My ASP.NET Application</p>
+            <p>&copy; @DateTime.Now.Year - monTHLey</p>
         </footer>
     </div>
 

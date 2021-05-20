@@ -249,6 +249,7 @@ namespace Monthley.Services
 
                         var mcsDetail = new MonthCategorySpendingDetail
                         {
+                            MonthName = $"{monthEntity.BeginDate.ToString("MMMM")} {monthEntity.BeginDate.ToString("yyyy")}",
                             CategoryName = name,
                             CategoryBudgetedAmount = amount,
                             Spent = spent,
@@ -272,9 +273,11 @@ namespace Monthley.Services
                 {
                     var transaction = new TransactionListItem()
                     {
-                        CategoryOrSourceName = paymentMade.Category.Name,
+                        ControllerName = "PaymentMade",
+                        TransactionId = paymentMade.Id,
                         Type = paymentMade.Category.Type.ToString(),
-                        Amount = paymentMade.Amount,
+                        CategoryOrSourceName = paymentMade.Category.Name,
+                        Amount = $"-{paymentMade.Amount.ToString("F")}",
                         TransactionDate = paymentMade.PaymentDate
                     };
                     transactionList.Add(transaction);
@@ -283,9 +286,11 @@ namespace Monthley.Services
                 {
                     var transaction = new TransactionListItem()
                     {
-                        CategoryOrSourceName = paymentReceived.Source.Name,
+                        ControllerName = "PaymentReceived",
+                        TransactionId = paymentReceived.Id,
                         Type = paymentReceived.Source.Type.ToString(),
-                        Amount = paymentReceived.Amount,
+                        CategoryOrSourceName = paymentReceived.Source.Name,
+                        Amount = $"+{paymentReceived.Amount.ToString("F")}",
                         TransactionDate = paymentReceived.PaymentDate
                     };
                     transactionList.Add(transaction);
