@@ -28,6 +28,14 @@ namespace Monthley.WebMVC.Controllers
             return View(monthDetailModel);
         }
 
+        // GET: Month/PieChart
+        public ActionResult PieChart(int id)
+        {
+            var service = CreateMonthService();
+            var monthPieSlices = service.GetMonthPieSlices(id);
+            return View(monthPieSlices);
+        }
+
         // GET: Month/Details/{id}
         public ActionResult Details(int id)
         {

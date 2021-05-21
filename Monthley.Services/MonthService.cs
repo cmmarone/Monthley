@@ -110,6 +110,54 @@ namespace Monthley.Services
             }
         }
 
+        public List<PieSliceModel> GetMonthPieSlices(int id)
+        {
+            var monthDetail = GetMonthById(id);
+            var pieChartSlices = new List<PieSliceModel>();
+
+            var totalBillsPairing = new PieSliceModel
+            {
+                Label = "Bills",
+                Amount = monthDetail.TotalBills
+            };
+            if (totalBillsPairing.Amount > 0)
+                pieChartSlices.Add(totalBillsPairing);
+
+            var totalSavingPairing = new PieSliceModel
+            {
+                Label = "Savings",
+                Amount = monthDetail.TotalSaving
+            };
+            if (totalSavingPairing.Amount > 0)
+                pieChartSlices.Add(totalSavingPairing);
+
+            var totalOneTimePairing = new PieSliceModel
+            {
+                Label = "One-Time Expenses",
+                Amount = monthDetail.TotalOneTimeExpenses
+            };
+            if (totalOneTimePairing.Amount > 0)
+                pieChartSlices.Add(totalOneTimePairing);
+
+            var totalBudgetedExpensesPairing = new PieSliceModel
+            {
+                Label = "Budgeted Expenses",
+                Amount = monthDetail.TotalExpenses
+            };
+            if (totalBudgetedExpensesPairing.Amount > 0)
+                pieChartSlices.Add(totalBudgetedExpensesPairing);
+
+            var disposableRemainingPairing = new PieSliceModel
+            {
+                Label = "Spendable Money Remaining",
+                Amount = monthDetail.DisposableRemaining
+            };
+            if (disposableRemainingPairing.Amount > 0)
+                pieChartSlices.Add(disposableRemainingPairing);
+
+            return pieChartSlices;
+        }
+
         public MonthDetail GetMonthById(int id)
         {
             using (var context = new ApplicationDbContext())
@@ -216,7 +264,6 @@ namespace Monthley.Services
                 return monthId;
             }
         }
-
 
         public IEnumerable<MonthCategorySpendingDetail> GetCategorySpendingForMonth(int id)
         {

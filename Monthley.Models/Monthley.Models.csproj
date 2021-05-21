@@ -65,6 +65,7 @@
     <Compile Include="MonthModels\MonthCategorySpendingDetail.cs" />
     <Compile Include="MonthModels\MonthDetail.cs" />
     <Compile Include="MonthModels\MonthListItem.cs" />
+    <Compile Include="MonthModels\PieSliceModel.cs" />
     <Compile Include="MonthModels\TransactionListItem.cs" />
     <Compile Include="PaymentMadeModels\PaymentMadeCreate.cs" />
     <Compile Include="PaymentMadeModels\PaymentMadeDetail.cs" />

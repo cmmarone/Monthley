@@ -302,6 +302,7 @@
     <Content Include="Views\Month\Details.cshtml" />
     <Content Include="Views\Month\CategorySpending.cshtml" />
     <Content Include="Views\Month\CurrentBudget.cshtml" />
+    <Content Include="Views\Month\PieChart.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

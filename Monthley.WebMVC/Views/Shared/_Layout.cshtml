@@ -6,34 +6,27 @@
     <title>@ViewBag.Title - monTHLey</title>
     @Styles.Render("~/Content/css")
     @Scripts.Render("~/bundles/modernizr")
-
 </head>
+
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
         <div class="container">
-
             <div class="navbar-collapse collapse">
-
                 <ul class="nav navbar-nav">
                     @if (User.Identity.IsAuthenticated)
                     {
                         <li>@Html.ActionLink("Current Budget", "CurrentBudget", "Month", null, new { @style = "color:black;" })</li>
+                        <li>@Html.ActionLink("Calendar", "Index", "Month", null, new { @style = "color:black;" })</li>
                         <li>@Html.ActionLink("Expenses", "Index", "Expense", null, new { @style = "color:black;" })</li>
                         <li>@Html.ActionLink("Incomes", "Index", "Income", null, new { @style = "color:black;" })</li>
                     }
-                    <li>@Html.ActionLink("About", "About", "Home", null, new { @style = "color:black;" })</li>
-                    <li>@Html.ActionLink("Contact", "Contact", "Home", null, new { @style = "color:black;" })</li>
                 </ul>
-
                 @Html.Partial("_LoginPartial")
                 @Html.ActionLink("monTHLey", "Index", "Home", null, new { @class = "navbar-brand", @style = "color:black;" })
-
             </div>
-
-
-
         </div>
     </div>
+
     <div class="container body-content">
         @RenderBody()
         <hr />

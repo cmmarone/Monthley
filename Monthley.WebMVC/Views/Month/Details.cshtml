@@ -4,95 +4,112 @@
     ViewBag.Title = $"{Model.Name}";
 }
 
-<h2>Monthly Budget</h2>
+
+
+
+<h2>@Html.DisplayFor(model => model.Name)</h2>
 
 <div>
-
-    <hr />
-    <dl class="dl-horizontal">
-        <dt>
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalIncome)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TotalIncome)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalBills)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TotalBills)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalSaving)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TotalSaving)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalOneTimeExpenses)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TotalOneTimeExpenses)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.BudgetedExpenses)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.BudgetedExpenses)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.TotalExpenses)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.TotalExpenses)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.DisposableRemaining)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.DisposableRemaining)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.EndingBalance)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.EndingBalance)
-        </dd>
-
-        <dt>
-            @Html.DisplayNameFor(model => model.Net)
-        </dt>
-
-        <dd>
-            @Html.DisplayFor(model => model.Net)
-        </dd>
-
-    </dl>
+    <img src='@Url.Action("PieChart", "Month", new { id = Model.Id })' />
 </div>
 <p>
-    @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-    @Html.ActionLink("Back to List", "Index")
+    @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade") |
+    @Html.ActionLink("Add an Incoming Transaction", "Create", "PaymentReceived") |
+    @Html.ActionLink("Transactions", "Transactions", new { id = Model.Id })
 </p>
+
+
+
+
+@*<h2>Monthly Budget</h2>
+
+    <div>
+
+        <hr />
+        <dl class="dl-horizontal">
+            <dt>
+                @Html.DisplayNameFor(model => model.Name)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Name)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TotalIncome)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TotalIncome)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TotalBills)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TotalBills)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TotalSaving)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TotalSaving)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TotalOneTimeExpenses)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TotalOneTimeExpenses)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.BudgetedExpenses)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.BudgetedExpenses)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.TotalExpenses)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.TotalExpenses)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.DisposableRemaining)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.DisposableRemaining)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.EndingBalance)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.EndingBalance)
+            </dd>
+
+            <dt>
+                @Html.DisplayNameFor(model => model.Net)
+            </dt>
+
+            <dd>
+                @Html.DisplayFor(model => model.Net)
+            </dd>
+
+        </dl>
+    </div>
+    <p>
+        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
+        @Html.ActionLink("Back to List", "Index")
+    </p>*@

@@ -1,0 +1,10 @@
+﻿@model List<Monthley.Models.MonthModels.PieSliceModel>
+
+@{
+    var chart = new Chart(width: 500, height: 500, theme: ChartTheme.Vanilla3D)
+   .AddTitle("Expected Income")
+   .AddSeries("Default", chartType: "Pie",
+        xValue: Model, xField: "Label",
+        yValues: Model, yFields: "Amount")
+    .Write();
+}
