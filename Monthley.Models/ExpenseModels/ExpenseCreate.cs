@@ -12,12 +12,14 @@ namespace Monthley.Models.ExpenseModels
     {
         // hitch-hiker properties for CategoryService---------------->
         [Required]
-        [Display(Name = "Name")]
-        public string CategoryName { get; set; }
-
-        [Required]
         [Display(Name = "Type of Expense")]
         public CategoryType CategoryType { get; set; }
+
+        [Required]
+        [Display(Name = "Description")]
+        [MinLength(2)]
+        [MaxLength(22)]
+        public string CategoryName { get; set; }
 
         // for ExpenseService------------------>
         // Expense Id prop [PK, FK to Category table] will be set in the service by LINQ-querying the 

@@ -7,7 +7,15 @@ using System.Threading.Tasks;
 
 namespace Monthley.Data.Entities
 {
-    public enum CategoryType { Bill, Expense, Saving, Once, Unbudgeted }
+    public enum CategoryType
+    { 
+        Bill = 1,
+        [Display(Name ="Budgeted Expense")]
+        Expense = 2, 
+        Saving = 3,
+        [Display(Name = "One-Time Expense")]
+        Once = 4, 
+        Unbudgeted = 5 }
     public class Category
     {
         [Key]

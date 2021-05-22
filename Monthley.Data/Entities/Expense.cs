@@ -8,7 +8,14 @@ using System.Threading.Tasks;
 
 namespace Monthley.Data.Entities
 {
-    public enum ExpenseFreqType { ByMonth, ByWeek, Once }
+    public enum ExpenseFreqType
+    { 
+        [Display(Name = "month(s)")]
+        ByMonth = 1, 
+        [Display(Name = "week(s)")]
+        ByWeek = 2, 
+        Once = 3
+    }
 
     public class Expense
     {
@@ -22,6 +29,7 @@ namespace Monthley.Data.Entities
         public ExpenseFreqType ExpenseFreqType { get; set; }
 
         [Required]
+        [Range(1, 52)]
         public int FrequencyFactor { get; set; }
 
         [Required]

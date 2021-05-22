@@ -15,16 +15,10 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CategoryType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.CategoryType,
-               new SelectList(Enum.GetValues(typeof(Monthley.Data.Entities.CategoryType))),
-               "Select Category Type")
-                @Html.ValidationMessageFor(model => model.CategoryType, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <small>Enter a brief description of the expense (Ex. <i>Rent</i> or <i>Groceries</i>)</small>
         </div>
-
         <div class="form-group">
             @Html.LabelFor(model => model.CategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -33,6 +27,22 @@
             </div>
         </div>
 
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <small>Choose the type of expense</small>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(model => model.CategoryType, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EnumDropDownListFor(model => model.CategoryType, "-- Select Type --", new { @class = "form-control", @id = "categoryType", @onchange = "TypeShowHide()" })
+                @Html.ValidationMessageFor(model => model.CategoryType, "", new { @class = "text-danger" })
+            </div>
+        </div>
+
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <small>Enter the amount to be paid</small>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -41,41 +51,160 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ExpenseFreqType, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div id="firstDueDate" style="display:none">
+            <div class="col-md-2"></div>
             <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ExpenseFreqType,
-               new SelectList(Enum.GetValues(typeof(Monthley.Data.Entities.ExpenseFreqType))),
-               "Select Frequency Type")
-                @Html.ValidationMessageFor(model => model.ExpenseFreqType, "", new { @class = "text-danger" })
+                <small>What is the first time this expense will be due?</small>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.InitialDueDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.InitialDueDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InitialDueDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div id="onceDueDate" style="display:none">
+            <div class="col-md-2"></div>
+            <div class="col-md-10">
+                <small>When is this one-time expense due?</small>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.InitialDueDate, "Due Date", htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.InitialDueDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.InitialDueDate, "", new { @class = "text-danger" })
+                </div>
+            </div>
+        </div>
+
+        <div id="billFrequency" style="display:none">
+            <div class="col-md-3"><b>How often do you pay this bill?</b></div>
+            <div class="col-md-9"></div>
+            <br />
+            <table class="expenseCreateTable">
+                <tr>
+                    <td class="col-md-1 text-right"></td>
+                    <td class="col-md-1 text-right"><small>Ex: &nbsp;<i>Every</i></small></td>
+                    <td class="col-md-1 text-center"><small><i>1</i></small></td>
+                    <td class="col-md-3">&nbsp;&nbsp;<small><i>month(s)</i></small></td>
+                    <td class="col-md-6"></td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right"></td>
+                    <td class="col-md-1 text-right"><small>Ex: &nbsp;<i>Every</i></small></td>
+                    <td class="col-md-1 text-center"><small><i>4</i></small></td>
+                    <td class="col-md-3">&nbsp;&nbsp;<small><i>week(s)</i></small></td>
+                    <td class="col-md-6"></td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1 text-right">Every</td>
+                    <td class="col-md-1">
+                        @Html.EditorFor(model => model.FrequencyFactor, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td class="col-md-3">
+                        @Html.EnumDropDownListFor(model => model.ExpenseFreqType, "-- Select --", new { @class = "form-control", @id = "billExpenseFreqType" })
+                    </td>
+                    <td class="col-md-6"></td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1">
+                        @Html.ValidationMessageFor(model => model.FrequencyFactor, "", new { @class = "text-danger" })
+                    </td>
+                    <td class="col-md-3"></td>
+                    <td class="col-md-6"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="savingFrequency" style="display:none">
+            <div class="col-md-3"><b>How often do move this money to savings?</b></div>
+            <div class="col-md-9"></div>
+            <br />
+            <table class="expenseCreateTable">
+                <tr>
+                    <td class="col-md-1 text-right"></td>
+                    <td class="col-md-1 text-right"><small>Ex: &nbsp;<i>Every</i></small></td>
+                    <td class="col-md-1 text-center"><small><i>1</i></small></td>
+                    <td class="col-md-3">&nbsp;&nbsp;<small><i>month(s)</i></small></td>
+                    <td class="col-md-6"></td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right"></td>
+                    <td class="col-md-1 text-right"><small>Ex: &nbsp;<i>Every</i></small></td>
+                    <td class="col-md-1 text-center"><small><i>4</i></small></td>
+                    <td class="col-md-3">&nbsp;&nbsp;<small><i>week(s)</i></small></td>
+                    <td class="col-md-6"></td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1 text-right">Every</td>
+                    <td class="col-md-1">
+                        @Html.EditorFor(model => model.FrequencyFactor, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td class="col-md-3">
+                        @Html.EnumDropDownListFor(model => model.ExpenseFreqType, "-- Select --", new { @class = "form-control", @id = "savingExpenseFreqType" })
+                    </td>
+                    <td class="col-md-6"></td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1">
+                        @Html.ValidationMessageFor(model => model.FrequencyFactor, "", new { @class = "text-danger" })
+                    </td>
+                    <td class="col-md-3"></td>
+                    <td class="col-md-6"></td>
+                </tr>
+            </table>
+        </div>
+
+        <div id="endDateOption" style="display:none">
+            <br />
+            <div class="col-md-4">
+                <b>Do you want to set an end date for this expense?</b>
+            </div>
+            <div class="col-md-8"></div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <select class="form-control" id="endDateChoice" , onchange="EndDateShowHide()">
+                        <option>No</option>
+                        <option>Yes</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+
+        <div id="lastDueDate" style="display:none">
+            <div class="col-md-2"></div>
+            <div class="col-md-10">
+                <small>You won't pay this expense after this date</small>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
         <div class="form-group">
-            @Html.LabelFor(model => model.FrequencyFactor, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FrequencyFactor, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FrequencyFactor, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.InitialDueDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.InitialDueDate, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.InitialDueDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", placeholder = "(optional)" } })
-                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
+            <br />
+            <br />
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
@@ -90,5 +219,56 @@
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
 
+    <script type="text/javascript">
+        var list = document.getElementById("categoryType");
+        console.log(list.childNodes[10]);
+        list.removeChild(list.childNodes[10]);
 
+        var list = document.getElementById("billExpenseFreqType");
+        console.log(list.childNodes[6]);
+        list.removeChild(list.childNodes[6]);
+
+        var list = document.getElementById("savingExpenseFreqType");
+        console.log(list.childNodes[6]);
+        list.removeChild(list.childNodes[6]);
+
+        function TypeShowHide() {
+            var categoryType = document.getElementById("categoryType");
+
+            var firstDueDate = document.getElementById("firstDueDate");
+            firstDueDate.style.display = (categoryType.value == 1 || categoryType.value == 3) ? "block" : "none";
+
+            var onceDueDate = document.getElementById("onceDueDate");
+            onceDueDate.style.display = categoryType.value == 4 ? "block" : "none";
+
+            var billFrequency = document.getElementById("billFrequency");
+            billFrequency.style.display = categoryType.value == 1 ? "block" : "none";
+
+            var savingFrequency = document.getElementById("savingFrequency");
+            savingFrequency.style.display = categoryType.value == 3 ? "block" : "none";
+
+            var endDateOption = document.getElementById("endDateOption");
+            endDateOption.style.display = (categoryType.value == 1 || categoryType.value == 3) ? "block" : "none";
+
+            var lastDueDate = document.getElementById("lastDueDate");
+            if (categoryType.value == 2 || categoryType.value == 4) {
+                lastDueDate.style.display = "none";
+            }
+            if (categoryType.value == 2 || categoryType.value == 4) {
+                selectElement('endDateChoice', "No")
+            }
+        }
+
+        function EndDateShowHide() {
+            var endDateChoice = document.getElementById("endDateChoice");
+
+            var lastDueDate = document.getElementById("lastDueDate");
+            lastDueDate.style.display = endDateChoice.value == "Yes" ? "block" : "none";
+        }
+
+        function selectElement(id, valueToSelect) {
+            let element = document.getElementById(id);
+            element.value = valueToSelect;
+        }
+    </script>
 }
