@@ -35,6 +35,9 @@ namespace Monthley.Models.MonthModels
         [Display(Name = "Total Expenses ($)")]
         public decimal TotalExpenses { get; set; }
 
+        [Display(Name = "Unbudgeted Spent ($)")]
+        public decimal DisposableSpent { get; set; }
+
         [Display(Name = "Spendable Money Remaining ($)")]
         public decimal DisposableRemaining { get; set; }
 

@@ -1,29 +1,29 @@
 ﻿@model Monthley.Models.ExpenseModels.ExpenseCreate
 
 @{
-    ViewBag.Title = "Add an Expense";
+    ViewBag.Title = "Bills";
 }
 
-<h2>Add a New Expense</h2>
+<h2>Add a Bill</h2>
 
+<p>Add one of your bills.</p>
+<p>Bills are payments you make on a regular basis (usually once per month) and pay the same amount each time.</p>
+<p>Examples are things like rent, mortgage, car payment, HOA dues, car insurance, internet/TV service, and streaming services like Netflix or Spotify.</p>
+<p>
+    Utilities like electricity, gas and water fall into this category only if you have set up budget billing with your utility provider
+    (you set it up to pay the same each month).  If you haven't set up your utiliy like this, then let's enter in utilities later.
+</p>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CategoryType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.CategoryType,
-               new SelectList(Enum.GetValues(typeof(Monthley.Data.Entities.CategoryType))),
-               "Select Category Type")
-                @Html.ValidationMessageFor(model => model.CategoryType, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @Html.HiddenFor(model => model.CategoryType)
 
         <div class="form-group">
             @Html.LabelFor(model => model.CategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -83,12 +83,7 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to Expenses", "Index")
-</div>
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
-
 }

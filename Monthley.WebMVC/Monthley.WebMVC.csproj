@@ -303,6 +303,17 @@
     <Content Include="Views\Month\CategorySpending.cshtml" />
     <Content Include="Views\Month\CurrentBudget.cshtml" />
     <Content Include="Views\Month\PieChart.cshtml" />
+    <Content Include="Views\Account\Welcome.cshtml" />
+    <Content Include="Views\Account\SetupIncome.cshtml" />
+    <Content Include="Views\Account\IncomeConfirm.cshtml" />
+    <Content Include="Views\Account\ExpensesIntro.cshtml" />
+    <Content Include="Views\Account\SetupBill.cshtml" />
+    <Content Include="Views\Account\BillConfirm.cshtml" />
+    <Content Include="Views\Account\SetupSaving.cshtml" />
+    <Content Include="Views\Account\SavingConfirm.cshtml" />
+    <Content Include="Views\Account\SetupBudgetedExpense.cshtml" />
+    <Content Include="Views\Account\BudgetedExpenseConfirm.cshtml" />
+    <Content Include="Views\Account\SetupSuccess.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

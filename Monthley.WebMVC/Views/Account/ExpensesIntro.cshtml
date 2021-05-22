@@ -1,0 +1,22 @@
+﻿
+@{
+    ViewBag.Title = "Expenses";
+}
+
+<h2>Expenses</h2>
+
+We're going to divide your expenses into three categories:
+<br />
+<br />
+
+<ul>
+    <li>Bills - expenses in which you know how much you will pay</li>
+    <li>Savings - a set amount you will save each month</li>
+    <li>Budgeted Expenses - expenses in which you can't say exactly how much you'll spend, but you can set a budget for how much you will spend each month</li>
+</ul>
+
+<br />
+
+<p>@Html.ActionLink("Start Adding Expenses", "SetupBill")</p>
+<p>@Html.ActionLink("I want to enter my expenses later", "Index", "Home")</p>
+

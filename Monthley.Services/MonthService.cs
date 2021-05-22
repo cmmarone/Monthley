@@ -147,6 +147,14 @@ namespace Monthley.Services
             if (totalBudgetedExpensesPairing.Amount > 0)
                 pieChartSlices.Add(totalBudgetedExpensesPairing);
 
+            var disposableSpentPairing = new PieSliceModel
+            {
+                Label = "Unbudgeted Money Spent",
+                Amount = monthDetail.DisposableSpent
+            };
+            if (disposableSpentPairing.Amount > 0)
+                pieChartSlices.Add(disposableSpentPairing);
+
             var disposableRemainingPairing = new PieSliceModel
             {
                 Label = "Spendable Money Remaining",
@@ -207,13 +215,16 @@ namespace Monthley.Services
                 // getting TotalExpenses
                 decimal totalExpenses = (totalBills + totalSaving + totalOneTimeExpenses + budgetedExpenses);
 
-                // getting DisposableRemaining
-                decimal disposableRemaining = totalIncome - (totalExpenses);
+                // getting DisposableSpent
+                decimal disposableSpent = 0;
                 foreach (var paymentMade in entity.PaymentsMade)
                 {
                     if (paymentMade.Category.Type == CategoryType.Unbudgeted)
-                        disposableRemaining -= paymentMade.Amount;
+                        disposableSpent += paymentMade.Amount;
                 }
+
+                // getting DisposableRemaining
+                decimal disposableRemaining = totalIncome - totalExpenses - disposableSpent;
 
                 // getting EndingBalance
                 decimal actualIncome = 0;
@@ -247,6 +258,7 @@ namespace Monthley.Services
                     TotalOneTimeExpenses = totalOneTimeExpenses,
                     BudgetedExpenses = budgetedExpenses,
                     TotalExpenses = totalExpenses,
+                    DisposableSpent = disposableSpent,
                     DisposableRemaining = disposableRemaining,
                     EndingBalance = endingBalance,
                     Net = net,

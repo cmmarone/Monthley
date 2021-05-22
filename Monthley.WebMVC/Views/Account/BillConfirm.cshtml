@@ -1,0 +1,59 @@
+﻿@model IEnumerable<Monthley.Models.ExpenseModels.ExpenseListItem>
+
+@{
+    ViewBag.Title = "Bills";
+}
+
+<h2>Expenses</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryType)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.CategoryName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Frequency)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextDueDate)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryType)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.CategoryName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Frequency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextDueDate)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<hr />
+
+Great! Do you have any more monthly bills to add?
+
+<br />
+<br />
+
+<p>@Html.ActionLink("Yes", "SetupBill")</p>
+<p>@Html.ActionLink("No", "SetupSaving")</p>

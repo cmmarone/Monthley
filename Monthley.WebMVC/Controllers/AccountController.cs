@@ -10,6 +10,8 @@ using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Monthley.Data;
 using Monthley.Data.Entities;
+using Monthley.Models.ExpenseModels;
+using Monthley.Models.IncomeModels;
 using Monthley.Services;
 using Monthley.WebMVC.Models;
 
@@ -188,7 +190,7 @@ namespace Monthley.WebMVC.Controllers
                     // var callbackUrl = Url.Action("ConfirmEmail", "Account", new { userId = user.Id, code = code }, protocol: Request.Url.Scheme);
                     // await UserManager.SendEmailAsync(user.Id, "Confirm your account", "Please confirm your account by clicking <a href=\"" + callbackUrl + "\">here</a>");
 
-                    return RedirectToAction("Index", "Home");
+                    return RedirectToAction("Welcome");
                 }
                 AddErrors(result);
             }
@@ -196,6 +198,185 @@ namespace Monthley.WebMVC.Controllers
             // If we got this far, something failed, redisplay form
             return View(model);
         }
+
+        //---BEGIN monTHLey NEW USER SETUP WALKTHROUGH VIEWS------------------------>
+
+        // GET: Account/Welcome
+        public ActionResult Welcome()
+        {
+            return View();
+        }
+
+        // GET: Account/SetupIncome
+        public ActionResult SetupIncome()
+        {
+            return View();
+        }
+
+        // POST: Account/SetupIncome
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SetupIncome(IncomeCreate model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new IncomeService(userId);
+
+            if (service.CreateIncome(model))
+            {
+                TempData["SaveResult"] = "Your income was created.";
+                return RedirectToAction("IncomeConfirm");
+            }
+
+            ModelState.AddModelError("", "Income could not be created.");
+            return View(model);
+        }
+
+        // GET: Account/IncomeConfirm
+        public ActionResult IncomeConfirm()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new IncomeService(userId);
+            var modelList = service.GetIncomes();
+
+            return View(modelList);
+        }
+
+        // GET Account/ExpensesIntro
+        public ActionResult ExpensesIntro()
+        {
+            return View();
+        }
+
+        // GET: Account/SetupBill
+        public ActionResult SetupBill()
+        {
+            var expenseCreate = new ExpenseCreate()
+            {
+                CategoryType = CategoryType.Bill
+            };
+            return View(expenseCreate);
+        }
+
+        // POST: Account/SetupBill
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SetupBill(ExpenseCreate model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ExpenseService(userId);
+
+            if (service.CreateExpense(model))
+            {
+                TempData["SaveResult"] = "Your expense was created.";
+                return RedirectToAction("BillConfirm");
+            }
+
+            ModelState.AddModelError("", "Expense could not be created.");
+            return View(model);
+        }
+
+        // GET: Account/BillConfirm
+        public ActionResult BillConfirm()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ExpenseService(userId);
+            var modelList = service.GetExpenses();
+
+            return View(modelList);
+        }
+
+        // GET: Account/SetupSaving
+        public ActionResult SetupSaving()
+        {
+            var expenseCreate = new ExpenseCreate()
+            {
+                CategoryType = CategoryType.Saving
+            };
+            return View(expenseCreate);
+        }
+
+        // POST: Account/SetupSaving
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SetupSaving(ExpenseCreate model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ExpenseService(userId);
+
+            if (service.CreateExpense(model))
+            {
+                TempData["SaveResult"] = "Your expense was created.";
+                return RedirectToAction("SavingConfirm");
+            }
+
+            ModelState.AddModelError("", "Expense could not be created.");
+            return View(model);
+        }
+
+        // GET: Account/SavingConfirm
+        public ActionResult SavingConfirm()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ExpenseService(userId);
+            var modelList = service.GetExpenses();
+
+            return View(modelList);
+        }
+
+        // GET: Account/SetupBudgetedExpense
+        public ActionResult SetupBudgetedExpense()
+        {
+            var expenseCreate = new ExpenseCreate()
+            {
+                CategoryType = CategoryType.Expense
+            };
+            return View(expenseCreate);
+        }
+
+        // POST: Account/SetupBudgetedExpense
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SetupBudgetedExpense(ExpenseCreate model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ExpenseService(userId);
+
+            if (service.CreateExpense(model))
+            {
+                TempData["SaveResult"] = "Your expense was created.";
+                return RedirectToAction("BudgetedExpenseConfirm");
+            }
+
+            ModelState.AddModelError("", "Expense could not be created.");
+            return View(model);
+        }
+
+        // GET: Account/BudgetedExpenseConfirm
+        public ActionResult BudgetedExpenseConfirm()
+        {
+            var userId = Guid.Parse(User.Identity.GetUserId());
+            var service = new ExpenseService(userId);
+            var modelList = service.GetExpenses();
+
+            return View(modelList);
+        }
+
+        // GET: Account/SetupSuccess
+        public ActionResult SetupSuccess()
+        {
+            return View();
+        }
+
+        // <------------------------------END monTHLey NEW USER SETUP WALKTHROUGH VIEWS
+
 
         //
         // GET: /Account/ConfirmEmail

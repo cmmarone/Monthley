@@ -1,29 +1,26 @@
 ﻿@model Monthley.Models.ExpenseModels.ExpenseCreate
 
 @{
-    ViewBag.Title = "Add an Expense";
+    ViewBag.Title = "Budgeted Expenses";
 }
 
-<h2>Add a New Expense</h2>
+<h2>Add a Budgeted Expense</h2>
 
+<p>Add a budgeted monthly expense.</p>
+<p>These are things you know you will spend money on each month, but amounts vary.</p>
+<p>Examples are things like groceries, transportation expenses like gasoline or public transportation and entertainment. Feel free to get detailed and add things like haircuts, car washes, or new clothes.</p>
+<p>If you didn't have budget billing set up for a utility like electricity, gas, or water, this is the place to add those utilities.</p>
 
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
 
     <div class="form-horizontal">
+
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.CategoryType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.CategoryType,
-               new SelectList(Enum.GetValues(typeof(Monthley.Data.Entities.CategoryType))),
-               "Select Category Type")
-                @Html.ValidationMessageFor(model => model.CategoryType, "", new { @class = "text-danger" })
-            </div>
-        </div>
+        @Html.HiddenFor(model => model.CategoryType)
 
         <div class="form-group">
             @Html.LabelFor(model => model.CategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
@@ -83,12 +80,6 @@
     </div>
 }
 
-<div>
-    @Html.ActionLink("Back to Expenses", "Index")
-</div>
-
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
-
-
 }

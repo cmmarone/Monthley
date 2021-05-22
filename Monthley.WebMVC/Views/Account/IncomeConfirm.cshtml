@@ -1,0 +1,54 @@
+﻿@model IEnumerable<Monthley.Models.IncomeModels.IncomeListItem>
+
+@{
+    ViewBag.Title = "Setup Income";
+}
+
+<h2>Incomes</h2>
+
+<table class="table">
+    <tr>
+        <th>
+            @Html.DisplayNameFor(model => model.SourceName)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Amount)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.Frequency)
+        </th>
+        <th>
+            @Html.DisplayNameFor(model => model.NextPayDate)
+        </th>
+    </tr>
+
+    @foreach (var item in Model)
+    {
+        <tr>
+            <td>
+                @Html.DisplayFor(modelItem => item.SourceName)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Amount)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.Frequency)
+            </td>
+            <td>
+                @Html.DisplayFor(modelItem => item.NextPayDate)
+            </td>
+        </tr>
+    }
+
+</table>
+
+<hr />
+
+Great! Do you have any other sources of income that you receive on a regular basis?
+
+<br />
+<br />
+
+<p>@Html.ActionLink("Yes", "SetupIncome")</p>
+<p>@Html.ActionLink("No", "ExpensesIntro")</p>
+
