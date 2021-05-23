@@ -12,7 +12,7 @@ namespace Monthley.Models.ExpenseModels
     {
         // hitch-hiker properties for CategoryService---------------->
         [Required]
-        [Display(Name = "Type of Expense")]
+        [Display(Name = "Type")]
         public CategoryType CategoryType { get; set; }
 
         [Required]

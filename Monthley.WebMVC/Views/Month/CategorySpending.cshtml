@@ -1,14 +1,11 @@
 ﻿@model IEnumerable<Monthley.Models.MonthModels.MonthCategorySpendingDetail>
 
 @{
-    ViewBag.Title = $"{Model.First().MonthName} - Expense Spending";
+    ViewBag.Title = $"{Model.First().MonthName} - Budgeted Expense Spending";
 }
 
 <h2>@Html.DisplayFor(model => model.First().MonthName) - Expense Spending</h2>
 
-<p>
-    @Html.ActionLink("Create New", "Create")
-</p>
 <table class="table">
     <tr>
         <th>
@@ -23,7 +20,6 @@
         <th>
             @Html.DisplayNameFor(model => model.SpendableRemaining)
         </th>
-        <th></th>
     </tr>
 
 @foreach (var item in Model) {
@@ -39,11 +35,6 @@
         </td>
         <td>
             @Html.DisplayFor(modelItem => item.SpendableRemaining)
-        </td>
-        <td>
-            @Html.ActionLink("Edit", "Edit", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Details", "Details", new { /* id=item.PrimaryKey */ }) |
-            @Html.ActionLink("Delete", "Delete", new { /* id=item.PrimaryKey */ })
         </td>
     </tr>
 }

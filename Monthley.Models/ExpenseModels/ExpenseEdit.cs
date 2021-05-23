@@ -13,10 +13,10 @@ namespace Monthley.Models.ExpenseModels
         public int Id { get; set; }
 
         // hitch-hiker properties for CategoryService---------------->
-        [Display(Name = "Name")]
+        [Display(Name = "Description")]
         public string CategoryName { get; set; }
 
-        [Display(Name = "Expense Type")]
+        [Display(Name = "Type")]
         public CategoryType CategoryType { get; set; }
 
         // for ExpenseService------------------>

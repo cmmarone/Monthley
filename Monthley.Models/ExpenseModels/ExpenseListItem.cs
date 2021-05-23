@@ -12,10 +12,10 @@ namespace Monthley.Models.ExpenseModels
     {
         public int Id { get; set; }
 
-        [Display(Name = "Expense Type")]
+        [Display(Name = "Type")]
         public string CategoryType { get; set; }
 
-        [Display(Name = "Name")]
+        [Display(Name = "Description")]
         public string CategoryName { get; set; }
 
         [Display(Name = "Amount ($)")]

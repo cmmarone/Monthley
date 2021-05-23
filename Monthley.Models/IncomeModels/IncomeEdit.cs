@@ -13,7 +13,7 @@ namespace Monthley.Models.IncomeModels
         public int Id { get; set; }
 
         // hitch-hiker properties for SourceService---------------->
-        [Display(Name = "Name")]
+        [Display(Name = "Description")]
         public string SourceName { get; set; }
 
         // for IncomeService------------------>

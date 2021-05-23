@@ -10,6 +10,7 @@
     <img src='@Url.Action("PieChart", "Month", new { id = Model.Id })' />
 </div>
 <p>
+    @Html.ActionLink("Category Spending", "CategorySpending", "Month", new { id = Model.Id }, null) |
     @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade") |
     @Html.ActionLink("Add an Incoming Transaction", "Create", "PaymentReceived") |
     @Html.ActionLink("Transactions", "Transactions", new { id = Model.Id })

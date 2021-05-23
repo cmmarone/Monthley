@@ -11,7 +11,7 @@ namespace Monthley.Models.IncomeModels
     {
         public int Id { get; set; }
 
-        [Display(Name = "Name")]
+        [Display(Name = "Description")]
         public string SourceName { get; set; }
 
         [Display(Name = "Amount ($)")]
