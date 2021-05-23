@@ -35,10 +35,8 @@ namespace Monthley.WebMVC.Controllers
 
             if (service.CreatePaymentMade(model))
             {
-                var monthService = CreateMonthService();
-                var monthId = monthService.GetMonthId(model.PaymentDate);
                 TempData["SaveResult"] = "Your payment was created.";
-                return RedirectToAction($"Details/{monthId}", "Month");
+                return RedirectToAction("CurrentBudget", "Month");
             }
 
             ModelState.AddModelError("", "Payment could not be created.");

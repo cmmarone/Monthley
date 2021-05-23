@@ -10,6 +10,8 @@ namespace Monthley.Models.MonthModels
 {
     public class MonthCategorySpendingDetail
     {
+        public int MonthId { get; set; }
+
         [Display(Name = "Month")]
         public string MonthName { get; set; }
 

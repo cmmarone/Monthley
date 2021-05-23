@@ -7,8 +7,8 @@
 <h2>Transactions</h2>
 
 <p>
-    @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade") |
-    @Html.ActionLink("Add an Incoming Transaction", "Create", "PaymentReceived") 
+    @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add an Incoming Transaction", "Create", "PaymentReceived", null, new { @class = "btn btn-default" }) 
 </p>
 <table class="table">
     <tr>
@@ -43,8 +43,8 @@
                 @Html.DisplayFor(modelItem => item.TransactionDate)
             </td>
             <td>
-                @Html.ActionLink("Edit", "Edit", $"{item.ControllerName}", new { id=item.TransactionId }, null) |
-                @Html.ActionLink("Delete", "Delete", $"{item.ControllerName}", new { id = item.TransactionId }, null)
+                @Html.ActionLink("Edit", "Edit", $"{item.ControllerName}", new { id=item.TransactionId }, new { @class = "btn btn-default" })
+                @Html.ActionLink("Delete", "Delete", $"{item.ControllerName}", new { id = item.TransactionId }, new { @class = "btn btn-default" })
             </td>
         </tr>
     }

@@ -4,113 +4,39 @@
     ViewBag.Title = $"{Model.Name}";
 }
 
-
-
-
 <h2>@Html.DisplayFor(model => model.Name)</h2>
 
 <div>
     <img src='@Url.Action("PieChart", "Month", new { id = Model.Id })' />
 </div>
-<p>
-    @Html.ActionLink("Category Spending", "CategorySpending", "Month", new { id = Model.Id }, null) |
-    @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade") |
-    @Html.ActionLink("Add an Incoming Transaction", "Create", "PaymentReceived") |
-    @Html.ActionLink("Transactions", "Transactions", new { id = Model.Id })
-</p>
+<table>
+    <tr>
+        @{ if (Model.BeginDate.AddMonths(1) >= DateTime.Now)
+            {
+                <th>Spendable Money Remaining:&nbsp;&nbsp;</th>
+                <td>
+                    $@Html.DisplayFor(model => model.DisposableRemaining)
+                </td>
+            }
+            else
+            {
+                <th>End-of-Month Net:&nbsp;&nbsp;</th>
+                <td>
+                    $@Html.DisplayFor(model => model.Net)
+                </td>
+            }
+        }
+    </tr>
+</table>
 
+    @Html.ActionLink("Category Spending", "CategorySpending", "Month", new { id = Model.Id }, new { @class = "btn btn-default" })
+    @{ if (Model.BeginDate.Month == DateTime.Now.Month && Model.BeginDate.Year == DateTime.Now.Year)
+        {
+        <p>
+            @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade", null, new { @class = "btn btn-default" })
+            @Html.ActionLink("Add an Incoming Transaction", "Create", "PaymentReceived", null, new { @class = "btn btn-default" })
+        </p>
+        }
+    }
 
-
-
-@*<h2>Monthly Budget</h2>
-
-    <div>
-
-        <hr />
-        <dl class="dl-horizontal">
-            <dt>
-                @Html.DisplayNameFor(model => model.Name)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Name)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.TotalIncome)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.TotalIncome)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.TotalBills)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.TotalBills)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.TotalSaving)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.TotalSaving)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.TotalOneTimeExpenses)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.TotalOneTimeExpenses)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.BudgetedExpenses)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.BudgetedExpenses)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.TotalExpenses)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.TotalExpenses)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.DisposableRemaining)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.DisposableRemaining)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.EndingBalance)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.EndingBalance)
-            </dd>
-
-            <dt>
-                @Html.DisplayNameFor(model => model.Net)
-            </dt>
-
-            <dd>
-                @Html.DisplayFor(model => model.Net)
-            </dd>
-
-        </dl>
-    </div>
-    <p>
-        @Html.ActionLink("Edit", "Edit", new { id = Model.Id }) |
-        @Html.ActionLink("Back to List", "Index")
-    </p>*@
+    @Html.ActionLink("Transactions", "Transactions", new { id = Model.Id }, new { @class = "btn btn-default" })

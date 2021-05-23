@@ -55,5 +55,7 @@ Great! Do you have any more budgeted expenses to add?
 <br />
 <br />
 
-<p>@Html.ActionLink("Yes", "SetupBudgetedExpense")</p>
-<p>@Html.ActionLink("No", "SetupSuccess")</p>
+<p>
+    @Html.ActionLink("Yes", "SetupBudgetedExpense", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("No", "SetupSuccess", null, new { @class = "btn btn-default" })
+</p>

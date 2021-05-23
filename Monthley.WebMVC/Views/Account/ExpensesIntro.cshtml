@@ -17,6 +17,8 @@ We're going to divide your expenses into three categories:
 
 <br />
 
-<p>@Html.ActionLink("Start Adding Expenses", "SetupBill")</p>
-<p>@Html.ActionLink("I want to enter my expenses later", "Index", "Home")</p>
+<p>
+    @Html.ActionLink("Start Adding Expenses", "SetupBill", null, new { @class = "btn btn-default" })&nbsp; &nbsp;
+    @Html.ActionLink("I want to enter my expenses later", "Index", "Home")
+</p>
 

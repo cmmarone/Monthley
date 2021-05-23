@@ -55,5 +55,7 @@ Great! Do you have any more monthly bills to add?
 <br />
 <br />
 
-<p>@Html.ActionLink("Yes", "SetupBill")</p>
-<p>@Html.ActionLink("No", "SetupSaving")</p>
+<p>
+    @Html.ActionLink("Yes", "SetupBill", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("No", "SetupSaving", null, new { @class = "btn btn-default" })
+</p>

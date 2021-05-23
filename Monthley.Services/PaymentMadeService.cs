@@ -25,9 +25,9 @@ namespace Monthley.Services
                 var paymentMadeEntity = new PaymentMade()
                 {
                     CategoryId = context.Categories.SingleOrDefault(c => c.Name == model.CategoryName && c.UserId == _userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == model.PaymentDate.Month && m.BeginDate.Year == model.PaymentDate.Year && m.UserId == _userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == DateTime.Now.Month && m.BeginDate.Year == DateTime.Now.Year && m.UserId == _userId).Id,
                     Amount = model.Amount,
-                    PaymentDate = model.PaymentDate,
+                    PaymentDate = DateTime.Now,
                     UserId = _userId
                 };
                 context.PaymentsMade.Add(paymentMadeEntity);

@@ -9,9 +9,17 @@
 <div>
     <img src='@Url.Action("PieChart", "Month", new { id = Model.Id })' />
 </div>
+<table>
+    <tr>
+        <th>Spendable Money Remaining:&nbsp;&nbsp;</th>
+        <td>
+           $@Html.DisplayFor(model => model.DisposableRemaining)
+        </td>
+    </tr>
+</table>
 <p>
-    @Html.ActionLink("Category Spending", "CategorySpending", "Month", new { id = Model.Id }, null) |
-    @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade") |
-    @Html.ActionLink("Add an Incoming Transaction", "Create", "PaymentReceived") |
-    @Html.ActionLink("Transactions", "Transactions", new { id = Model.Id })
+    @Html.ActionLink("Category Spending", "CategorySpending", "Month", new { id = Model.Id }, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Add an Incoming Transaction", "Create", "PaymentReceived", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("Transactions", "Transactions", new { id = Model.Id }, new { @class = "btn btn-default" })
 </p>

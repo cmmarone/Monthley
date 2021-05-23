@@ -10,7 +10,6 @@
 <p>This is any amount you want to set aside each month.</p>
 <p>Examples are regular deposits into a savings account or investment, or deposits to a trust fund or college fund.</p>
 
-
 @using (Html.BeginForm())
 {
     @Html.AntiForgeryToken()
@@ -22,6 +21,10 @@
 
         @Html.HiddenFor(model => model.CategoryType)
 
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <small>Enter a brief description of this savings (Ex. <i>General Savings</i> or <i>College Fund</i>)</small>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.CategoryName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -30,6 +33,10 @@
             </div>
         </div>
 
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <small>Enter the amount</small>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -38,37 +45,88 @@
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.ExpenseFreqType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.ExpenseFreqType,
-               new SelectList(Enum.GetValues(typeof(Monthley.Data.Entities.ExpenseFreqType))),
-               "Select Frequency Type")
-                @Html.ValidationMessageFor(model => model.ExpenseFreqType, "", new { @class = "text-danger" })
-            </div>
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <small>What is the first time you will move money for this savings?</small>
         </div>
-
         <div class="form-group">
-            @Html.LabelFor(model => model.FrequencyFactor, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.EditorFor(model => model.FrequencyFactor, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FrequencyFactor, "", new { @class = "text-danger" })
-            </div>
-        </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.InitialDueDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            @Html.LabelFor(model => model.InitialDueDate, "Due Date", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
                 @Html.EditorFor(model => model.InitialDueDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.InitialDueDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
+        <div class="col-md-3"><b>How often do move this money to savings?</b></div>
+        <div class="col-md-9"></div>
+        <br />
+        <table>
+            <tr>
+                <td class="col-md-1 text-right"></td>
+                <td class="col-md-1 text-right"><small>Ex: &nbsp;<i>Every</i></small></td>
+                <td class="col-md-1 text-center"><small><i>1</i></small></td>
+                <td class="col-md-3">&nbsp;&nbsp;<small><i>month(s)</i></small></td>
+                <td class="col-md-6"></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-1 text-right"></td>
+                <td class="col-md-1 text-right"><small>Ex: &nbsp;<i>Every</i></small></td>
+                <td class="col-md-1 text-center"><small><i>4</i></small></td>
+                <td class="col-md-3">&nbsp;&nbsp;<small><i>week(s)</i></small></td>
+                <td class="col-md-6"></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-1"></td>
+                <td class="col-md-1 text-right">Every</td>
+                <td class="col-md-1">
+                    @Html.EditorFor(model => model.FrequencyFactor, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+                <td class="col-md-3">
+                    @Html.EnumDropDownListFor(model => model.ExpenseFreqType, "-- Select --", new { @class = "form-control", @id = "expenseFreqType" })
+                </td>
+                <td class="col-md-6"></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-1"></td>
+                <td class="col-md-1"></td>
+                <td class="col-md-1">
+                    @Html.ValidationMessageFor(model => model.FrequencyFactor, "", new { @class = "text-danger" })
+                </td>
+                <td class="col-md-3"></td>
+                <td class="col-md-6"></td>
+            </tr>
+        </table>
+
+        <br />
+        <div class="col-md-4">
+            <b>Do you want to set an end date for this saving goal?</b>
+        </div>
+        <div class="col-md-8"></div>
+        <br />
         <div class="form-group">
-            @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-2"></div>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", placeholder = "(optional)" } })
-                @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                <select class="form-control" id="endDateChoice" , onchange="EndDateShowHide()">
+                    <option>No</option>
+                    <option>Yes</option>
+                </select>
+            </div>
+        </div>
+
+        <div id="lastDueDate" style="display:none">
+            <div class="col-md-2"></div>
+            <div class="col-md-10">
+                <small>You won't contribute to this saving goal after this date.</small>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
@@ -82,4 +140,17 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+
+    <script type="text/javascript">
+        var list2 = document.getElementById("expenseFreqType");
+        console.log(list2.childNodes[6]);
+        list2.removeChild(list2.childNodes[6]);
+
+        function EndDateShowHide() {
+            var endDateChoice = document.getElementById("endDateChoice");
+
+            var lastDueDate = document.getElementById("lastDueDate");
+            lastDueDate.style.display = endDateChoice.value == "Yes" ? "block" : "none";
+        }
+    </script>
 }

@@ -55,5 +55,7 @@ Great! Do you have any more savings to add?
 <br />
 <br />
 
-<p>@Html.ActionLink("Yes", "SetupSaving")</p>
-<p>@Html.ActionLink("No", "SetupBudgetedExpense")</p>
+<p>
+    @Html.ActionLink("Yes", "SetupSaving", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("No", "SetupBudgetedExpense", null, new { @class = "btn btn-default" })
+</p>

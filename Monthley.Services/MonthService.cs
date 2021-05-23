@@ -308,6 +308,7 @@ namespace Monthley.Services
 
                         var mcsDetail = new MonthCategorySpendingDetail
                         {
+                            MonthId = monthEntity.Id,
                             MonthName = $"{monthEntity.BeginDate.ToString("MMMM")} {monthEntity.BeginDate.ToString("yyyy")}",
                             CategoryName = name,
                             CategoryBudgetedAmount = amount,

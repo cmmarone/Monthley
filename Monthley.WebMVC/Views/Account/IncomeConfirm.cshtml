@@ -49,6 +49,8 @@ Great! Do you have any other sources of income that you receive on a regular bas
 <br />
 <br />
 
-<p>@Html.ActionLink("Yes", "SetupIncome")</p>
-<p>@Html.ActionLink("No", "ExpensesIntro")</p>
+<p>
+    @Html.ActionLink("Yes", "SetupIncome", null, new { @class = "btn btn-default" })
+    @Html.ActionLink("No", "ExpensesIntro", null, new { @class = "btn btn-default" })
+</p>
 

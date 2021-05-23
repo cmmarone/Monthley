@@ -19,11 +19,6 @@ namespace Monthley.Models.PaymentMadeModels
         [Display(Name = "Amount ($)")]
         public decimal Amount { get; set; }
 
-        [Required]
-        [Display(Name = "Payment Date")]
-        [DisplayFormat(ApplyFormatInEditMode = true, DataFormatString = "{0:M/dd/yyyy}")]
-        public DateTime PaymentDate { get; set; }
-
         // reference property
         public ICollection<string> CategoryEntityNames { get; set; }
     }

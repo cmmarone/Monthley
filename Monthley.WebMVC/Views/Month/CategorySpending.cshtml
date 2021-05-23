@@ -5,7 +5,9 @@
 }
 
 <h2>@Html.DisplayFor(model => model.First().MonthName) - Expense Spending</h2>
-
+<p>
+    @Html.ActionLink("Back to Full Budget", "Details", new { id = Model.First().MonthId }, new { @class = "btn btn-default" })
+</p>
 <table class="table">
     <tr>
         <th>
