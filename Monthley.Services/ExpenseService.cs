@@ -24,9 +24,26 @@ namespace Monthley.Services
             if (!categoryService.CreateCategory(model))
                 return false;
 
+            int frequencyFactor = model.FrequencyFactor ?? 1;
+
+            if (model.CategoryType == CategoryType.Once)
+                model.ExpenseFreqType = ExpenseFreqType.Once;
+
+            if (model.CategoryType == CategoryType.Expense)
+            {
+                model.ExpenseFreqType = ExpenseFreqType.ByMonth;
+            }
+
+            // the only time model.InitialDueDate won't be filled out by user is if model.CategoryType == CategoryType.Expense,
+            // in which case, start the due date on the last day of the current month
+            DateTime lastDayCurrentMonth = 
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+            DateTime initialDueDate = model.InitialDueDate ?? lastDayCurrentMonth;
+
+
             DateTime endDate = model.EndDate ?? new DateTime(2100, 12, 31);
-            if (model.ExpenseFreqType == ExpenseFreqType.Once)
-                endDate = model.InitialDueDate;
+            if (model.CategoryType == CategoryType.Once)
+                endDate = initialDueDate;
 
             using (var context = new ApplicationDbContext())
             {
@@ -35,8 +52,8 @@ namespace Monthley.Services
                     Id = (context.Categories.Single(c => c.Name == model.CategoryName && c.UserId == _userId)).Id,
                     Amount = model.Amount,
                     ExpenseFreqType = model.ExpenseFreqType,
-                    FrequencyFactor = model.FrequencyFactor,
-                    InitialDueDate = model.InitialDueDate,
+                    FrequencyFactor = frequencyFactor,
+                    InitialDueDate = initialDueDate,
                     EndDate = endDate,
                     UserId = _userId
                 };
@@ -97,7 +114,7 @@ namespace Monthley.Services
                     };
                     expenseList.Add(expenseListItem);
                 }
-                return expenseList.OrderBy(e => e.CategoryName);
+                return expenseList.OrderBy(e => e.CategoryType);
             }
         }
 

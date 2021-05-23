@@ -20,27 +20,47 @@ namespace Monthley.Services
 
         public bool CreateDueDates(ExpenseCreate model)
         {
+            //DateTime endDate = model.EndDate ?? new DateTime(2100, 12, 31);
+            //if (model.ExpenseFreqType == ExpenseFreqType.Once)
+            //    endDate = model.InitialDueDate;
+
+            int frequencyFactor = model.FrequencyFactor ?? 1;
+
+            if (model.CategoryType == CategoryType.Once)
+                model.ExpenseFreqType = ExpenseFreqType.Once;
+
+            if (model.CategoryType == CategoryType.Expense)
+            {
+                model.ExpenseFreqType = ExpenseFreqType.ByMonth;
+            }
+
+            // the only time model.InitialDueDate won't be filled out by user is if model.CategoryType == CategoryType.Expense,
+            // in which case, start the due date on the last day of the current month
+            DateTime lastDayCurrentMonth =
+                new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
+            DateTime initialDueDate = model.InitialDueDate ?? lastDayCurrentMonth;
+
             DateTime endDate = model.EndDate ?? new DateTime(2100, 12, 31);
-            if (model.ExpenseFreqType == ExpenseFreqType.Once)
-                endDate = model.InitialDueDate;
+            if (model.CategoryType == CategoryType.Once)
+                endDate = initialDueDate;
 
             var dueDates = new List<DateTime>();
             if (model.ExpenseFreqType == ExpenseFreqType.ByMonth)
             {
-                for (var date = model.InitialDueDate;
+                for (var date = initialDueDate;
                     (DateTime.Compare(date, endDate)) <= 0;
-                    date = date.AddMonths(1 * model.FrequencyFactor))
+                    date = date.AddMonths(1 * frequencyFactor))
                     dueDates.Add(date);
             }
             else if (model.ExpenseFreqType == ExpenseFreqType.ByWeek)
             {
-                for (var date = model.InitialDueDate;
+                for (var date = initialDueDate;
                      (DateTime.Compare(date, endDate)) <= 0;
-                     date = date.AddDays(7 * model.FrequencyFactor))
+                     date = date.AddDays(7 * frequencyFactor))
                     dueDates.Add(date);
             }
             else
-                dueDates.Add(model.InitialDueDate);
+                dueDates.Add(initialDueDate);
 
             using (var context = new ApplicationDbContext())
             {

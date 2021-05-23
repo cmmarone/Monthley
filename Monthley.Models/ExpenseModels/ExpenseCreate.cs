@@ -33,13 +33,11 @@ namespace Monthley.Models.ExpenseModels
         [Display(Name = "Frequency Type")]
         public ExpenseFreqType ExpenseFreqType { get; set; }
 
-        [Required]
         [Display(Name = "Frequency")]
-        public int FrequencyFactor { get; set; }
+        public int? FrequencyFactor { get; set; }
 
-        [Required]
         [Display(Name = "First Due Date")]
-        public DateTime InitialDueDate { get; set; }
+        public DateTime? InitialDueDate { get; set; }
 
         [Display(Name = "Last Due Date")]
         public DateTime? EndDate { get; set; }
