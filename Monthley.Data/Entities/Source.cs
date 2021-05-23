@@ -7,7 +7,12 @@ using System.Threading.Tasks;
 
 namespace Monthley.Data.Entities
 {
-    public enum SourceType { Budgeted, Unbudgeted }
+    public enum SourceType 
+    { 
+        Budgeted, 
+        Unbudgeted 
+    }
+
     public class Source
     {
         [Key]

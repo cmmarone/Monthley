@@ -15,6 +15,11 @@
         <hr />
         @Html.ValidationSummary(true, "", new { @class = "text-danger" })
 
+
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <small>Enter a brief description of the income (Ex. <i>My Full-time Job</i> or <i>My Part-Time Job</i>)</small>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.SourceName, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
@@ -23,45 +28,139 @@
             </div>
         </div>
 
+        <div class="col-md-2"></div>
+        <div class="col-md-10">
+            <small>Enter the amount you are paid per pay day. If it changes each time, estimate as best you can.</small>
+        </div>
         <div class="form-group">
             @Html.LabelFor(model => model.Amount, htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-               @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.Amount, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.Amount, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.PayFreqType, htmlAttributes: new { @class = "control-label col-md-2" })
-            <div class="col-md-10">
-                @Html.DropDownListFor(model => model.PayFreqType,
-               new SelectList(Enum.GetValues(typeof(Monthley.Data.Entities.PayFreqType))),
-               "Select Frequency Type")
-                @Html.ValidationMessageFor(model => model.PayFreqType, "", new { @class = "text-danger" })
+        <div>
+            <br />
+            <div class="col-md-4">
+                <b>Is this a one-time pay day?</b>
+            </div>
+            <div class="col-md-8"></div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <select class="form-control" id="oneTimeIncomeChoice" , onchange="OneTimeChoiceShowHide()">
+                        <option>Yes</option>
+                        <option>No</option>
+                    </select>
+                </div>
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.FrequencyFactor, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div id="firstPayDate" style="display:none">
+            <div class="col-md-2"></div>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.FrequencyFactor, new { htmlAttributes = new { @class = "form-control" } })
-                @Html.ValidationMessageFor(model => model.FrequencyFactor, "", new { @class = "text-danger" })
+                <small>What is the first date you will be paid?</small>
             </div>
         </div>
-
-        <div class="form-group">
-            @Html.LabelFor(model => model.InitialPayDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        <div id="oncePayDate">
+            <div class="col-md-2"></div>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.InitialPayDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Select Date", @readonly = "true" } })
+                <small>What date will you receive this payment?</small>
+            </div>
+        </div>
+        <div class="form-group" id="payDate">
+            @Html.LabelFor(model => model.InitialPayDate, "Pay Date", htmlAttributes: new { @class = "control-label col-md-2" })
+            <div class="col-md-10">
+                @Html.EditorFor(model => model.InitialPayDate, new { htmlAttributes = new { @class = "form-control" } })
                 @Html.ValidationMessageFor(model => model.InitialPayDate, "", new { @class = "text-danger" })
             </div>
         </div>
 
-        <div class="form-group">
-            @Html.LabelFor(model => model.LastPayDate, htmlAttributes: new { @class = "control-label col-md-2" })
+        @*<div class="form-group">
+                @Html.LabelFor(model => model.InitialPayDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.InitialPayDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Select Date", @readonly = "true" } })
+                    @Html.ValidationMessageFor(model => model.InitialPayDate, "", new { @class = "text-danger" })
+                </div>
+            </div>*@
+
+        <div id="payFrequency" style="display:none">
+            <div class="col-md-3"><b>How often do you get paid?</b></div>
+            <div class="col-md-9"></div>
+            <br />
+            <table>
+                <tr>
+                    <td class="col-md-1 text-right"></td>
+                    <td class="col-md-1 text-right"><small>Ex: &nbsp;<i>Every</i></small></td>
+                    <td class="col-md-1 text-center"><small><i>1</i></small></td>
+                    <td class="col-md-3">&nbsp;&nbsp;<small><i>month(s)</i></small></td>
+                    <td class="col-md-6"></td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1 text-right"></td>
+                    <td class="col-md-1 text-right"><small>Ex: &nbsp;<i>Every</i></small></td>
+                    <td class="col-md-1 text-center"><small><i>1</i></small></td>
+                    <td class="col-md-3">&nbsp;&nbsp;<small><i>week(s)</i></small></td>
+                    <td class="col-md-6"></td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1 text-right">Every</td>
+                    <td class="col-md-1">
+                        @Html.EditorFor(model => model.FrequencyFactor, new { htmlAttributes = new { @class = "form-control" } })
+                    </td>
+                    <td class="col-md-3">
+                        @Html.EnumDropDownListFor(model => model.PayFreqType, "-- Select --", new { @class = "form-control", @id = "payFreqType" })
+                    </td>
+                    <td class="col-md-6"></td>
+                </tr>
+
+                <tr>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1"></td>
+                    <td class="col-md-1">
+                        @Html.ValidationMessageFor(model => model.FrequencyFactor, "", new { @class = "text-danger" })
+                    </td>
+                    <td class="col-md-3"></td>
+                    <td class="col-md-6"></td>
+                </tr>
+            </table>
+        </div>
+
+
+        <div id="endDateOption" style="display:none">
+            <br />
+            <div class="col-md-4">
+                <b>Do you want to set an end date for this income?</b>
+            </div>
+            <div class="col-md-8"></div>
+            <br />
+            <div class="form-group">
+                <div class="col-md-2"></div>
+                <div class="col-md-10">
+                    <select class="form-control" id="endDateChoice" , onchange="EndDateShowHide()">
+                        <option>No</option>
+                        <option>Yes</option>
+                    </select>
+                </div>
+            </div>
+        </div>
+
+        <div id="lastPayDate" style="display:none">
+            <div class="col-md-2"></div>
             <div class="col-md-10">
-                @Html.EditorFor(model => model.LastPayDate, new { htmlAttributes = new { @class = "form-control", placeholder = "(optional)" } })
-                @Html.ValidationMessageFor(model => model.LastPayDate, "", new { @class = "text-danger" })
+                <small>You won't receive this income after this date</small>
+            </div>
+            <div class="form-group">
+                @Html.LabelFor(model => model.LastPayDate, htmlAttributes: new { @class = "control-label col-md-2" })
+                <div class="col-md-10">
+                    @Html.EditorFor(model => model.LastPayDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.ValidationMessageFor(model => model.LastPayDate, "", new { @class = "text-danger" })
+                </div>
             </div>
         </div>
 
@@ -92,5 +191,48 @@
             });
 
         });
+
+        var list = document.getElementById("payFreqType");
+        console.log(list.childNodes[6]);
+        list.removeChild(list.childNodes[6]);
+
+        function OneTimeChoiceShowHide() {
+            var oneTimeIncomeChoice = document.getElementById("oneTimeIncomeChoice");
+
+            var firstPayDate = document.getElementById("firstPayDate");
+            firstPayDate.style.display = oneTimeIncomeChoice.value == "No" ? "block" : "none";
+
+            var oncePayDate = document.getElementById("oncePayDate");
+            oncePayDate.style.display = oneTimeIncomeChoice.value == "Yes" ? "block" : "none";
+
+            var payDate = document.getElementById("payDate");
+            payDate.style.display = (oneTimeIncomeChoice.value == "Yes" || oneTimeIncomeChoice.value == "No") ? "block" : "none";
+
+            var payFrequency = document.getElementById("payFrequency");
+            payFrequency.style.display = oneTimeIncomeChoice.value == "No" ? "block" : "none";
+
+            var endDateOption = document.getElementById("endDateOption");
+            endDateOption.style.display = oneTimeIncomeChoice.value == "No" ? "block" : "none";
+
+            var lastPayDate = document.getElementById("lastPayDate");
+            if (oneTimeIncomeChoice.value == "Yes") {
+                lastPayDate.style.display = "none";
+            }
+            if (oneTimeIncomeChoice.value == "Yes") {
+                selectElement('endDateChoice', "No")
+            }
+        }
+
+        function EndDateShowHide() {
+            var endDateChoice = document.getElementById("endDateChoice");
+
+            var lastPayDate = document.getElementById("lastPayDate");
+            lastPayDate.style.display = endDateChoice.value == "Yes" ? "block" : "none";
+        }
+
+        function selectElement(id, valueToSelect) {
+            let element = document.getElementById(id);
+            element.value = valueToSelect;
+        }
     </script>
 }

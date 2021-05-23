@@ -12,7 +12,9 @@ namespace Monthley.Models.IncomeModels
     {
         // hitch-hiker properties for SourceService---------------->
         [Required]
-        [Display(Name = "Name")]
+        [Display(Name = "Description")]
+        [MinLength(2)]
+        [MaxLength(22)]
         public string SourceName { get; set; }
 
         // for IncomeService------------------>
@@ -23,13 +25,11 @@ namespace Monthley.Models.IncomeModels
         [Display(Name = "Amount ($)")]
         public decimal Amount { get; set; }
 
-        [Required]
         [Display(Name = "Frequency Type")]
-        public PayFreqType PayFreqType { get; set; }
+        public PayFreqType? PayFreqType { get; set; }
 
-        [Required]
         [Display(Name = "Frequency")]
-        public int FrequencyFactor { get; set; }
+        public int? FrequencyFactor { get; set; }
 
         [Required]
         [Display(Name = "First Pay Date")]

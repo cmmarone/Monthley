@@ -105,7 +105,7 @@
                     @Html.EditorFor(model => model.FrequencyFactor, new { htmlAttributes = new { @class = "form-control" } })
                 </td>
                 <td class="col-md-3">
-                    @Html.EnumDropDownListFor(model => model.ExpenseFreqType, "-- Select --", new { @class = "form-control", @id = "billExpenseFreqType" })
+                    @Html.EnumDropDownListFor(model => model.ExpenseFreqType, "-- Select --", new { @class = "form-control", @id = "expenseFreqType" })
                 </td>
                 <td class="col-md-6"></td>
             </tr>
@@ -176,13 +176,9 @@
         console.log(list.childNodes[10]);
         list.removeChild(list.childNodes[10]);
 
-        var list = document.getElementById("billExpenseFreqType");
-        console.log(list.childNodes[6]);
-        list.removeChild(list.childNodes[6]);
-
-        var list = document.getElementById("savingExpenseFreqType");
-        console.log(list.childNodes[6]);
-        list.removeChild(list.childNodes[6]);
+        var list2 = document.getElementById("expenseFreqType");
+        console.log(list2.childNodes[6]);
+        list2.removeChild(list2.childNodes[6]);
 
         function TypeShowHide() {
             var categoryType = document.getElementById("categoryType");

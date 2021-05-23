@@ -8,7 +8,14 @@ using System.Threading.Tasks;
 
 namespace Monthley.Data.Entities
 {
-    public enum PayFreqType { ByMonth, ByWeek, Once }
+    public enum PayFreqType
+	{
+		[Display(Name = "month(s)")]
+		ByMonth = 1,
+		[Display(Name = "week(s)")]
+		ByWeek = 2, 
+		Once = 3
+	}
 
     public class Income
     {

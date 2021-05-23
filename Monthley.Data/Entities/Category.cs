@@ -15,7 +15,9 @@ namespace Monthley.Data.Entities
         Saving = 3,
         [Display(Name = "One-Time Expense")]
         Once = 4, 
-        Unbudgeted = 5 }
+        Unbudgeted = 5 
+    }
+
     public class Category
     {
         [Key]

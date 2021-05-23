@@ -24,8 +24,12 @@ namespace Monthley.Services
             if (!sourceService.CreateSource(model))
                 return false;
 
+            int frequencyFactor = model.FrequencyFactor ?? 1;
+
+            var payFreqType = model.PayFreqType ?? PayFreqType.Once;
+
             DateTime lastPayDate = model.LastPayDate ?? new DateTime(2100, 12, 31);
-            if (model.PayFreqType == PayFreqType.Once)
+            if (payFreqType == PayFreqType.Once)
                 lastPayDate = model.InitialPayDate;
 
             using (var context = new ApplicationDbContext())
@@ -34,8 +38,8 @@ namespace Monthley.Services
                 {
                     Id = (context.Sources.Single(s => s.Name == model.SourceName && s.UserId == _userId)).Id,
                     Amount = model.Amount,
-                    PayFreqType = model.PayFreqType,
-                    FrequencyFactor = model.FrequencyFactor,
+                    PayFreqType = payFreqType,
+                    FrequencyFactor = frequencyFactor,
                     InitialPayDate = model.InitialPayDate,
                     LastPayDate = lastPayDate,
                     UserId = _userId
