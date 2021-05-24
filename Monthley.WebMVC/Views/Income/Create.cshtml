@@ -1,4 +1,6 @@
-﻿@model Monthley.Models.IncomeModels.IncomeCreate
+﻿<link href="https://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css">
+
+@model Monthley.Models.IncomeModels.IncomeCreate
 
 @{
     ViewBag.Title = "Add Income";
@@ -73,18 +75,10 @@
         <div class="form-group" id="payDate">
             @Html.LabelFor(model => model.InitialPayDate, "Pay Date", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.InitialPayDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.InitialPayDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Select Date", @readonly = "true" } })
                 @Html.ValidationMessageFor(model => model.InitialPayDate, "", new { @class = "text-danger" })
             </div>
         </div>
-
-        @*<div class="form-group">
-                @Html.LabelFor(model => model.InitialPayDate, htmlAttributes: new { @class = "control-label col-md-2" })
-                <div class="col-md-10">
-                    @Html.EditorFor(model => model.InitialPayDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Select Date", @readonly = "true" } })
-                    @Html.ValidationMessageFor(model => model.InitialPayDate, "", new { @class = "text-danger" })
-                </div>
-            </div>*@
 
         <div id="payFrequency" style="display:none">
             <div class="col-md-3"><b>How often do you get paid?</b></div>
@@ -131,7 +125,6 @@
             </table>
         </div>
 
-
         <div id="endDateOption" style="display:none">
             <br />
             <div class="col-md-4">
@@ -158,7 +151,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.LastPayDate, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.LastPayDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.LastPayDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Select Date", @readonly = "true" } })
                     @Html.ValidationMessageFor(model => model.LastPayDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -184,12 +177,11 @@
     <script type="text/javascript">
         $(document).ready(function () {
             $('input[type=datetime]').datepicker({
-                dateFormat: "dd/M/yy",
+                dateFormat: "MM d, yy",
                 changeMonth: true,
                 changeYear: true,
-                yearRange: "-60:+0"
+                yearRange: "-10:+20"
             });
-
         });
 
         var list = document.getElementById("payFreqType");

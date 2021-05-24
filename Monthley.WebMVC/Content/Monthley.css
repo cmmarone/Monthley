@@ -44,5 +44,12 @@
     opacity: 0.3;
 }
 
+.ui-datepicker .ui-datepicker-title select {
+    background: #eaffe8;
+    opacity: 1;
+    border: 1px solid #000000;
+    color: black;
+}
+
 
 

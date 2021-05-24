@@ -1,4 +1,6 @@
-﻿@model Monthley.Models.ExpenseModels.ExpenseCreate
+﻿<link href="https://code.jquery.com/ui/1.11.4/themes/ui-lightness/jquery-ui.css" rel="stylesheet" type="text/css">
+
+@model Monthley.Models.ExpenseModels.ExpenseCreate
 
 @{
     ViewBag.Title = "Savings";
@@ -52,7 +54,7 @@
         <div class="form-group">
             @Html.LabelFor(model => model.InitialDueDate, "Due Date", htmlAttributes: new { @class = "control-label col-md-2" })
             <div class="col-md-10">
-                @Html.EditorFor(model => model.InitialDueDate, new { htmlAttributes = new { @class = "form-control" } })
+                @Html.EditorFor(model => model.InitialDueDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Select Date", @readonly = "true" } })
                 @Html.ValidationMessageFor(model => model.InitialDueDate, "", new { @class = "text-danger" })
             </div>
         </div>
@@ -124,7 +126,7 @@
             <div class="form-group">
                 @Html.LabelFor(model => model.EndDate, htmlAttributes: new { @class = "control-label col-md-2" })
                 <div class="col-md-10">
-                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control" } })
+                    @Html.EditorFor(model => model.EndDate, new { htmlAttributes = new { @class = "form-control", placeholder = "Select Date", @readonly = "true" } })
                     @Html.ValidationMessageFor(model => model.EndDate, "", new { @class = "text-danger" })
                 </div>
             </div>
@@ -140,11 +142,22 @@
 
 @section Scripts {
     @Scripts.Render("~/bundles/jqueryval")
+    @Scripts.Render("~/bundles/jqueryui")
+    @Styles.Render("~/Content/cssjqryUi")
 
     <script type="text/javascript">
-        var list2 = document.getElementById("expenseFreqType");
-        console.log(list2.childNodes[6]);
-        list2.removeChild(list2.childNodes[6]);
+        $(document).ready(function () {
+            $('input[type=datetime]').datepicker({
+                dateFormat: "MM d, yy",
+                changeMonth: true,
+                changeYear: true,
+                yearRange: "-10:+20"
+            });
+        });
+
+        var list = document.getElementById("expenseFreqType");
+        console.log(list.childNodes[6]);
+        list.removeChild(list.childNodes[6]);
 
         function EndDateShowHide() {
             var endDateChoice = document.getElementById("endDateChoice");
