@@ -4,22 +4,34 @@
     ViewBag.Title = "Current Budget";
 }
 
-<h2>@Html.DisplayFor(model => model.Name)</h2>
+<br />
 
-<div>
-    <img src='@Url.Action("PieChart", "Month", new { id = Model.Id })' />
-</div>
-<table>
-    <tr>
-        <th>Spendable Money Remaining:&nbsp;&nbsp;</th>
-        <td>
-           $@Html.DisplayFor(model => model.DisposableRemaining)
-        </td>
-    </tr>
-</table>
+<h2>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;@Html.DisplayFor(model => model.Name)</h2>
+<br />
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;
+@Html.ActionLink("Category Spending", "CategorySpending", "Month", new { id = Model.Id }, new { @class = "btn btn-default" })
+&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+@Html.ActionLink("Transactions", "Transactions", new { id = Model.Id }, new { @class = "btn btn-default" })
+
+<hr />
+
+<img src='@Url.Action("PieChart", "Month", new { id = Model.Id })' />
+
+<br />
+<br />
+<br />
+<br />
+
+<span class="col-md-6 disposableRemaining">Spendable Money Remaining: &nbsp;&nbsp;<small>$</small> @Html.DisplayFor(model => model.DisposableRemaining)</span>
+<span class="col-md-1 greenBack"></span>
+<span class="col-md-5"></span>
+<br />
+<br />
+<br />
+<br />
+
 <p>
-    @Html.ActionLink("Category Spending", "CategorySpending", "Month", new { id = Model.Id }, new { @class = "btn btn-default" })
-    @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade", null, new { @class = "btn btn-default" })
+    &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
+    @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade", null, new { @class = "btn btn-default" }) &nbsp;&nbsp;
     @Html.ActionLink("Add an Incoming Transaction", "Create", "PaymentReceived", null, new { @class = "btn btn-default" })
-    @Html.ActionLink("Transactions", "Transactions", new { id = Model.Id }, new { @class = "btn btn-default" })
 </p>

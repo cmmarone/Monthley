@@ -24,5 +24,25 @@
 }
 
 .btn-default {
+    background-color: #d9f7d2;
+}
+
+.disposableRemaining {
+    font-size: 24pt;
     background-color: #cbffba;
 }
+
+
+.greenBack {
+    position: relative;
+    background-color: #4fb32e;
+    width: 160px;
+    height: 70px;
+    border-radius: 70px / 35px;
+    top: -12px;
+    left: -165px;
+    opacity: 0.3;
+}
+
+
+
