@@ -4,57 +4,72 @@
     ViewBag.Title = $"{Model.Name}";
 }
 
-<br />
+<div class="row budget-row text-center">
+    <div class="col-md-5">
+        <h2 class="month-header">@Html.DisplayFor(model => model.Name)</h2>
+        <br />
+        <hr class="custom-hr" />
+        <br />
+        <br />
+        @Html.ActionLink("Budgeted Spending Breakdown", "CategorySpending", "Month", new { id = Model.Id }, new { @class = "btn btn-default btn-budget-view" })
+        @if (TempData.ContainsKey("LoadCategorySpendingResult"))
+        {
+            <div class="alert alert-success fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span>&times;</span>
+                </button>
+                @TempData["LoadCategorySpendingResult"]
+            </div>
+        }
+        <br />
+        <br />
+        <br />
+        @Html.ActionLink("View All Transactions", "Transactions", new { id = Model.Id }, new { @class = "btn btn-default btn-budget-view" })
+        @if (TempData.ContainsKey("LoadTransactionsResult"))
+        {
+            <div class="alert alert-success fade in" role="alert">
+                <button type="button" class="close" data-dismiss="alert">
+                    <span>&times;</span>
+                </button>
+                @TempData["LoadTransactionsResult"]
+            </div>
+        }
+        <br />
+        <br />
+        <br />
+        <br />
+        <br />
+        <div class="spendable-or-net">
+            @{ if (Model.BeginDate.AddMonths(1) >= DateTime.Now)
+                {
+                    <div class="amount-label">Spendable Money Remaining</div>
+                    <br />
+                    <div class="amount"><small>$</small> @Html.DisplayFor(model => model.DisposableRemaining)</div>
+                }
+                else
+                {
+                    <div class="col-md-8 disposableRemaining">End-of-Month Net:</div>
+                    <br />
+                    <div class="col-md-4 amount"><small>$</small> @Html.DisplayFor(model => model.Net)</div>
+                }
+            }
+            <br />
+            <br />
+            <br />
+            <br />
+            <br />
+            @{ if (Model.BeginDate.Month == DateTime.Now.Month && Model.BeginDate.Year == DateTime.Now.Year)
+                {
+                    <p>
+                        @Html.ActionLink("Report Money Spent", "Create", "PaymentMade", null, new { @class = "btn btn-default", style = "font-size:16pt; background-color:#F99677;" }) &nbsp;&nbsp;
+                        @Html.ActionLink("Report Money Received", "Create", "PaymentReceived", null, new { @class = "btn btn-default", style = "font-size:16pt; background-color:#68E03A;" })
+                    </p>
+                }
+            }
+        </div>
+    </div>
 
-<h2>&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;  &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; @Html.DisplayFor(model => model.Name)</h2>
-<br />
-&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;&nbsp;&nbsp;
-@Html.ActionLink("Category Spending", "CategorySpending", "Month", new { id = Model.Id }, new { @class = "btn btn-default" })
-&nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
-@Html.ActionLink("Transactions", "Transactions", new { id = Model.Id }, new { @class = "btn btn-default" })
-<hr />
-
-<img src='@Url.Action("PieChart", "Month", new { id = Model.Id })' />
-
-<br />
-<br />
-<br />
-<br />
-
-
-@{ if (Model.BeginDate.AddMonths(1) >= DateTime.Now)
-    {
-        <span class="col-md-6 disposableRemaining">Spendable Money Remaining: &nbsp;&nbsp;<small>$</small> @Html.DisplayFor(model => model.DisposableRemaining)</span>
-        <span class="col-md-1 greenBack"></span>
-        <span class="col-md-5"></span>
-    }
-    else
-    {
-        <span class="col-md-6 disposableRemaining">
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp;&nbsp;End-of-Month Net:
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<small>$</small> @Html.DisplayFor(model => model.Net)
-        </span>
-        <span class="col-md-1 greenBack"></span>
-        <span class="col-md-5"></span>
-    }
-}
-
-<br />
-<br />
-<br />
-<br />
-
-
-
-
-@{ if (Model.BeginDate.Month == DateTime.Now.Month && Model.BeginDate.Year == DateTime.Now.Year)
-    {
-        <p>
-            &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp; &nbsp;&nbsp;
-            @Html.ActionLink("Add an Outgoing Transaction", "Create", "PaymentMade", null, new { @class = "btn btn-default" }) &nbsp;&nbsp;
-            @Html.ActionLink("Add an Incoming Transaction", "Create", "PaymentReceived", null, new { @class = "btn btn-default" })
-        </p>
-    }
-}
-
-
+    <div class="col-md-7">
+        <img src='@Url.Action("PieChart", "Month", new { id = Model.Id })' />
+    </div>
+</div>

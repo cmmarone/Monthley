@@ -12,18 +12,32 @@
     <div class="col-md-6"></div>
 </div>
 
+
 <div class="row">
-    <div class="col-md-2">
-        <p>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;@Html.ActionLink("About", "About", null, new { @class = "btn btn-default home-button" })</p>
-    </div>
-    <div class="col-md-2">
-        <p>@Html.ActionLink("Contact Us", "Contact", null, new { @class = "btn btn-default home-button" })</p>
-    </div>
     <div class="col-md-2">
         @if (User.Identity.IsAuthenticated)
         {
-            <p>@Html.ActionLink("Setup Wizard", "Welcome", "Account", null, new { @class = "btn btn-default home-button" })</p>
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.ActionLink("Setup Wizard", "Welcome", "Account", null, new { @class = "btn btn-default home-button" })
+            </p>
         }
+        else
+        {
+            <p>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.ActionLink("Sign Up!", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default home-button" })
+            </p>
+        }
+    </div>
+    <div class="col-md-2">
+        <p>
+            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+            @Html.ActionLink("About", "About", null, new { @class = "btn btn-default home-button" })
+        </p>
+    </div>
+    <div class="col-md-2">
+        <p>@Html.ActionLink("Contact Us", "Contact", null, new { @class = "btn btn-default home-button" })</p>
     </div>
     <div class="col-md-6"></div>
 </div>

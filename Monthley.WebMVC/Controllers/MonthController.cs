@@ -24,8 +24,8 @@ namespace Monthley.WebMVC.Controllers
         public ActionResult CurrentBudget()
         {
             var service = CreateMonthService();
-            var monthDetailModel = service.GetCurrentMonthDetail();
-            return View(monthDetailModel);
+            var monthId = service.GetCurrentMonthId();
+            return RedirectToAction("Details", new { id = monthId });
         }
 
         // GET: Month/PieChart
@@ -49,6 +49,12 @@ namespace Monthley.WebMVC.Controllers
         {
             var service = CreateMonthService();
             var categorySpendingList = service.GetCategorySpendingForMonth(id);
+            if (categorySpendingList.Count() == 0)
+            {
+                TempData["LoadCategorySpendingResult"] = "You haven't added any budgeted expenses yet!";
+                return RedirectToAction("Details", new { id });
+            }
+
             return View(categorySpendingList);
         }
 
@@ -57,6 +63,12 @@ namespace Monthley.WebMVC.Controllers
         {
             var service = CreateMonthService();
             var transactionList = service.GetTransactionsForMonth(id);
+            if (transactionList.Count() == 0)
+            {
+                TempData["LoadTransactionsResult"] = "You haven't reported any transactions yet!";
+                return RedirectToAction("Details", new { id });
+            }
+
             return View(transactionList);
         }
 

@@ -27,21 +27,16 @@
     background-color: #d9f7d2;
 }
 
-.disposableRemaining {
-    font-size: 24pt;
-    background-color: #cbffba;
+.amount-label {
+    font-size: 18pt;
+    text-decoration: underline;
 }
 
 
-.greenBack {
-    position: relative;
-    background-color: #4fb32e;
-    width: 160px;
-    height: 70px;
-    border-radius: 70px / 35px;
-    top: -12px;
-    left: -165px;
-    opacity: 0.3;
+.amount {
+    font-size: 20pt;
+    background-color: #cbffba;
+    border: 1px ridge black;
 }
 
 .ui-datepicker .ui-datepicker-title select {
@@ -65,9 +60,25 @@ h1.jumbotron{
     font-weight: bold;
 }
 
-.home-button{
-
+.month-header {
+    font-size: 48pt;
+    border: 1px solid black;
+    background-color: #D6FF8A;
 }
 
+.btn-budget-view{
+    font-size: 24pt;
+    border: 1px ridge black;
+}
+
+.budget-row{
+
+    padding: 30px 0 0 0;
+}
+
+.custom-hr{
+    border: 2px solid black;
+    width: 80%;
+}
 
 

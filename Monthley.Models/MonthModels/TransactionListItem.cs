@@ -9,6 +9,10 @@ namespace Monthley.Models.MonthModels
 {
     public class TransactionListItem
     {
+        public int MonthId { get; set; }
+
+        public string MonthName { get; set; }
+
         public string ControllerName { get; set; }
 
         public int TransactionId { get; set; }

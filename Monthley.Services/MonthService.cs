@@ -99,14 +99,23 @@ namespace Monthley.Services
             }
         }
 
-        public MonthDetail GetCurrentMonthDetail()
+        //public MonthDetail GetCurrentMonthDetail()
+        //{
+        //    var monthBeginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+        //    using (var context = new ApplicationDbContext())
+        //    {
+        //        int id = context.Months.SingleOrDefault(m => m.BeginDate == monthBeginDate && m.UserId == _userId).Id;
+        //        var monthDetail = GetMonthById(id);
+        //        return monthDetail;
+        //    }
+        //}
+
+        public int GetCurrentMonthId()
         {
             var monthBeginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
             using (var context = new ApplicationDbContext())
             {
-                int id = context.Months.SingleOrDefault(m => m.BeginDate == monthBeginDate && m.UserId == _userId).Id;
-                var monthDetail = GetMonthById(id);
-                return monthDetail;
+                return context.Months.SingleOrDefault(m => m.BeginDate == monthBeginDate && m.UserId == _userId).Id;
             }
         }
 
@@ -142,7 +151,7 @@ namespace Monthley.Services
             var totalBudgetedExpensesPairing = new PieSliceModel
             {
                 Label = "Budgeted Expenses",
-                Amount = monthDetail.TotalExpenses
+                Amount = monthDetail.BudgetedExpenses
             };
             if (totalBudgetedExpensesPairing.Amount > 0)
                 pieChartSlices.Add(totalBudgetedExpensesPairing);
@@ -333,6 +342,8 @@ namespace Monthley.Services
                 {
                     var transaction = new TransactionListItem()
                     {
+                        MonthId = monthId,
+                        MonthName = $"{monthEntity.BeginDate.ToString("MMMM")} {monthEntity.BeginDate.ToString("yyyy")}",
                         ControllerName = "PaymentMade",
                         TransactionId = paymentMade.Id,
                         Type = paymentMade.Category.Type.ToString(),
