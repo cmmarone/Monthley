@@ -99,17 +99,6 @@ namespace Monthley.Services
             }
         }
 
-        //public MonthDetail GetCurrentMonthDetail()
-        //{
-        //    var monthBeginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-        //    using (var context = new ApplicationDbContext())
-        //    {
-        //        int id = context.Months.SingleOrDefault(m => m.BeginDate == monthBeginDate && m.UserId == _userId).Id;
-        //        var monthDetail = GetMonthById(id);
-        //        return monthDetail;
-        //    }
-        //}
-
         public int GetCurrentMonthId()
         {
             var monthBeginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
