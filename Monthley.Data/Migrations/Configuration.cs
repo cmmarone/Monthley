@@ -177,31 +177,6 @@ namespace Monthley.Data.Migrations
                 context.SaveChanges();
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
                 // seeding example Category entities
                 var category1 = new Category()
                 {
@@ -282,7 +257,7 @@ namespace Monthley.Data.Migrations
                     UserId = userId
                 };
                 context.Categories.Add(category10);
-               
+
                 var category11 = new Category()
                 {
                     Name = "Gasoline",
@@ -852,21 +827,368 @@ namespace Monthley.Data.Migrations
                 context.SaveChanges();
 
 
+
+
                 // seeding example PaymentReceived entities
+                var dtr1 = new DateTime(2021, 5, 6);
+                var paymentReceived1 = new PaymentReceived()
+                {
+                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "My full-time job" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr1.Month && m.BeginDate.Year == dtr1.Year && m.UserId == userId).Id,
+                    Amount = 604.11m,
+                    PaymentDate = dtr1,
+                    UserId = userId
+                };
+                context.PaymentsReceived.Add(paymentReceived1);
+
+                var dtr2 = new DateTime(2021, 5, 14);
+                var paymentReceived2 = new PaymentReceived()
+                {
+                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "My full-time job" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr2.Month && m.BeginDate.Year == dtr2.Year && m.UserId == userId).Id,
+                    Amount = 596.82m,
+                    PaymentDate = dtr2,
+                    UserId = userId
+                };
+                context.PaymentsReceived.Add(paymentReceived2);
+
+                var dtr3 = new DateTime(2021, 5, 21);
+                var paymentReceived3 = new PaymentReceived()
+                {
+                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "My full-time job" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr3.Month && m.BeginDate.Year == dtr3.Year && m.UserId == userId).Id,
+                    Amount = 613.40m,
+                    PaymentDate = dtr3,
+                    UserId = userId
+                };
+                context.PaymentsReceived.Add(paymentReceived3);
+
+                var dtr4 = new DateTime(2021, 5, 27);
+                var paymentReceived4 = new PaymentReceived()
+                {
+                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "My full-time job" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr4.Month && m.BeginDate.Year == dtr4.Year && m.UserId == userId).Id,
+                    Amount = 600.41m,
+                    PaymentDate = dtr4,
+                    UserId = userId
+                };
+                context.PaymentsReceived.Add(paymentReceived4);
+
+                var dtr5 = new DateTime(2021, 5, 10);
+                var paymentReceived5 = new PaymentReceived()
+                {
+                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "Private teaching gig" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr5.Month && m.BeginDate.Year == dtr5.Year && m.UserId == userId).Id,
+                    Amount = 36.00m,
+                    PaymentDate = dtr5,
+                    UserId = userId
+                };
+                context.PaymentsReceived.Add(paymentReceived5);
+
+                var dtr6 = new DateTime(2021, 5, 24);
+                var paymentReceived6 = new PaymentReceived()
+                {
+                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "Private teaching gig" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr6.Month && m.BeginDate.Year == dtr6.Year && m.UserId == userId).Id,
+                    Amount = 36.00m,
+                    PaymentDate = dtr6,
+                    UserId = userId
+                };
+                context.PaymentsReceived.Add(paymentReceived6);
+
+                context.SaveChanges();
+
 
                 // seeding example PaymentMade entities
+                var dtm1 = new DateTime(2021, 5, 1);
+                var paymentMade1 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Rent" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm1.Month && m.BeginDate.Year == dtm1.Year && m.UserId == userId).Id,
+                    Amount = 710.00m,
+                    PaymentDate = dtm1,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade1);
 
+                var dtm2 = new DateTime(2021, 5, 3);
+                var paymentMade2 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Car Insurance" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm2.Month && m.BeginDate.Year == dtm2.Year && m.UserId == userId).Id,
+                    Amount = 92.33m,
+                    PaymentDate = dtm2,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade2);
 
+                var dtm3 = new DateTime(2021, 5, 16);
+                var paymentMade3 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Car Lease" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm3.Month && m.BeginDate.Year == dtm3.Year && m.UserId == userId).Id,
+                    Amount = 151.39m,
+                    PaymentDate = dtm3,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade3);
 
+                var dtm4 = new DateTime(2021, 5, 24);
+                var paymentMade4 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Comcast ISP/TV" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm4.Month && m.BeginDate.Year == dtm4.Year && m.UserId == userId).Id,
+                    Amount = 116.01m,
+                    PaymentDate = dtm4,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade4);
 
+                var dtm5 = new DateTime(2021, 5, 10);
+                var paymentMade5 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Rent" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm5.Month && m.BeginDate.Year == dtm5.Year && m.UserId == userId).Id,
+                    Amount = 9.99m,
+                    PaymentDate = dtm5,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade5);
 
+                var dtm6 = new DateTime(2021, 5, 16);
+                var paymentMade6 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Hulu" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm6.Month && m.BeginDate.Year == dtm6.Year && m.UserId == userId).Id,
+                    Amount = 11.99m,
+                    PaymentDate = dtm6,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade6);
 
+                var dtm7a = new DateTime(2021, 5, 3);
+                var paymentMade7a = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Daycare" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm7a.Month && m.BeginDate.Year == dtm7a.Year && m.UserId == userId).Id,
+                    Amount = 151.00m,
+                    PaymentDate = dtm7a,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade7a);
 
+                var dtm7b = new DateTime(2021, 5, 10);
+                var paymentMade7b = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Daycare" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm7b.Month && m.BeginDate.Year == dtm7b.Year && m.UserId == userId).Id,
+                    Amount = 151.00m,
+                    PaymentDate = dtm7b,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade7b);
+
+                var dtm7c = new DateTime(2021, 5, 17);
+                var paymentMade7c = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Daycare" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm7c.Month && m.BeginDate.Year == dtm7c.Year && m.UserId == userId).Id,
+                    Amount = 151.00m,
+                    PaymentDate = dtm7c,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade7c);
+
+                var dtm7d = new DateTime(2021, 5, 24);
+                var paymentMade7d = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Daycare" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm7d.Month && m.BeginDate.Year == dtm7d.Year && m.UserId == userId).Id,
+                    Amount = 151.00m,
+                    PaymentDate = dtm7d,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade7d);
+
+                var dtm8 = new DateTime(2021, 5, 15);
+                var paymentMade8 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "General savings" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm8.Month && m.BeginDate.Year == dtm8.Year && m.UserId == userId).Id,
+                    Amount = 100.00m,
+                    PaymentDate = dtm8,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade8);
+
+                var dtm9 = new DateTime(2021, 5, 15);
+                var paymentMade9 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "College fund" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm9.Month && m.BeginDate.Year == dtm9.Year && m.UserId == userId).Id,
+                    Amount = 50.00m,
+                    PaymentDate = dtm9,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade9);
+
+                var dtm10a = new DateTime(2021, 5, 6);
+                var paymentMade10a = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Groceries" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm10a.Month && m.BeginDate.Year == dtm10a.Year && m.UserId == userId).Id,
+                    Amount = 77.13m,
+                    PaymentDate = dtm10a,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade10a);
+
+                var dtm10b = new DateTime(2021, 5, 13);
+                var paymentMade10b = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Groceries" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm10b.Month && m.BeginDate.Year == dtm10b.Year && m.UserId == userId).Id,
+                    Amount = 87.01m,
+                    PaymentDate = dtm10b,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade10b);
+
+                var dtm10c = new DateTime(2021, 5, 20);
+                var paymentMade10c = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Groceries" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm10c.Month && m.BeginDate.Year == dtm10c.Year && m.UserId == userId).Id,
+                    Amount = 59.09m,
+                    PaymentDate = dtm10c,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade10c);
+
+                var dtm10d = new DateTime(2021, 5, 27);
+                var paymentMade10d = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Groceries" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm10d.Month && m.BeginDate.Year == dtm10d.Year && m.UserId == userId).Id,
+                    Amount = 79.44m,
+                    PaymentDate = dtm10d,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade10d);
+
+                var dtm11a = new DateTime(2021, 5, 9);
+                var paymentMade11a = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Gasoline" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm11a.Month && m.BeginDate.Year == dtm11a.Year && m.UserId == userId).Id,
+                    Amount = 20.03m,
+                    PaymentDate = dtm11a,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade11a);
+
+                var dtm11b = new DateTime(2021, 5, 18);
+                var paymentMade11b = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Gasoline" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm11b.Month && m.BeginDate.Year == dtm11b.Year && m.UserId == userId).Id,
+                    Amount = 18.14m,
+                    PaymentDate = dtm11b,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade11b);
+
+                var dtm11c = new DateTime(2021, 5, 27);
+                var paymentMade11c = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Gasoline" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm11c.Month && m.BeginDate.Year == dtm11c.Year && m.UserId == userId).Id,
+                    Amount = 10.01m,
+                    PaymentDate = dtm11c,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade11c);
+
+                var dtm12a = new DateTime(2021, 5, 3);
+                var paymentMade12a = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "New clothes" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm12a.Month && m.BeginDate.Year == dtm12a.Year && m.UserId == userId).Id,
+                    Amount = 14.87m,
+                    PaymentDate = dtm12a,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade12a);
+
+                var dtm12b = new DateTime(2021, 5, 21);
+                var paymentMade12b = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "New clothes" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm12b.Month && m.BeginDate.Year == dtm12b.Year && m.UserId == userId).Id,
+                    Amount = 24.91m,
+                    PaymentDate = dtm12b,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade12b);
+
+                var dtm13a = new DateTime(2021, 5, 9);
+                var paymentMade13a = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Entertainment" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm13a.Month && m.BeginDate.Year == dtm13a.Year && m.UserId == userId).Id,
+                    Amount = 20.00m,
+                    PaymentDate = dtm13a,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade13a);
+
+                var dtm13b = new DateTime(2021, 5, 22);
+                var paymentMade13b = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Entertainment" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm13b.Month && m.BeginDate.Year == dtm13b.Year && m.UserId == userId).Id,
+                    Amount = 28.14m,
+                    PaymentDate = dtm13b,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade13b);
+
+                var dtm14 = new DateTime(2021, 5, 22);
+                var paymentMade14 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Gas bill" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm14.Month && m.BeginDate.Year == dtm14.Year && m.UserId == userId).Id,
+                    Amount = 28.07m,
+                    PaymentDate = dtm14,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade14);
+
+                var dtm15 = new DateTime(2021, 5, 11);
+                var paymentMade15 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Electric bill" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm15.Month && m.BeginDate.Year == dtm15.Year && m.UserId == userId).Id,
+                    Amount = 72.65m,
+                    PaymentDate = dtm15,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade15);
+
+                var dtm16 = new DateTime(2021, 5, 21);
+                var paymentMade16 = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Gas bill" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm16.Month && m.BeginDate.Year == dtm16.Year && m.UserId == userId).Id,
+                    Amount = 15.00m,
+                    PaymentDate = dtm16,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade16);
+
+                context.SaveChanges();
 
                 // <-------------------------------------------------------------------------------------END SEEDING EXAMPLES OF USER DATA
-
-
-
             }
         }
     }
