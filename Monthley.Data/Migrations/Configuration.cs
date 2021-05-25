@@ -1186,6 +1186,74 @@ namespace Monthley.Data.Migrations
                 };
                 context.PaymentsMade.Add(paymentMade16);
 
+
+                // seeding example PaymentMade entities (unbudgeted spending)
+                var dtm17a = new DateTime(2021, 5, 5);
+                var paymentMade17a = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17a.Month && m.BeginDate.Year == dtm17a.Year && m.UserId == userId).Id,
+                    Amount = 21.23m,
+                    PaymentDate = dtm17a,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade17a);
+
+                var dtm17b = new DateTime(2021, 5, 13);
+                var paymentMade17b = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17b.Month && m.BeginDate.Year == dtm17b.Year && m.UserId == userId).Id,
+                    Amount = 2.11m,
+                    PaymentDate = dtm17b,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade17b);
+
+                var dtm17c = new DateTime(2021, 5, 14);
+                var paymentMade17c = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17c.Month && m.BeginDate.Year == dtm17c.Year && m.UserId == userId).Id,
+                    Amount = 2.11m,
+                    PaymentDate = dtm17c,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade17c);
+
+                var dtm17d = new DateTime(2021, 5, 21);
+                var paymentMade17d = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17d.Month && m.BeginDate.Year == dtm17d.Year && m.UserId == userId).Id,
+                    Amount = 18.41m,
+                    PaymentDate = dtm17d,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade17d);
+
+                var dtm17e = new DateTime(2021, 5, 26);
+                var paymentMade17e = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17e.Month && m.BeginDate.Year == dtm17e.Year && m.UserId == userId).Id,
+                    Amount = 5.86m,
+                    PaymentDate = dtm17e,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade17e);
+
+                var dtm17f = new DateTime(2021, 5, 26);
+                var paymentMade17f = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17f.Month && m.BeginDate.Year == dtm17f.Year && m.UserId == userId).Id,
+                    Amount = 8.13m,
+                    PaymentDate = dtm17f,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade17f);
+
                 context.SaveChanges();
 
                 // <-------------------------------------------------------------------------------------END SEEDING EXAMPLES OF USER DATA
