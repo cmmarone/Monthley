@@ -429,7 +429,7 @@ namespace Monthley.Data.Migrations
         }
 
         // helpers
-        public void SeedIncome(string sourceName, decimal amount, PayFreqType payFreqType, int frequencyFactor, DateTime initialPayDate, DateTime lastPayDate, Guid userId)
+        private void SeedIncome(string sourceName, decimal amount, PayFreqType payFreqType, int frequencyFactor, DateTime initialPayDate, DateTime lastPayDate, Guid userId)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -447,7 +447,7 @@ namespace Monthley.Data.Migrations
                 context.SaveChanges();
             }
         }
-        public void SeedPayDays(string sourceName, DateTime initialPayDate, DateTime lastPayDate, PayFreqType freqType, int frequencyFactor, decimal amount, Guid userId)
+        private void SeedPayDays(string sourceName, DateTime initialPayDate, DateTime lastPayDate, PayFreqType freqType, int frequencyFactor, decimal amount, Guid userId)
         {
             var payDates = new List<DateTime>();
             if (freqType == PayFreqType.ByMonth)
@@ -482,7 +482,7 @@ namespace Monthley.Data.Migrations
             }
         }
 
-        public void SeedExpense(string categoryName, decimal amount, ExpenseFreqType expenseFreqType, int frequencyFactor, DateTime initialDueDate, DateTime endDate, Guid userId)
+        private void SeedExpense(string categoryName, decimal amount, ExpenseFreqType expenseFreqType, int frequencyFactor, DateTime initialDueDate, DateTime endDate, Guid userId)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -501,7 +501,7 @@ namespace Monthley.Data.Migrations
             }
         }
 
-        public void SeedDueDates(string categoryName, DateTime initialDueDate, DateTime endDate, ExpenseFreqType freqType, int frequencyFactor, decimal amount, Guid userId)
+        private void SeedDueDates(string categoryName, DateTime initialDueDate, DateTime endDate, ExpenseFreqType freqType, int frequencyFactor, decimal amount, Guid userId)
         {
             var dueDates = new List<DateTime>();
             if (freqType == ExpenseFreqType.ByMonth)
@@ -536,7 +536,7 @@ namespace Monthley.Data.Migrations
             }
         }
 
-        public void SeedPaymentReceived(string sourceName, decimal amount, DateTime paymentDate, Guid userId)
+        private void SeedPaymentReceived(string sourceName, decimal amount, DateTime paymentDate, Guid userId)
         {
             using (var context = new ApplicationDbContext())
             {
@@ -553,7 +553,7 @@ namespace Monthley.Data.Migrations
             }
         }
 
-        public void SeedPaymentMade(string categoryName, decimal amount, DateTime paymentDate, Guid userId)
+        private void SeedPaymentMade(string categoryName, decimal amount, DateTime paymentDate, Guid userId)
         {
             using (var context = new ApplicationDbContext())
             {

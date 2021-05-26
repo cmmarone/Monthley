@@ -1,7 +1,25 @@
 ﻿@{
     ViewBag.Title = "About";
 }
-<h2>@ViewBag.Title.</h2>
-<h3>@ViewBag.Message</h3>
+<h2>How To Use monTHLey</h2>
+<hr />
 
-<p>Use this area to provide additional information.</p>
+<p>monTHLey uses your income and expenses to provide you with a simple view of your monthly budget and show you how to keep your checking account steady or growing from month to month</p>
+<p>Using the @Html.ActionLink("Setup Wizard", "Welcome", "Account", null, new { @style = "font-weight: bold;" }) is highly recommended to to properly provide monTHLey with information about your incomes and expenses.</p>
+<p>
+    Your expenses are divided into 5 categories:
+    <ul>
+        <li>Bills - Ex. Rent or Car payment</li>
+        <li>Monthly Saving - Regular contributions to saving or investments</li>
+        <li>One-Time Expenses - That you know about ahead-of-time</li>
+        <li>Budgeted Expenses - Ex. Groceries or Entertainment</li>
+        <li>Miscellaneous - Things that aren't planned in any of the above categories</li>
+    </ul>
+</p>
+
+<p>When a new month begins, monTHLey shows you how much money you can spend and still break even by the end of the month.</p>
+<p>As you pay and receive money, track your transactions by reporting them in the app, and monTHLey will keep your "Spendable Money Remaining" updated as you spend. If you spend money on items outside your budget, the "Spendable Money Remaining" will dwindle away. If you report money spent on Budgeted Expenses, you can track your budgeted spending by clicking on "Budgeted Spending Breakdown" and see how much you have left to spend on each budgeted expense category.</p>
+<p>When a month ends, monTHLey will not only look at how you did with miscellaneous spending and budgeted expenses, but factor in what you actually earned and actually spent on your bills, and calculate your "End-of-Month Net" -- how much money you gained or lost from the beginning to end of the month. </p>
+<p>When you look in the calendar, monTHLey also shows you what future months have in store, and how much spendable money you'll begin the month with.  Remember, if you have incomes or expenses that occur on some kind of weekly basis (instead of monthly) the number of pay days or due dates will vary from month to month-- and when they do, monTHLey already knows how the month is structured, so don't worry! </p>
+
+<p>If something changes, like a change to an income or expense, simply find it in "Expenses" or "Incomes" and make the changes you need. monTHLey will automatically update your budget for the current month and every month to come!</p>
