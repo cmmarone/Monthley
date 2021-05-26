@@ -18,7 +18,7 @@ namespace Monthley.Data.Migrations
 
         protected override void Seed(Monthley.Data.ApplicationDbContext context)
         {
-            // Seeding a user
+            // Seeding a demo account
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             if (userManager.FindByEmail("efa@monthley.com") == null)
             {
@@ -42,14 +42,15 @@ namespace Monthley.Data.Migrations
                 //    Configuration class, it doesn't pass through the AccountController, so it is necessary to execute the code 
                 //    here to replicate the result of a typical user registration.
 
+
+
                 // seeding Month entities for user 'efa@monthley.com'
                 List<DateTime> dtList = new List<DateTime>();
-                var endDate = new DateTime(2100, 12, 1);
-                for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                var endDate = new DateTime(2050, 12, 1);
+                for (var date = new DateTime(2021, 3, 1);
                     (DateTime.Compare(date, endDate) <= 0);
                     date = date.AddMonths(1))
                     dtList.Add(date);
-
                 foreach (var beginDate in dtList)
                 {
                     var month = new Month
@@ -59,6 +60,7 @@ namespace Monthley.Data.Migrations
                     };
                     context.Months.Add(month);
                 }
+                context.SaveChanges();
 
                 // seeding "Miscellaneous" Category entity for user 'efa@monthley.com'
                 var category = new Category()
@@ -68,6 +70,7 @@ namespace Monthley.Data.Migrations
                     UserId = userId
                 };
                 context.Categories.Add(category);
+                context.SaveChanges();
 
                 // seeding "Unplanned" Source entity for user 'efa@monthley.com'
                 var source = new Source()
@@ -77,10 +80,13 @@ namespace Monthley.Data.Migrations
                     UserId = userId
                 };
                 context.Sources.Add(source);
-
                 context.SaveChanges();
 
                 // <-----------------------------------------------------------------------------------------END USER REGISTRATION SEEDING
+
+
+
+
 
 
                 // ---BEGIN SEEDING EXAMPLES OF USER DATA-------------------------------------------------------------------------------->
@@ -107,75 +113,12 @@ namespace Monthley.Data.Migrations
                 context.SaveChanges();
 
                 // seeding example Income entities
-                var income1 = new Income()
-                {
-                    Id = (context.Sources.Single(s => s.Name == "My full-time job" && s.UserId == userId)).Id,
-                    Amount = 600.00m,
-                    PayFreqType = PayFreqType.ByWeek,
-                    FrequencyFactor = 1,
-                    InitialPayDate = new DateTime(2021, 5, 6),
-                    LastPayDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Incomes.Add(income1);
-
-                var income2 = new Income()
-                {
-                    Id = (context.Sources.Single(s => s.Name == "Private teaching gig" && s.UserId == userId)).Id,
-                    Amount = 36.00m,
-                    PayFreqType = PayFreqType.ByWeek,
-                    FrequencyFactor = 2,
-                    InitialPayDate = new DateTime(2021, 5, 9),
-                    LastPayDate = new DateTime(2022, 12, 31),
-                    UserId = userId
-                };
-                context.Incomes.Add(income2);
-
-                context.SaveChanges();
+                SeedIncome("My full-time job", 700.00m, PayFreqType.ByWeek, 1, new DateTime(2021, 3, 4), new DateTime(2025, 12, 31), userId);
+                SeedIncome("Private teaching gig", 36.00m, PayFreqType.ByWeek, 2, new DateTime(2021, 3, 14), new DateTime(2022, 12, 31), userId);
 
                 // seeding example PayDay entities
-                var payDates1 = new List<DateTime>();
-                var initialPayDate = new DateTime(2021, 5, 6);
-                var lastPayDate = new DateTime(2100, 12, 31);
-                for (var date = initialPayDate;
-                     (DateTime.Compare(date, lastPayDate)) <= 0;
-                     date = date.AddDays(7 * 1))
-                    payDates1.Add(date);
-                foreach (var date in payDates1)
-                {
-                    var payDay = new PayDay()
-                    {
-                        IncomeId = (context.Sources.Single(s => s.Name == "My full-time job" && s.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 600,
-                        UserId = userId
-                    };
-                    context.PayDays.Add(payDay);
-                }
-
-                var payDates2 = new List<DateTime>();
-                var initialPayDate2 = new DateTime(2021, 5, 9);
-                var lastPayDate2 = new DateTime(2022, 12, 31);
-                for (var date = initialPayDate2;
-                     (DateTime.Compare(date, lastPayDate2)) <= 0;
-                     date = date.AddDays(7 * 2))
-                    payDates2.Add(date);
-                foreach (var date in payDates2)
-                {
-                    var payDay = new PayDay()
-                    {
-                        IncomeId = (context.Sources.Single(s => s.Name == "Private teaching gig" && s.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 36.00m,
-                        UserId = userId
-                    };
-                    context.PayDays.Add(payDay);
-                }
-
-                context.SaveChanges();
-
+                SeedPayDays("My full-time job", new DateTime(2021, 3, 4), new DateTime(2025, 12, 31), PayFreqType.ByWeek, 1, 700.00m, userId);
+                SeedPayDays("Private teaching gig", new DateTime(2021, 3, 14), new DateTime(2022, 12, 31), PayFreqType.ByWeek, 2, 36.00m, userId);
 
                 // seeding example Category entities
                 var category1 = new Category()
@@ -309,954 +252,321 @@ namespace Monthley.Data.Migrations
                 context.SaveChanges();
 
                 // seeding example Expense entities
-                var expense1 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Rent" && c.UserId == userId)).Id,
-                    Amount = 710.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 1),
-                    EndDate = new DateTime(2022, 10, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense1);
-
-                var expense2 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Car Insurance" && c.UserId == userId)).Id,
-                    Amount = 92.33m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 3),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense2);
-
-                var expense3 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Car Lease" && c.UserId == userId)).Id,
-                    Amount = 151.39m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 16),
-                    EndDate = new DateTime(2023, 8, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense3);
-
-                var expense4 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Comcast ISP/TV" && c.UserId == userId)).Id,
-                    Amount = 116.01m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 24),
-                    EndDate = new DateTime(2022, 2, 24),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense4);
-
-                var expense5 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Spotify" && c.UserId == userId)).Id,
-                    Amount = 9.99m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 10),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense5);
-
-                var expense6 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Hulu" && c.UserId == userId)).Id,
-                    Amount = 11.99m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 16),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense6);
-
-                var expense7 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Daycare" && c.UserId == userId)).Id,
-                    Amount = 151.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByWeek,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 3),
-                    EndDate = new DateTime(2022, 5, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense7);
-
-                var expense8 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "General savings" && c.UserId == userId)).Id,
-                    Amount = 100.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 15),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense8);
-
-                var expense9 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "College fund" && c.UserId == userId)).Id,
-                    Amount = 50.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 15),
-                    EndDate = new DateTime(2035, 06, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense9);
-
-                var expense10 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Groceries" && c.UserId == userId)).Id,
-                    Amount = 80.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByWeek,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 6),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense10);
-
-                var expense11 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Gasoline" && c.UserId == userId)).Id,
-                    Amount = 50.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 31),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense11);
-
-                var expense12 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "New clothes" && c.UserId == userId)).Id,
-                    Amount = 50.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 31),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense12);
-
-                var expense13 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Entertainment" && c.UserId == userId)).Id,
-                    Amount = 50.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 31),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense13);
-
-                var expense14 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Gas bill" && c.UserId == userId)).Id,
-                    Amount = 30.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 22),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense14);
-
-                var expense15 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Electric bill" && c.UserId == userId)).Id,
-                    Amount = 70.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 11),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense15);
-
-                var expense16 = new Expense()
-                {
-                    Id = (context.Categories.Single(c => c.Name == "Haircuts" && c.UserId == userId)).Id,
-                    Amount = 15.00m,
-                    ExpenseFreqType = ExpenseFreqType.ByMonth,
-                    FrequencyFactor = 1,
-                    InitialDueDate = new DateTime(2021, 5, 31),
-                    EndDate = new DateTime(2100, 12, 31),
-                    UserId = userId
-                };
-                context.Expenses.Add(expense16);
-
-                context.SaveChanges();
+                SeedExpense("Rent", 710.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 1), new DateTime(2022, 10, 31), userId);
+                SeedExpense("Car Insurance", 92.33m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 3), new DateTime(2050, 12, 31), userId);
+                SeedExpense("Car Lease", 151.39m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 16), new DateTime(2023, 8, 31), userId);
+                SeedExpense("Comcast ISP/TV", 116.01m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 24), new DateTime(2022, 2, 24), userId);
+                SeedExpense("Spotify", 9.99m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 10), new DateTime(2050, 12, 31), userId);
+                SeedExpense("Hulu", 710.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 16), new DateTime(2050, 12, 31), userId);
+                SeedExpense("Daycare", 151.00m, ExpenseFreqType.ByWeek, 1, new DateTime(2021, 3, 1), new DateTime(2022, 5, 31), userId);
+                SeedExpense("General savings", 100.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 15), new DateTime(2050, 12, 31), userId);
+                SeedExpense("College fund", 50.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 15), new DateTime(2035, 06, 30), userId);
+                SeedExpense("Groceries", 80.00m, ExpenseFreqType.ByWeek, 1, new DateTime(2021, 3, 4), new DateTime(2050, 12, 31), userId);
+                SeedExpense("Gasoline", 50.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), userId);
+                SeedExpense("New clothes", 50.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), userId);
+                SeedExpense("Entertainment", 50.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), userId);
+                SeedExpense("Gas bill", 30.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 22), new DateTime(2050, 12, 31), userId);
+                SeedExpense("Electric bill", 70.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 11), new DateTime(2050, 12, 31), userId);
+                SeedExpense("Haircuts", 15.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), userId);
 
                 // seeding example DueDate entities
-                var dueDates1 = new List<DateTime>();
-                var initialDueDate1 = new DateTime(2021, 5, 1);
-                var endDate1 = new DateTime(2022, 10, 31);
-                for (var date = initialDueDate1;
-                    (DateTime.Compare(date, endDate1)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates1.Add(date);
-                foreach (var date in dueDates1)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Rent" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 710.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates2 = new List<DateTime>();
-                var initialDueDate2 = new DateTime(2021, 5, 3);
-                var endDate2 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate2;
-                    (DateTime.Compare(date, endDate2)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates2.Add(date);
-                foreach (var date in dueDates2)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Car Insurance" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 92.33m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates3 = new List<DateTime>();
-                var initialDueDate3 = new DateTime(2021, 5, 16);
-                var endDate3 = new DateTime(2023, 8, 31);
-                for (var date = initialDueDate3;
-                    (DateTime.Compare(date, endDate3)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates3.Add(date);
-                foreach (var date in dueDates3)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Car Lease" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 151.39m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates4 = new List<DateTime>();
-                var initialDueDate4 = new DateTime(2021, 5, 24);
-                var endDate4 = new DateTime(2022, 2, 24);
-                for (var date = initialDueDate4;
-                    (DateTime.Compare(date, endDate4)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates4.Add(date);
-                foreach (var date in dueDates4)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Comcast ISP/TV" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 116.01m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates5 = new List<DateTime>();
-                var initialDueDate5 = new DateTime(2021, 5, 10);
-                var endDate5 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate5;
-                    (DateTime.Compare(date, endDate5)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates5.Add(date);
-                foreach (var date in dueDates5)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Spotify" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 9.99m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates6 = new List<DateTime>();
-                var initialDueDate6 = new DateTime(2021, 5, 16);
-                var endDate6 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate6;
-                    (DateTime.Compare(date, endDate6)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates6.Add(date);
-                foreach (var date in dueDates6)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Hulu" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 11.99m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates7 = new List<DateTime>();
-                var initialDueDate7 = new DateTime(2021, 5, 3);
-                var endDate7 = new DateTime(2022, 5, 31);
-                for (var date = initialDueDate7;
-                    (DateTime.Compare(date, endDate7)) <= 0;
-                    date = date.AddDays(7 * 1))
-                    dueDates7.Add(date);
-                foreach (var date in dueDates7)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Daycare" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 151.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates8 = new List<DateTime>();
-                var initialDueDate8 = new DateTime(2021, 5, 15);
-                var endDate8 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate8;
-                    (DateTime.Compare(date, endDate8)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates8.Add(date);
-                foreach (var date in dueDates8)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "General savings" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 100.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates9 = new List<DateTime>();
-                var initialDueDate9 = new DateTime(2021, 5, 15);
-                var endDate9 = new DateTime(2035, 06, 31);
-                for (var date = initialDueDate9;
-                    (DateTime.Compare(date, endDate9)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates9.Add(date);
-                foreach (var date in dueDates9)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "College fund" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 50.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates10 = new List<DateTime>();
-                var initialDueDate10 = new DateTime(2021, 5, 6);
-                var endDate10 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate10;
-                    (DateTime.Compare(date, endDate10)) <= 0;
-                    date = date.AddDays(7 * 1))
-                    dueDates10.Add(date);
-                foreach (var date in dueDates10)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Groceries" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 80.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates11 = new List<DateTime>();
-                var initialDueDate11 = new DateTime(2021, 5, 31);
-                var endDate11 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate11;
-                    (DateTime.Compare(date, endDate11)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates11.Add(date);
-                foreach (var date in dueDates11)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Gasoline" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 50.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates12 = new List<DateTime>();
-                var initialDueDate12 = new DateTime(2021, 5, 31);
-                var endDate12 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate12;
-                    (DateTime.Compare(date, endDate12)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates12.Add(date);
-                foreach (var date in dueDates12)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "New clothes" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 50.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates13 = new List<DateTime>();
-                var initialDueDate13 = new DateTime(2021, 5, 31);
-                var endDate13 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate13;
-                    (DateTime.Compare(date, endDate13)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates13.Add(date);
-                foreach (var date in dueDates13)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Entertainment" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 50.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates14 = new List<DateTime>();
-                var initialDueDate14 = new DateTime(2021, 5, 22);
-                var endDate14 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate14;
-                    (DateTime.Compare(date, endDate14)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates14.Add(date);
-                foreach (var date in dueDates14)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Gas bill" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 30.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates15 = new List<DateTime>();
-                var initialDueDate15 = new DateTime(2021, 5, 11);
-                var endDate15 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate15;
-                    (DateTime.Compare(date, endDate15)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates15.Add(date);
-                foreach (var date in dueDates15)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Electric bill" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 70.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                var dueDates16 = new List<DateTime>();
-                var initialDueDate16 = new DateTime(2021, 5, 31);
-                var endDate16 = new DateTime(2100, 12, 31);
-                for (var date = initialDueDate16;
-                    (DateTime.Compare(date, endDate16)) <= 0;
-                    date = date.AddMonths(1 * 1))
-                    dueDates16.Add(date);
-                foreach (var date in dueDates16)
-                {
-                    var dueDate = new DueDate()
-                    {
-                        ExpenseId = (context.Categories.Single(c => c.Name == "Haircuts" && c.UserId == userId)).Id,
-                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
-                        Date = date,
-                        Amount = 15.00m,
-                        UserId = userId
-                    };
-                    context.DueDates.Add(dueDate);
-                }
-
-                context.SaveChanges();
-
-
-
+                SeedDueDates("Rent", new DateTime(2021, 3, 1), new DateTime(2022, 10, 31), ExpenseFreqType.ByMonth, 1, 710.00m, userId);
+                SeedDueDates("Car Insurance", new DateTime(2021, 3, 3), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 92.33m, userId);
+                SeedDueDates("Car Lease", new DateTime(2021, 3, 16), new DateTime(2023, 8, 31), ExpenseFreqType.ByMonth, 1, 151.39m, userId);
+                SeedDueDates("Comcast ISP/TV", new DateTime(2021, 3, 24), new DateTime(2022, 2, 24), ExpenseFreqType.ByMonth, 1, 116.01m, userId);
+                SeedDueDates("Spotify", new DateTime(2021, 3, 10), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 9.99m, userId);
+                SeedDueDates("Hulu", new DateTime(2021, 3, 16), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 11.99m, userId);
+                SeedDueDates("Daycare", new DateTime(2021, 3, 1), new DateTime(2022, 5, 31), ExpenseFreqType.ByWeek, 1, 151.00m, userId);
+                SeedDueDates("General savings", new DateTime(2021, 3, 15), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 100.00m, userId);
+                SeedDueDates("College fund", new DateTime(2021, 3, 15), new DateTime(2035, 06, 30), ExpenseFreqType.ByMonth, 1, 50.00m, userId);
+                SeedDueDates("Groceries", new DateTime(2021, 3, 4), new DateTime(2050, 12, 31), ExpenseFreqType.ByWeek, 1, 80.00m, userId);
+                SeedDueDates("Gasoline", new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 50.00m, userId);
+                SeedDueDates("New clothes", new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 50.00m, userId);
+                SeedDueDates("Entertainment", new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 50.00m, userId);
+                SeedDueDates("Gas bill", new DateTime(2021, 3, 22), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 30.00m, userId);
+                SeedDueDates("Electric bill", new DateTime(2021, 3, 11), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 70.00m, userId);
+                SeedDueDates("Haircuts", new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 15.00m, userId);
 
                 // seeding example PaymentReceived entities
-                var dtr1 = new DateTime(2021, 5, 6);
-                var paymentReceived1 = new PaymentReceived()
-                {
-                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "My full-time job" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr1.Month && m.BeginDate.Year == dtr1.Year && m.UserId == userId).Id,
-                    Amount = 604.11m,
-                    PaymentDate = dtr1,
-                    UserId = userId
-                };
-                context.PaymentsReceived.Add(paymentReceived1);
-
-                var dtr2 = new DateTime(2021, 5, 14);
-                var paymentReceived2 = new PaymentReceived()
-                {
-                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "My full-time job" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr2.Month && m.BeginDate.Year == dtr2.Year && m.UserId == userId).Id,
-                    Amount = 596.82m,
-                    PaymentDate = dtr2,
-                    UserId = userId
-                };
-                context.PaymentsReceived.Add(paymentReceived2);
-
-                var dtr3 = new DateTime(2021, 5, 21);
-                var paymentReceived3 = new PaymentReceived()
-                {
-                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "My full-time job" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr3.Month && m.BeginDate.Year == dtr3.Year && m.UserId == userId).Id,
-                    Amount = 613.40m,
-                    PaymentDate = dtr3,
-                    UserId = userId
-                };
-                context.PaymentsReceived.Add(paymentReceived3);
-
-                var dtr4 = new DateTime(2021, 5, 27);
-                var paymentReceived4 = new PaymentReceived()
-                {
-                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "My full-time job" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr4.Month && m.BeginDate.Year == dtr4.Year && m.UserId == userId).Id,
-                    Amount = 600.41m,
-                    PaymentDate = dtr4,
-                    UserId = userId
-                };
-                context.PaymentsReceived.Add(paymentReceived4);
-
-                var dtr5 = new DateTime(2021, 5, 10);
-                var paymentReceived5 = new PaymentReceived()
-                {
-                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "Private teaching gig" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr5.Month && m.BeginDate.Year == dtr5.Year && m.UserId == userId).Id,
-                    Amount = 36.00m,
-                    PaymentDate = dtr5,
-                    UserId = userId
-                };
-                context.PaymentsReceived.Add(paymentReceived5);
-
-                var dtr6 = new DateTime(2021, 5, 24);
-                var paymentReceived6 = new PaymentReceived()
-                {
-                    SourceId = context.Sources.SingleOrDefault(c => c.Name == "Private teaching gig" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtr6.Month && m.BeginDate.Year == dtr6.Year && m.UserId == userId).Id,
-                    Amount = 36.00m,
-                    PaymentDate = dtr6,
-                    UserId = userId
-                };
-                context.PaymentsReceived.Add(paymentReceived6);
-
-                context.SaveChanges();
-
+                SeedPaymentReceived("My full-time job", 694.53m, new DateTime(2021, 3, 4), userId);
+                SeedPaymentReceived("My full-time job", 710.01m, new DateTime(2021, 3, 11), userId);
+                SeedPaymentReceived("My full-time job", 705.66m, new DateTime(2021, 3, 18), userId);
+                SeedPaymentReceived("My full-time job", 701.01m, new DateTime(2021, 3, 25), userId);
+                SeedPaymentReceived("My full-time job", 731.84m, new DateTime(2021, 4, 1), userId);
+                SeedPaymentReceived("My full-time job", 700.22m, new DateTime(2021, 4, 8), userId);
+                SeedPaymentReceived("My full-time job", 709.31m, new DateTime(2021, 4, 15), userId);
+                SeedPaymentReceived("My full-time job", 692.49m, new DateTime(2021, 4, 22), userId);
+                SeedPaymentReceived("My full-time job", 700.41m, new DateTime(2021, 4, 29), userId);
+                SeedPaymentReceived("My full-time job", 704.11m, new DateTime(2021, 5, 6), userId);
+                SeedPaymentReceived("My full-time job", 696.82m, new DateTime(2021, 5, 14), userId);
+                SeedPaymentReceived("My full-time job", 713.40m, new DateTime(2021, 5, 21), userId);
+                SeedPaymentReceived("My full-time job", 700.41m, new DateTime(2021, 5, 27), userId);
+                SeedPaymentReceived("Private teaching gig", 36.00m, new DateTime(2021, 3, 14), userId);
+                SeedPaymentReceived("Private teaching gig", 36.00m, new DateTime(2021, 3, 28), userId);
+                SeedPaymentReceived("Private teaching gig", 36.00m, new DateTime(2021, 4, 11), userId);
+                SeedPaymentReceived("Private teaching gig", 36.00m, new DateTime(2021, 4, 25), userId);
+                SeedPaymentReceived("Private teaching gig", 36.00m, new DateTime(2021, 5, 10), userId);
+                SeedPaymentReceived("Private teaching gig", 36.00m, new DateTime(2021, 5, 24), userId);
 
                 // seeding example PaymentMade entities
-                var dtm1 = new DateTime(2021, 5, 1);
-                var paymentMade1 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Rent" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm1.Month && m.BeginDate.Year == dtm1.Year && m.UserId == userId).Id,
-                    Amount = 710.00m,
-                    PaymentDate = dtm1,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade1);
-
-                var dtm2 = new DateTime(2021, 5, 3);
-                var paymentMade2 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Car Insurance" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm2.Month && m.BeginDate.Year == dtm2.Year && m.UserId == userId).Id,
-                    Amount = 92.33m,
-                    PaymentDate = dtm2,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade2);
-
-                var dtm3 = new DateTime(2021, 5, 16);
-                var paymentMade3 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Car Lease" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm3.Month && m.BeginDate.Year == dtm3.Year && m.UserId == userId).Id,
-                    Amount = 151.39m,
-                    PaymentDate = dtm3,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade3);
-
-                var dtm4 = new DateTime(2021, 5, 24);
-                var paymentMade4 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Comcast ISP/TV" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm4.Month && m.BeginDate.Year == dtm4.Year && m.UserId == userId).Id,
-                    Amount = 116.01m,
-                    PaymentDate = dtm4,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade4);
-
-                var dtm5 = new DateTime(2021, 5, 10);
-                var paymentMade5 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Rent" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm5.Month && m.BeginDate.Year == dtm5.Year && m.UserId == userId).Id,
-                    Amount = 9.99m,
-                    PaymentDate = dtm5,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade5);
-
-                var dtm6 = new DateTime(2021, 5, 16);
-                var paymentMade6 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Hulu" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm6.Month && m.BeginDate.Year == dtm6.Year && m.UserId == userId).Id,
-                    Amount = 11.99m,
-                    PaymentDate = dtm6,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade6);
-
-                var dtm7a = new DateTime(2021, 5, 3);
-                var paymentMade7a = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Daycare" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm7a.Month && m.BeginDate.Year == dtm7a.Year && m.UserId == userId).Id,
-                    Amount = 151.00m,
-                    PaymentDate = dtm7a,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade7a);
-
-                var dtm7b = new DateTime(2021, 5, 10);
-                var paymentMade7b = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Daycare" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm7b.Month && m.BeginDate.Year == dtm7b.Year && m.UserId == userId).Id,
-                    Amount = 151.00m,
-                    PaymentDate = dtm7b,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade7b);
-
-                var dtm7c = new DateTime(2021, 5, 17);
-                var paymentMade7c = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Daycare" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm7c.Month && m.BeginDate.Year == dtm7c.Year && m.UserId == userId).Id,
-                    Amount = 151.00m,
-                    PaymentDate = dtm7c,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade7c);
-
-                var dtm7d = new DateTime(2021, 5, 24);
-                var paymentMade7d = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Daycare" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm7d.Month && m.BeginDate.Year == dtm7d.Year && m.UserId == userId).Id,
-                    Amount = 151.00m,
-                    PaymentDate = dtm7d,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade7d);
-
-                var dtm8 = new DateTime(2021, 5, 15);
-                var paymentMade8 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "General savings" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm8.Month && m.BeginDate.Year == dtm8.Year && m.UserId == userId).Id,
-                    Amount = 100.00m,
-                    PaymentDate = dtm8,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade8);
-
-                var dtm9 = new DateTime(2021, 5, 15);
-                var paymentMade9 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "College fund" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm9.Month && m.BeginDate.Year == dtm9.Year && m.UserId == userId).Id,
-                    Amount = 50.00m,
-                    PaymentDate = dtm9,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade9);
-
-                var dtm10a = new DateTime(2021, 5, 6);
-                var paymentMade10a = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Groceries" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm10a.Month && m.BeginDate.Year == dtm10a.Year && m.UserId == userId).Id,
-                    Amount = 77.13m,
-                    PaymentDate = dtm10a,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade10a);
-
-                var dtm10b = new DateTime(2021, 5, 13);
-                var paymentMade10b = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Groceries" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm10b.Month && m.BeginDate.Year == dtm10b.Year && m.UserId == userId).Id,
-                    Amount = 87.01m,
-                    PaymentDate = dtm10b,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade10b);
-
-                var dtm10c = new DateTime(2021, 5, 20);
-                var paymentMade10c = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Groceries" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm10c.Month && m.BeginDate.Year == dtm10c.Year && m.UserId == userId).Id,
-                    Amount = 59.09m,
-                    PaymentDate = dtm10c,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade10c);
-
-                var dtm10d = new DateTime(2021, 5, 27);
-                var paymentMade10d = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Groceries" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm10d.Month && m.BeginDate.Year == dtm10d.Year && m.UserId == userId).Id,
-                    Amount = 79.44m,
-                    PaymentDate = dtm10d,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade10d);
-
-                var dtm11a = new DateTime(2021, 5, 9);
-                var paymentMade11a = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Gasoline" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm11a.Month && m.BeginDate.Year == dtm11a.Year && m.UserId == userId).Id,
-                    Amount = 20.03m,
-                    PaymentDate = dtm11a,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade11a);
-
-                var dtm11b = new DateTime(2021, 5, 18);
-                var paymentMade11b = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Gasoline" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm11b.Month && m.BeginDate.Year == dtm11b.Year && m.UserId == userId).Id,
-                    Amount = 18.14m,
-                    PaymentDate = dtm11b,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade11b);
-
-                var dtm11c = new DateTime(2021, 5, 27);
-                var paymentMade11c = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Gasoline" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm11c.Month && m.BeginDate.Year == dtm11c.Year && m.UserId == userId).Id,
-                    Amount = 10.01m,
-                    PaymentDate = dtm11c,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade11c);
-
-                var dtm12a = new DateTime(2021, 5, 3);
-                var paymentMade12a = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "New clothes" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm12a.Month && m.BeginDate.Year == dtm12a.Year && m.UserId == userId).Id,
-                    Amount = 14.87m,
-                    PaymentDate = dtm12a,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade12a);
-
-                var dtm12b = new DateTime(2021, 5, 21);
-                var paymentMade12b = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "New clothes" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm12b.Month && m.BeginDate.Year == dtm12b.Year && m.UserId == userId).Id,
-                    Amount = 24.91m,
-                    PaymentDate = dtm12b,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade12b);
-
-                var dtm13a = new DateTime(2021, 5, 9);
-                var paymentMade13a = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Entertainment" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm13a.Month && m.BeginDate.Year == dtm13a.Year && m.UserId == userId).Id,
-                    Amount = 20.00m,
-                    PaymentDate = dtm13a,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade13a);
-
-                var dtm13b = new DateTime(2021, 5, 22);
-                var paymentMade13b = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Entertainment" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm13b.Month && m.BeginDate.Year == dtm13b.Year && m.UserId == userId).Id,
-                    Amount = 28.14m,
-                    PaymentDate = dtm13b,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade13b);
-
-                var dtm14 = new DateTime(2021, 5, 22);
-                var paymentMade14 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Gas bill" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm14.Month && m.BeginDate.Year == dtm14.Year && m.UserId == userId).Id,
-                    Amount = 28.07m,
-                    PaymentDate = dtm14,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade14);
-
-                var dtm15 = new DateTime(2021, 5, 11);
-                var paymentMade15 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Electric bill" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm15.Month && m.BeginDate.Year == dtm15.Year && m.UserId == userId).Id,
-                    Amount = 72.65m,
-                    PaymentDate = dtm15,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade15);
-
-                var dtm16 = new DateTime(2021, 5, 21);
-                var paymentMade16 = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Gas bill" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm16.Month && m.BeginDate.Year == dtm16.Year && m.UserId == userId).Id,
-                    Amount = 15.00m,
-                    PaymentDate = dtm16,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade16);
-
+                SeedPaymentMade("Rent", 710.00m, new DateTime(2021, 3, 1), userId);
+                SeedPaymentMade("Rent", 710.00m, new DateTime(2021, 4, 1), userId);
+                SeedPaymentMade("Rent", 710.00m, new DateTime(2021, 5, 1), userId);
+                SeedPaymentMade("Car Insurance", 92.33m, new DateTime(2021, 3, 3), userId);
+                SeedPaymentMade("Car Insurance", 92.33m, new DateTime(2021, 4, 3), userId);
+                SeedPaymentMade("Car Insurance", 92.33m, new DateTime(2021, 5, 3), userId);
+                SeedPaymentMade("Car Lease", 151.39m, new DateTime(2021, 3, 16), userId);
+                SeedPaymentMade("Car Lease", 151.39m, new DateTime(2021, 4, 16), userId);
+                SeedPaymentMade("Car Lease", 151.39m, new DateTime(2021, 5, 16), userId);
+                SeedPaymentMade("Comcast ISP/TV", 116.01m, new DateTime(2021, 3, 24), userId);
+                SeedPaymentMade("Comcast ISP/TV", 116.01m, new DateTime(2021, 4, 24), userId);
+                SeedPaymentMade("Comcast ISP/TV", 116.01m, new DateTime(2021, 5, 24), userId);
+                SeedPaymentMade("Spotify", 9.99m, new DateTime(2021, 3, 10), userId);
+                SeedPaymentMade("Spotify", 9.99m, new DateTime(2021, 4, 10), userId);
+                SeedPaymentMade("Spotify", 9.99m, new DateTime(2021, 5, 10), userId);
+                SeedPaymentMade("Hulu", 11.99m, new DateTime(2021, 3, 16), userId);
+                SeedPaymentMade("Hulu", 11.99m, new DateTime(2021, 4, 16), userId);
+                SeedPaymentMade("Hulu", 11.99m, new DateTime(2021, 5, 16), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 3, 1), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 3, 8), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 3, 15), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 3, 22), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 3, 29), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 4, 5), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 4, 12), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 4, 19), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 4, 26), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 5, 3), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 5, 10), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 5, 17), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 5, 24), userId);
+                SeedPaymentMade("Daycare", 151.00m, new DateTime(2021, 5, 31), userId);
+                SeedPaymentMade("General savings", 100.00m, new DateTime(2021, 3, 15), userId);
+                SeedPaymentMade("General savings", 100.00m, new DateTime(2021, 4, 15), userId);
+                SeedPaymentMade("General savings", 100.00m, new DateTime(2021, 5, 15), userId);
+                SeedPaymentMade("College fund", 50.00m, new DateTime(2021, 3, 15), userId);
+                SeedPaymentMade("College fund", 50.00m, new DateTime(2021, 4, 15), userId);
+                SeedPaymentMade("College fund", 50.00m, new DateTime(2021, 5, 15), userId);
+                SeedPaymentMade("Groceries", 81.43m, new DateTime(2021, 3, 4), userId);
+                SeedPaymentMade("Groceries", 83.89m, new DateTime(2021, 3, 11), userId);
+                SeedPaymentMade("Groceries", 72.32m, new DateTime(2021, 3, 18), userId);
+                SeedPaymentMade("Groceries", 76.23m, new DateTime(2021, 3, 25), userId);
+                SeedPaymentMade("Groceries", 89.55m, new DateTime(2021, 4, 1), userId);
+                SeedPaymentMade("Groceries", 59.14m, new DateTime(2021, 4, 8), userId);
+                SeedPaymentMade("Groceries", 84.92m, new DateTime(2021, 4, 15), userId);
+                SeedPaymentMade("Groceries", 81.36m, new DateTime(2021, 4, 22), userId);
+                SeedPaymentMade("Groceries", 80.61m, new DateTime(2021, 4, 29), userId);
+                SeedPaymentMade("Groceries", 93.90m, new DateTime(2021, 5, 6), userId);
+                SeedPaymentMade("Groceries", 76.92m, new DateTime(2021, 5, 13), userId);
+                SeedPaymentMade("Groceries", 79.18m, new DateTime(2021, 5, 20), userId);
+                SeedPaymentMade("Groceries", 73.24m, new DateTime(2021, 5, 27), userId);
+                SeedPaymentMade("Gasoline", 20.04m, new DateTime(2021, 3, 5), userId);
+                SeedPaymentMade("Gasoline", 20.03m, new DateTime(2021, 3, 17), userId);
+                SeedPaymentMade("Gasoline", 20.41m, new DateTime(2021, 3, 26), userId);
+                SeedPaymentMade("Gasoline", 10.09m, new DateTime(2021, 4, 11), userId);
+                SeedPaymentMade("Gasoline", 25.24m, new DateTime(2021, 4, 21), userId);
+                SeedPaymentMade("Gasoline", 25.98m, new DateTime(2021, 4, 29), userId);
+                SeedPaymentMade("Gasoline", 9.87m, new DateTime(2021, 5, 9), userId);
+                SeedPaymentMade("Gasoline", 20.55m, new DateTime(2021, 5, 17), userId);
+                SeedPaymentMade("Gasoline", 18.18m, new DateTime(2021, 5, 26), userId);
+                SeedPaymentMade("New clothes", 31.18m, new DateTime(2021, 3, 1), userId);
+                SeedPaymentMade("New clothes", 20.77m, new DateTime(2021, 3, 18), userId);
+                SeedPaymentMade("New clothes", 18.14m, new DateTime(2021, 4, 4), userId);
+                SeedPaymentMade("New clothes", 22.89m, new DateTime(2021, 4, 20), userId);
+                SeedPaymentMade("New clothes", 25.98m, new DateTime(2021, 5, 4), userId);
+                SeedPaymentMade("New clothes", 20.48m, new DateTime(2021, 5, 22), userId);
+                SeedPaymentMade("Entertainment", 45.28m, new DateTime(2021, 3, 14), userId);
+                SeedPaymentMade("Entertainment", 12.00m, new DateTime(2021, 4, 14), userId);
+                SeedPaymentMade("Entertainment", 15.00m, new DateTime(2021, 4, 20), userId);
+                SeedPaymentMade("Entertainment", 12.00m, new DateTime(2021, 5, 4), userId);
+                SeedPaymentMade("Entertainment", 40.43m, new DateTime(2021, 5, 21), userId);
+                SeedPaymentMade("Gas bill", 85.13m, new DateTime(2021, 3, 22), userId);
+                SeedPaymentMade("Gas bill", 52.43m, new DateTime(2021, 4, 22), userId);
+                SeedPaymentMade("Gas bill", 37.43m, new DateTime(2021, 5, 22), userId);
+                SeedPaymentMade("Electric bill", 38.43m, new DateTime(2021, 3, 11), userId);
+                SeedPaymentMade("Electric bill", 58.97m, new DateTime(2021, 4, 11), userId);
+                SeedPaymentMade("Electric bill", 82.51m, new DateTime(2021, 5, 11), userId);
+                SeedPaymentMade("Haircuts", 15.00m, new DateTime(2021, 3, 10), userId);
+                SeedPaymentMade("Haircuts", 15.00m, new DateTime(2021, 4, 13), userId);
+                SeedPaymentMade("Haircuts", 15.00m, new DateTime(2021, 5, 21), userId);
 
                 // seeding example PaymentMade entities (unbudgeted spending)
-                var dtm17a = new DateTime(2021, 5, 5);
-                var paymentMade17a = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17a.Month && m.BeginDate.Year == dtm17a.Year && m.UserId == userId).Id,
-                    Amount = 21.23m,
-                    PaymentDate = dtm17a,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade17a);
-
-                var dtm17b = new DateTime(2021, 5, 13);
-                var paymentMade17b = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17b.Month && m.BeginDate.Year == dtm17b.Year && m.UserId == userId).Id,
-                    Amount = 2.11m,
-                    PaymentDate = dtm17b,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade17b);
-
-                var dtm17c = new DateTime(2021, 5, 14);
-                var paymentMade17c = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17c.Month && m.BeginDate.Year == dtm17c.Year && m.UserId == userId).Id,
-                    Amount = 2.11m,
-                    PaymentDate = dtm17c,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade17c);
-
-                var dtm17d = new DateTime(2021, 5, 21);
-                var paymentMade17d = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17d.Month && m.BeginDate.Year == dtm17d.Year && m.UserId == userId).Id,
-                    Amount = 18.41m,
-                    PaymentDate = dtm17d,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade17d);
-
-                var dtm17e = new DateTime(2021, 5, 26);
-                var paymentMade17e = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17e.Month && m.BeginDate.Year == dtm17e.Year && m.UserId == userId).Id,
-                    Amount = 5.86m,
-                    PaymentDate = dtm17e,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade17e);
-
-                var dtm17f = new DateTime(2021, 5, 26);
-                var paymentMade17f = new PaymentMade()
-                {
-                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == "Miscellaneous" && c.UserId == userId).Id,
-                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == dtm17f.Month && m.BeginDate.Year == dtm17f.Year && m.UserId == userId).Id,
-                    Amount = 8.13m,
-                    PaymentDate = dtm17f,
-                    UserId = userId
-                };
-                context.PaymentsMade.Add(paymentMade17f);
-
-                context.SaveChanges();
-
+                SeedPaymentMade("Miscellaneous", 2.11m, new DateTime(2021, 3, 3), userId);
+                SeedPaymentMade("Miscellaneous", 8.98m, new DateTime(2021, 3, 7), userId);
+                SeedPaymentMade("Miscellaneous", 3.86m, new DateTime(2021, 3, 11), userId);
+                SeedPaymentMade("Miscellaneous", 4.41m, new DateTime(2021, 3, 14), userId);
+                SeedPaymentMade("Miscellaneous", 15.41m, new DateTime(2021, 3, 14), userId);
+                SeedPaymentMade("Miscellaneous", 8.98m, new DateTime(2021, 3, 19), userId);
+                SeedPaymentMade("Miscellaneous", 2.11m, new DateTime(2021, 3, 19), userId);
+                SeedPaymentMade("Miscellaneous", 10.08m, new DateTime(2021, 3, 22), userId);
+                SeedPaymentMade("Miscellaneous", 9.63m, new DateTime(2021, 3, 27), userId);
+                SeedPaymentMade("Miscellaneous", 2.11m, new DateTime(2021, 3, 28), userId);
+                SeedPaymentMade("Miscellaneous", 13.87m, new DateTime(2021, 3, 31), userId);
+                SeedPaymentMade("Miscellaneous", 6.55m, new DateTime(2021, 4, 2), userId);
+                SeedPaymentMade("Miscellaneous", 1.89m, new DateTime(2021, 4, 6), userId);
+                SeedPaymentMade("Miscellaneous", 2.11m, new DateTime(2021, 4, 11), userId);
+                SeedPaymentMade("Miscellaneous", 11.32m, new DateTime(2021, 4, 11), userId);
+                SeedPaymentMade("Miscellaneous", 8.98m, new DateTime(2021, 4, 11), userId);
+                SeedPaymentMade("Miscellaneous", 38.15m, new DateTime(2021, 4, 18), userId);
+                SeedPaymentMade("Miscellaneous", 15.73m, new DateTime(2021, 4, 22), userId);
+                SeedPaymentMade("Miscellaneous", 2.11m, new DateTime(2021, 4, 23), userId);
+                SeedPaymentMade("Miscellaneous", 46.13m, new DateTime(2021, 4, 23), userId);
+                SeedPaymentMade("Miscellaneous", 11.30m, new DateTime(2021, 4, 27), userId);
+                SeedPaymentMade("Miscellaneous", 4.15m, new DateTime(2021, 4, 28), userId);
+                SeedPaymentMade("Miscellaneous", 2.11m, new DateTime(2021, 4, 30), userId);
+                SeedPaymentMade("Miscellaneous", 2.11m, new DateTime(2021, 5, 6), userId);
+                SeedPaymentMade("Miscellaneous", 15.11m, new DateTime(2021, 5, 7), userId);
+                SeedPaymentMade("Miscellaneous", 14.68m, new DateTime(2021, 5, 7), userId);
+                SeedPaymentMade("Miscellaneous", 8.98m, new DateTime(2021, 5, 12), userId);
+                SeedPaymentMade("Miscellaneous", 15.92m, new DateTime(2021, 5, 15), userId);
+                SeedPaymentMade("Miscellaneous", 2.11m, new DateTime(2021, 5, 19), userId);
+                SeedPaymentMade("Miscellaneous", 7.56m, new DateTime(2021, 5, 21), userId);
+                SeedPaymentMade("Miscellaneous", 19.31m, new DateTime(2021, 5, 24), userId);
+                SeedPaymentMade("Miscellaneous", 22.02m, new DateTime(2021, 5, 26), userId);
+                SeedPaymentMade("Miscellaneous", 2.11m, new DateTime(2021, 5, 26), userId);
                 // <-------------------------------------------------------------------------------------END SEEDING EXAMPLES OF USER DATA
+            }
+        }
+
+        // helpers
+        public void SeedIncome(string sourceName, decimal amount, PayFreqType payFreqType, int frequencyFactor, DateTime initialPayDate, DateTime lastPayDate, Guid userId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var income = new Income()
+                {
+                    Id = (context.Sources.Single(c => c.Name == sourceName && c.UserId == userId)).Id,
+                    Amount = amount,
+                    PayFreqType = payFreqType,
+                    FrequencyFactor = frequencyFactor,
+                    InitialPayDate = initialPayDate,
+                    LastPayDate = lastPayDate,
+                    UserId = userId
+                };
+                context.Incomes.Add(income);
+                context.SaveChanges();
+            }
+        }
+        public void SeedPayDays(string sourceName, DateTime initialPayDate, DateTime lastPayDate, PayFreqType freqType, int frequencyFactor, decimal amount, Guid userId)
+        {
+            var payDates = new List<DateTime>();
+            if (freqType == PayFreqType.ByMonth)
+            {
+                for (var date = initialPayDate;
+                 (DateTime.Compare(date, lastPayDate)) <= 0;
+                 date = date.AddMonths(1 * frequencyFactor))
+                    payDates.Add(date);
+            }
+            else
+            {
+                for (var date = initialPayDate;
+                 (DateTime.Compare(date, lastPayDate)) <= 0;
+                 date = date.AddDays(7 * frequencyFactor))
+                    payDates.Add(date);
+            }
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var date in payDates)
+                {
+                    var payDay = new PayDay()
+                    {
+                        IncomeId = (context.Sources.Single(s => s.Name == sourceName && s.UserId == userId)).Id,
+                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
+                        Date = date,
+                        Amount = amount,
+                        UserId = userId
+                    };
+                    context.PayDays.Add(payDay);
+                }
+                context.SaveChanges();
+            }
+        }
+
+        public void SeedExpense(string categoryName, decimal amount, ExpenseFreqType expenseFreqType, int frequencyFactor, DateTime initialDueDate, DateTime endDate, Guid userId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var expense = new Expense()
+                {
+                    Id = (context.Categories.Single(c => c.Name == categoryName && c.UserId == userId)).Id,
+                    Amount = amount,
+                    ExpenseFreqType = expenseFreqType,
+                    FrequencyFactor = frequencyFactor,
+                    InitialDueDate = initialDueDate,
+                    EndDate = endDate,
+                    UserId = userId
+                };
+                context.Expenses.Add(expense);
+                context.SaveChanges();
+            }
+        }
+
+        public void SeedDueDates(string categoryName, DateTime initialDueDate, DateTime endDate, ExpenseFreqType freqType, int frequencyFactor, decimal amount, Guid userId)
+        {
+            var dueDates = new List<DateTime>();
+            if (freqType == ExpenseFreqType.ByMonth)
+            {
+                for (var date = initialDueDate;
+                 (DateTime.Compare(date, endDate)) <= 0;
+                 date = date.AddMonths(1 * frequencyFactor))
+                    dueDates.Add(date);
+            }
+            else
+            {
+                for (var date = initialDueDate;
+                 (DateTime.Compare(date, endDate)) <= 0;
+                 date = date.AddDays(7 * frequencyFactor))
+                    dueDates.Add(date);
+            }
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var date in dueDates)
+                {
+                    var dueDate = new DueDate()
+                    {
+                        ExpenseId = (context.Categories.Single(c => c.Name == categoryName && c.UserId == userId)).Id,
+                        MonthId = (context.Months.Single(m => m.BeginDate.Month == date.Month && m.BeginDate.Year == date.Year && m.UserId == userId)).Id,
+                        Date = date,
+                        Amount = amount,
+                        UserId = userId
+                    };
+                    context.DueDates.Add(dueDate);
+                }
+                context.SaveChanges();
+            }
+        }
+
+        public void SeedPaymentReceived(string sourceName, decimal amount, DateTime paymentDate, Guid userId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var paymentReceived = new PaymentReceived()
+                {
+                    SourceId = context.Sources.SingleOrDefault(c => c.Name == sourceName && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == paymentDate.Month && m.BeginDate.Year == paymentDate.Year && m.UserId == userId).Id,
+                    Amount = amount,
+                    PaymentDate = paymentDate,
+                    UserId = userId
+                };
+                context.PaymentsReceived.Add(paymentReceived);
+                context.SaveChanges();
+            }
+        }
+
+        public void SeedPaymentMade(string categoryName, decimal amount, DateTime paymentDate, Guid userId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var paymentMade = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == categoryName && c.UserId == userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == paymentDate.Month && m.BeginDate.Year == paymentDate.Year && m.UserId == userId).Id,
+                    Amount = amount,
+                    PaymentDate = paymentDate,
+                    UserId = userId
+                };
+                context.PaymentsMade.Add(paymentMade);
+                context.SaveChanges();
             }
         }
     }

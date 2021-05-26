@@ -20,7 +20,7 @@ namespace Monthley.Services
         public bool SeedMonthsForNewUser()
         {
             List<DateTime> dtList = new List<DateTime>();
-            var endDate = new DateTime(2100, 12, 1);
+            var endDate = new DateTime(2050, 12, 1);
             for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 (DateTime.Compare(date, endDate) <= 0);
                 date = date.AddMonths(1))

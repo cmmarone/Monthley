@@ -25,7 +25,7 @@ namespace Monthley.Services
 
             var payFreqType = model.PayFreqType ?? PayFreqType.Once;
 
-            DateTime lastPayDate = model.LastPayDate ?? new DateTime(2100, 12, 31);
+            DateTime lastPayDate = model.LastPayDate ?? new DateTime(2050, 12, 31);
             if (payFreqType == PayFreqType.Once)
                 lastPayDate = model.InitialPayDate;
 

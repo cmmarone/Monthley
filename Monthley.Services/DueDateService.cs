@@ -20,19 +20,13 @@ namespace Monthley.Services
 
         public bool CreateDueDates(ExpenseCreate model)
         {
-            //DateTime endDate = model.EndDate ?? new DateTime(2100, 12, 31);
-            //if (model.ExpenseFreqType == ExpenseFreqType.Once)
-            //    endDate = model.InitialDueDate;
-
             int frequencyFactor = model.FrequencyFactor ?? 1;
 
             if (model.CategoryType == CategoryType.Once)
                 model.ExpenseFreqType = ExpenseFreqType.Once;
 
             if (model.CategoryType == CategoryType.Expense)
-            {
                 model.ExpenseFreqType = ExpenseFreqType.ByMonth;
-            }
 
             // the only time model.InitialDueDate won't be filled out by user is if model.CategoryType == CategoryType.Expense,
             // in which case, start the due date on the last day of the current month
@@ -40,7 +34,7 @@ namespace Monthley.Services
                 new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
             DateTime initialDueDate = model.InitialDueDate ?? lastDayCurrentMonth;
 
-            DateTime endDate = model.EndDate ?? new DateTime(2100, 12, 31);
+            DateTime endDate = model.EndDate ?? new DateTime(2050, 12, 31);
             if (model.CategoryType == CategoryType.Once)
                 endDate = initialDueDate;
 
