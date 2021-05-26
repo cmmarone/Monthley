@@ -62,8 +62,8 @@ h1.jumbotron{
 
 .month-header {
     font-size: 48pt;
+    background-color: #cbffba;
     border: 1px solid black;
-    background-color: #D6FF8A;
 }
 
 .btn-budget-view{
