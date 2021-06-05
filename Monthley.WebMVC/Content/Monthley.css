@@ -1,6 +1,7 @@
 ﻿body {
-    background-color: #deffeb;
+    background-color: #000000;
     font-family: Calibri;
+    color: #ffffff;
 }
 
 .navbar {
@@ -27,6 +28,7 @@
     background-color: #d9f7d2;
 }
 
+
 .amount-label {
     font-size: 18pt;
     text-decoration: underline;
@@ -37,6 +39,7 @@
     font-size: 20pt;
     background-color: #cbffba;
     border: 1px ridge black;
+    color: #000000;
 }
 
 .ui-datepicker .ui-datepicker-title select {
@@ -47,23 +50,26 @@
 }
 
 .jumbotron{
-    padding: 0px;
-    margin: 20px;
+    padding: 0;
+    margin: 20px 0px;
     background-color: #ffffff;
-    height: 180px;
+    height: 150px;
     text-align: center;
     font-size: 20pt;
     border: 2px solid black;
+    color: #000000;
 }
 
-h1.jumbotron{
+h1.jumbotron {
     font-weight: bold;
+    color: #4fb32e;
 }
 
 .month-header {
     font-size: 48pt;
     background-color: #cbffba;
     border: 1px solid black;
+    color: #000000;
 }
 
 .btn-budget-view{

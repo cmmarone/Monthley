@@ -96,6 +96,14 @@ namespace Monthley.WebMVC.Controllers
             }
         }
 
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult LogInSeededUser()
+        {
+            SignInManager.PasswordSignIn("efa@monthley.com", "monTHL3yTest!", false, shouldLockout: false);
+            return RedirectToAction("Index", "Home");
+        }
+
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]

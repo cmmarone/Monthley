@@ -3,41 +3,53 @@
 }
 
 <div class="row">
-    <div class="col-md-6">
+    <div class="col-md-12">
         <div class="jumbotron">
             <h1>monTHLey</h1>
             <p class="lead">...sailing the high seas of personal budgeting.</p>
         </div>
     </div>
-    <div class="col-md-6"></div>
 </div>
 
-
-<div class="row">
-    <div class="col-md-2">
-        @if (User.Identity.IsAuthenticated)
-        {
+@if (User.Identity.IsAuthenticated)
+{
+    <div class="row" style="text-align: center">
+        <div class="col-md-4">
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 @Html.ActionLink("Setup Wizard", "Welcome", "Account", null, new { @class = "btn btn-default home-button" })
             </p>
-        }
-        else
-        {
+        </div>
+        <div class="col-md-4">
             <p>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                @Html.ActionLink("How It Works", "HowItWorks", null, new { @class = "btn btn-default home-button" })
+            </p>
+        </div>
+        <div class="col-md-4">
+            <p>@Html.ActionLink("More Info", "MoreInfo", null, new { @class = "btn btn-default home-button" })</p>
+        </div>
+    </div>
+}
+else
+{
+    <div class="row" style="text-align: center">
+        <div class="col-md-3">
+            <p>
                 @Html.ActionLink("Sign Up!", "Register", "Account", routeValues: null, htmlAttributes: new { @class = "btn btn-default home-button" })
             </p>
-        }
+        </div>
+        <div class="col-md-3">
+            <p>
+                @Html.ActionLink("How It Works", "HowItWorks", null, new { @class = "btn btn-default home-button" })
+            </p>
+        </div>
+        <div class="col-md-3">
+            <p>
+                @Html.ActionLink("Take a Test Drive", "LogInSeededUser", "Account", null, new { @class = "btn btn-default home-button" })
+            </p>
+        </div>
+        <div class="col-md-3">
+            <p>@Html.ActionLink("More Info", "MoreInfo", null, new { @class = "btn btn-default home-button" })</p>
+        </div>
+        <div class="col-md-6"></div>
     </div>
-    <div class="col-md-2">
-        <p>
-            &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-            @Html.ActionLink("How It Works", "About", null, new { @class = "btn btn-default home-button" })
-        </p>
-    </div>
-    <div class="col-md-2">
-        <p>@Html.ActionLink("Contact Us", "Contact", null, new { @class = "btn btn-default home-button" })</p>
-    </div>
-    <div class="col-md-6"></div>
-</div>
+}

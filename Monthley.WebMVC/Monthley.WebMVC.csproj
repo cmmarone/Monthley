@@ -316,6 +316,8 @@
     <Content Include="Views\Account\SetupBudgetedExpense.cshtml" />
     <Content Include="Views\Account\BudgetedExpenseConfirm.cshtml" />
     <Content Include="Views\Account\SetupSuccess.cshtml" />
+    <Content Include="Views\Home\HowItWorks.cshtml" />
+    <Content Include="Views\Home\MoreInfo.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
