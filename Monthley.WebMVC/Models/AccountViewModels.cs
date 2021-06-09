@@ -81,6 +81,12 @@ namespace Monthley.WebMVC.Models
         public string ConfirmPassword { get; set; }
     }
 
+    public class TestRegisterModel
+    {
+        [Required]
+        public string Name { get; set; }
+    }
+
     public class ResetPasswordViewModel
     {
         [Required]

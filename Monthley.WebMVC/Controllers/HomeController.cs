@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNet.Identity.Owin;
+using Monthley.WebMVC.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -26,6 +27,23 @@ namespace Monthley.WebMVC.Controllers
             ViewBag.Message = "Your contact page.";
 
             return View();
+        }
+
+        // GET: /TestDrive
+        [HttpGet]
+        public ActionResult TestDrive()
+        {
+            return View();
+        }
+
+        // POST: /TestDrive
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult TestDrive(TestRegisterModel model)
+        {
+            if (!ModelState.IsValid) return View(model);
+
+            return RedirectToAction("RegisterTestUser", "Account", new { name = model.Name });
         }
     }
 }

@@ -17,30 +17,6 @@ namespace Monthley.Services
             _userId = userId;
         }
 
-        public bool SeedMonthsForNewUser()
-        {
-            List<DateTime> dtList = new List<DateTime>();
-            var endDate = new DateTime(2050, 12, 1);
-            for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-                (DateTime.Compare(date, endDate) <= 0);
-                date = date.AddMonths(1))
-                dtList.Add(date);
-
-            using (var context = new ApplicationDbContext())
-            {
-                foreach (var beginDate in dtList)
-                {
-                    var month = new Month
-                    {
-                        BeginDate = beginDate,
-                        UserId = _userId
-                    };
-                    context.Months.Add(month);
-                }
-                return context.SaveChanges() == dtList.Count();
-            }
-        }
-
         public IEnumerable<MonthListItem> GetMonths()
         {
             using (var context = new ApplicationDbContext())
@@ -97,71 +73,6 @@ namespace Monthley.Services
                 }
                 return monthList.OrderBy(m => m.BeginDate);
             }
-        }
-
-        public int GetCurrentMonthId()
-        {
-            var monthBeginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
-            using (var context = new ApplicationDbContext())
-            {
-                return context.Months.SingleOrDefault(m => m.BeginDate == monthBeginDate && m.UserId == _userId).Id;
-            }
-        }
-
-        public List<PieSliceModel> GetMonthPieSlices(int id)
-        {
-            var monthDetail = GetMonthById(id);
-            var pieChartSlices = new List<PieSliceModel>();
-
-            var totalBillsPairing = new PieSliceModel
-            {
-                Label = "Bills",
-                Amount = monthDetail.TotalBills
-            };
-            if (totalBillsPairing.Amount > 0)
-                pieChartSlices.Add(totalBillsPairing);
-
-            var totalSavingPairing = new PieSliceModel
-            {
-                Label = "Savings",
-                Amount = monthDetail.TotalSaving
-            };
-            if (totalSavingPairing.Amount > 0)
-                pieChartSlices.Add(totalSavingPairing);
-
-            var totalOneTimePairing = new PieSliceModel
-            {
-                Label = "One-Time Expenses",
-                Amount = monthDetail.TotalOneTimeExpenses
-            };
-            if (totalOneTimePairing.Amount > 0)
-                pieChartSlices.Add(totalOneTimePairing);
-
-            var totalBudgetedExpensesPairing = new PieSliceModel
-            {
-                Label = "Budgeted Expenses",
-                Amount = monthDetail.BudgetedExpenses
-            };
-            if (totalBudgetedExpensesPairing.Amount > 0)
-                pieChartSlices.Add(totalBudgetedExpensesPairing);
-
-            var disposableSpentPairing = new PieSliceModel
-            {
-                Label = "Unbudgeted Money Spent",
-                Amount = monthDetail.DisposableSpent
-            };
-            if (disposableSpentPairing.Amount > 0)
-                pieChartSlices.Add(disposableSpentPairing);
-
-            var disposableRemainingPairing = new PieSliceModel
-            {
-                Label = "Spendable Money Remaining",
-                Amount = monthDetail.DisposableRemaining
-            };
-            if (disposableRemainingPairing.Amount > 0)
-                pieChartSlices.Add(disposableRemainingPairing);
-
-            return pieChartSlices;
         }
 
         public MonthDetail GetMonthById(int id)
@@ -275,6 +186,71 @@ namespace Monthley.Services
             }
         }
 
+        public int GetCurrentMonthId()
+        {
+            var monthBeginDate = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            using (var context = new ApplicationDbContext())
+            {
+                return context.Months.SingleOrDefault(m => m.BeginDate == monthBeginDate && m.UserId == _userId).Id;
+            }
+        }
+
+        public List<PieSliceModel> GetMonthPieSlices(int id)
+        {
+            var monthDetail = GetMonthById(id);
+            var pieChartSlices = new List<PieSliceModel>();
+
+            var totalBillsPairing = new PieSliceModel
+            {
+                Label = "Bills",
+                Amount = monthDetail.TotalBills
+            };
+            if (totalBillsPairing.Amount > 0)
+                pieChartSlices.Add(totalBillsPairing);
+
+            var totalSavingPairing = new PieSliceModel
+            {
+                Label = "Savings",
+                Amount = monthDetail.TotalSaving
+            };
+            if (totalSavingPairing.Amount > 0)
+                pieChartSlices.Add(totalSavingPairing);
+
+            var totalOneTimePairing = new PieSliceModel
+            {
+                Label = "One-Time Expenses",
+                Amount = monthDetail.TotalOneTimeExpenses
+            };
+            if (totalOneTimePairing.Amount > 0)
+                pieChartSlices.Add(totalOneTimePairing);
+
+            var totalBudgetedExpensesPairing = new PieSliceModel
+            {
+                Label = "Budgeted Expenses",
+                Amount = monthDetail.BudgetedExpenses
+            };
+            if (totalBudgetedExpensesPairing.Amount > 0)
+                pieChartSlices.Add(totalBudgetedExpensesPairing);
+
+            var disposableSpentPairing = new PieSliceModel
+            {
+                Label = "Unbudgeted Money Spent",
+                Amount = monthDetail.DisposableSpent
+            };
+            if (disposableSpentPairing.Amount > 0)
+                pieChartSlices.Add(disposableSpentPairing);
+
+            var disposableRemainingPairing = new PieSliceModel
+            {
+                Label = "Spendable Money Remaining",
+                Amount = monthDetail.DisposableRemaining
+            };
+            if (disposableRemainingPairing.Amount > 0)
+                pieChartSlices.Add(disposableRemainingPairing);
+
+            return pieChartSlices;
+        }
+
         public IEnumerable<MonthCategorySpendingDetail> GetCategorySpendingForMonth(int id)
         {
             using (var context = new ApplicationDbContext())
@@ -356,6 +332,54 @@ namespace Monthley.Services
                     transactionList.Add(transaction);
                 }
                 return transactionList.OrderByDescending(t => t.TransactionDate);
+            }
+        }
+
+        public bool SeedMonthsForNewUser()
+        {
+            List<DateTime> dtList = new List<DateTime>();
+            var endDate = new DateTime(2050, 12, 1);
+            for (var date = new DateTime(2021, 3, 1);
+                (DateTime.Compare(date, endDate) <= 0);
+                date = date.AddMonths(1))
+                dtList.Add(date);
+
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var beginDate in dtList)
+                {
+                    var month = new Month
+                    {
+                        BeginDate = beginDate,
+                        UserId = _userId
+                    };
+                    context.Months.Add(month);
+                }
+                return context.SaveChanges() == dtList.Count();
+            }
+        }
+
+        public void SeedMonthsForTestUser()
+        {
+            List<DateTime> dtList = new List<DateTime>();
+            var endDate = new DateTime(2025, 12, 1);
+            for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+                (DateTime.Compare(date, endDate) <= 0);
+                date = date.AddMonths(1))
+                dtList.Add(date);
+
+            using (var context = new ApplicationDbContext())
+            {
+                foreach (var beginDate in dtList)
+                {
+                    var month = new Month
+                    {
+                        BeginDate = beginDate,
+                        UserId = _userId
+                    };
+                    context.Months.Add(month);
+                }
+                context.SaveChanges();
             }
         }
     }

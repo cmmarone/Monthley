@@ -318,6 +318,7 @@
     <Content Include="Views\Account\SetupSuccess.cshtml" />
     <Content Include="Views\Home\HowItWorks.cshtml" />
     <Content Include="Views\Home\MoreInfo.cshtml" />
+    <Content Include="Views\Home\TestDrive.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

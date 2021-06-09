@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Configuration;
 using System.Globalization;
 using System.Linq;
 using System.Security.Claims;
@@ -6,12 +7,14 @@ using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 using Microsoft.AspNet.Identity;
+using Microsoft.AspNet.Identity.EntityFramework;
 using Microsoft.AspNet.Identity.Owin;
 using Microsoft.Owin.Security;
 using Monthley.Data;
 using Monthley.Data.Entities;
 using Monthley.Models.ExpenseModels;
 using Monthley.Models.IncomeModels;
+using Monthley.Models.PaymentReceivedModels;
 using Monthley.Services;
 using Monthley.WebMVC.Models;
 
@@ -96,14 +99,6 @@ namespace Monthley.WebMVC.Controllers
             }
         }
 
-        [HttpGet]
-        [AllowAnonymous]
-        public ActionResult LogInSeededUser()
-        {
-            SignInManager.PasswordSignIn("efa@monthley.com", "monTHL3yTest!", false, shouldLockout: false);
-            return RedirectToAction("Index", "Home");
-        }
-
         //
         // GET: /Account/VerifyCode
         [AllowAnonymous]
@@ -181,11 +176,11 @@ namespace Monthley.WebMVC.Controllers
                     var monthService = new MonthService(userId);
                     monthService.SeedMonthsForNewUser();
 
-                    //// seed a "Miscellaneous" Category
+                    // seed a "Miscellaneous" Category
                     var categoryService = new CategoryService(userId);
                     categoryService.SeedCategoryForNewUser();
 
-                    //// seed a "Unplanned" Source
+                    // seed an "Unplanned" Source
                     var sourceService = new SourceService(userId);
                     sourceService.SeedSourceForNewUser();
 
@@ -205,6 +200,494 @@ namespace Monthley.WebMVC.Controllers
 
             // If we got this far, something failed, redisplay form
             return View(model);
+        }
+
+        // User can setup a pre-filled account with some seeded data to take the app for a test-drive.  They just provide
+        // their name.
+
+        [HttpGet]
+        [AllowAnonymous]
+        public ActionResult RegisterTestUser(string name)
+        {
+            var user = new ApplicationUser { UserName = $"{name}@monthley.com", Email = $"{name}@monthley.com" };
+            var result = UserManager.Create(user, "monTHL3yTest!");
+
+            if (result.Succeeded)
+            {
+                SignInManager.SignIn(user, isPersistent: false, rememberBrowser: false);
+                var userId = Guid.Parse(user.Id);
+
+                // seed test Month entities -- SeedMonthsForTestUser() generates months thru 2025
+                var monthService = new MonthService(userId);
+                monthService.SeedMonthsForTestUser();
+
+                // seed an "Unplanned" Source
+                var sourceService = new SourceService(userId);
+                sourceService.SeedSourceForNewUser();
+
+                // seed a "Miscellaneous" Category
+                var categoryService = new CategoryService(userId);
+                categoryService.SeedCategoryForNewUser();
+
+
+                // seed test Income entities (seeds related Source and PayDay entities)
+                var incomeService = new IncomeService(userId);
+                incomeService.CreateIncome(new IncomeCreate
+                {
+                    SourceName = "My full-time job",
+                    Amount = 700.00m,
+                    PayFreqType = PayFreqType.ByWeek,
+                    FrequencyFactor = 1,
+                    InitialPayDate = new DateTime(2021, 3, 4),
+                    LastPayDate = new DateTime(2025, 12, 31)
+                });
+                incomeService.CreateIncome(new IncomeCreate
+                {
+                    SourceName = "Private teaching gig",
+                    Amount = 36.00m,
+                    PayFreqType = PayFreqType.ByWeek,
+                    FrequencyFactor = 2,
+                    InitialPayDate = new DateTime(2021, 3, 14),
+                    LastPayDate = new DateTime(2025, 12, 31)
+                });
+
+
+                // seed test Expense entities (seeds related Category and DueDate entities)
+                var expenseService = new ExpenseService(userId);
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Bill,
+                    CategoryName = "Rent",
+                    Amount = 710.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 1),
+                    EndDate = new DateTime(2022, 10, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Bill,
+                    CategoryName = "Car Insurance",
+                    Amount = 92.33m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 3),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Bill,
+                    CategoryName = "Car Lease",
+                    Amount = 151.39m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 16),
+                    EndDate = new DateTime(2023, 8, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Bill,
+                    CategoryName = "Comcast ISP/TV",
+                    Amount = 116.01m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 24),
+                    EndDate = new DateTime(2022, 2, 24)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Bill,
+                    CategoryName = "Spotify",
+                    Amount = 9.99m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 10),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Bill,
+                    CategoryName = "Hulu",
+                    Amount = 11.99m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 16),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Bill,
+                    CategoryName = "Daycare",
+                    Amount = 151.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByWeek,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 1),
+                    EndDate = new DateTime(2022, 5, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Saving,
+                    CategoryName = "General Savings",
+                    Amount = 100.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 15),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Saving,
+                    CategoryName = "College fund",
+                    Amount = 50.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 15),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Expense,
+                    CategoryName = "Groceries",
+                    Amount = 80.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByWeek,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 4),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Expense,
+                    CategoryName = "Gasoline",
+                    Amount = 50.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 31),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Expense,
+                    CategoryName = "New clothes",
+                    Amount = 50.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 31),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Expense,
+                    CategoryName = "Entertainment",
+                    Amount = 50.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 31),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Expense,
+                    CategoryName = "Gas bill",
+                    Amount = 30.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 22),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Expense,
+                    CategoryName = "Electric bill",
+                    Amount = 70.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 11),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+                expenseService.CreateExpense(new ExpenseCreate
+                {
+                    CategoryType = CategoryType.Expense,
+                    CategoryName = "Haircuts",
+                    Amount = 15.00m,
+                    ExpenseFreqType = ExpenseFreqType.ByMonth,
+                    FrequencyFactor = 1,
+                    InitialDueDate = new DateTime(2021, 3, 31),
+                    EndDate = new DateTime(2025, 12, 31)
+                });
+
+                // seed test PaymentReceived entities
+                var paymentReceivedService = new PaymentReceivedService(userId);
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 694.53m, new DateTime(2021, 3, 4));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 710.01m, new DateTime(2021, 3, 11));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 705.66m, new DateTime(2021, 3, 18));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 701.01m, new DateTime(2021, 3, 25));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 731.84m, new DateTime(2021, 4, 1));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 700.22m, new DateTime(2021, 4, 8));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 709.31m, new DateTime(2021, 4, 15));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 692.49m, new DateTime(2021, 4, 22));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 700.41m, new DateTime(2021, 4, 29));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 704.11m, new DateTime(2021, 5, 6));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 696.82m, new DateTime(2021, 5, 14));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 713.40m, new DateTime(2021, 5, 21));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 700.41m, new DateTime(2021, 5, 27));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 3, 14));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 3, 28));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 4, 11));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 4, 25));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 5, 10));
+                paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 5, 24));
+
+                // seed test PaymentMade entities
+                var paymentMadeService = new PaymentMadeService(userId);
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Rent", 710.00m, new DateTime(2021, 3, 1));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Rent", 710.00m, new DateTime(2021, 4, 1));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Rent", 710.00m, new DateTime(2021, 5, 1));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Insurance", 92.33m, new DateTime(2021, 3, 3));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Insurance", 92.33m, new DateTime(2021, 4, 3));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Insurance", 92.33m, new DateTime(2021, 5, 3));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Lease", 151.39m, new DateTime(2021, 3, 16));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Lease", 151.39m, new DateTime(2021, 4, 16));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Lease", 151.39m, new DateTime(2021, 5, 16));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Comcast ISP/TV", 116.01m, new DateTime(2021, 3, 24));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Comcast ISP/TV", 116.01m, new DateTime(2021, 4, 24));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Comcast ISP/TV", 116.01m, new DateTime(2021, 5, 24));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Spotify", 9.99m, new DateTime(2021, 3, 10));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Spotify", 9.99m, new DateTime(2021, 4, 10));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Spotify", 9.99m, new DateTime(2021, 5, 10));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Hulu", 11.99m, new DateTime(2021, 3, 16));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Hulu", 11.99m, new DateTime(2021, 4, 16));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Hulu", 11.99m, new DateTime(2021, 5, 16));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 3, 1));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 3, 8));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 3, 15));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 3, 22));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 3, 29));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 4, 5));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 4, 12));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 4, 19));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 4, 26));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 5, 3));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 5, 10));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 5, 17));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 5, 24));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 5, 31));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("General savings", 100.00m, new DateTime(2021, 3, 15));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("General savings", 100.00m, new DateTime(2021, 4, 15));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("General savings", 100.00m, new DateTime(2021, 5, 15));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("College fund", 50.00m, new DateTime(2021, 3, 15));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("College fund", 50.00m, new DateTime(2021, 4, 15));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("College fund", 50.00m, new DateTime(2021, 5, 15));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 81.43m, new DateTime(2021, 3, 4));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 83.89m, new DateTime(2021, 3, 11));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 72.32m, new DateTime(2021, 3, 18));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 76.23m, new DateTime(2021, 3, 25));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 89.55m, new DateTime(2021, 4, 1));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 59.14m, new DateTime(2021, 4, 8));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 84.92m, new DateTime(2021, 4, 15));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 81.36m, new DateTime(2021, 4, 22));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 80.61m, new DateTime(2021, 4, 29));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 93.90m, new DateTime(2021, 5, 6));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 76.92m, new DateTime(2021, 5, 13));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 79.18m, new DateTime(2021, 5, 20));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 73.24m, new DateTime(2021, 5, 27));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 20.04m, new DateTime(2021, 3, 5));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 20.03m, new DateTime(2021, 3, 17));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 20.41m, new DateTime(2021, 3, 26));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 10.09m, new DateTime(2021, 4, 11));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 25.24m, new DateTime(2021, 4, 21));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 25.98m, new DateTime(2021, 4, 29));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 9.87m, new DateTime(2021, 5, 9));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 20.55m, new DateTime(2021, 5, 17));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 18.18m, new DateTime(2021, 5, 26));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 31.18m, new DateTime(2021, 3, 1));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 20.77m, new DateTime(2021, 3, 18));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 18.14m, new DateTime(2021, 4, 4));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 22.89m, new DateTime(2021, 4, 20));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 25.98m, new DateTime(2021, 5, 4));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 20.48m, new DateTime(2021, 5, 22));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Entertainment", 45.28m, new DateTime(2021, 3, 14));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Entertainment", 12.00m, new DateTime(2021, 4, 14));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Entertainment", 15.00m, new DateTime(2021, 4, 20));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Entertainment", 12.00m, new DateTime(2021, 5, 4));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Entertainment", 40.43m, new DateTime(2021, 5, 21));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gas bill", 85.13m, new DateTime(2021, 3, 22));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gas bill", 52.43m, new DateTime(2021, 4, 22));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gas bill", 37.43m, new DateTime(2021, 5, 22));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Electric bill", 38.43m, new DateTime(2021, 3, 11));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Electric bill", 58.97m, new DateTime(2021, 4, 11));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Electric bill", 82.51m, new DateTime(2021, 5, 11));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Haircuts", 15.00m, new DateTime(2021, 3, 10));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Haircuts", 15.00m, new DateTime(2021, 4, 13));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Haircuts", 15.00m, new DateTime(2021, 5, 21));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 3, 3));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 8.98m, new DateTime(2021, 3, 7));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 3.86m, new DateTime(2021, 3, 11));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 4.41m, new DateTime(2021, 3, 14));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 15.41m, new DateTime(2021, 3, 14));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 8.98m, new DateTime(2021, 3, 19));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 3, 19));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 10.08m, new DateTime(2021, 3, 22));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 9.63m, new DateTime(2021, 3, 27));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 3, 28));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 13.87m, new DateTime(2021, 3, 31));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 6.55m, new DateTime(2021, 4, 2));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 1.89m, new DateTime(2021, 4, 6));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 4, 11));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 11.32m, new DateTime(2021, 4, 11));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 8.98m, new DateTime(2021, 4, 11));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 38.15m, new DateTime(2021, 4, 18));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 15.73m, new DateTime(2021, 4, 22));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 4, 23));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 46.13m, new DateTime(2021, 4, 23));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 11.30m, new DateTime(2021, 4, 27));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 4.15m, new DateTime(2021, 4, 28));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 4, 30));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 5, 6));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 15.11m, new DateTime(2021, 5, 7));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 14.68m, new DateTime(2021, 5, 7));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 8.98m, new DateTime(2021, 5, 12));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 15.92m, new DateTime(2021, 5, 15));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 5, 19));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 7.56m, new DateTime(2021, 5, 21));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 19.31m, new DateTime(2021, 5, 24));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 22.02m, new DateTime(2021, 5, 26));
+                paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 5, 26));
+
+                return RedirectToAction("CurrentBudget", "Month");
+            }
+            return View();
         }
 
         //---BEGIN monTHLey NEW USER SETUP WALKTHROUGH VIEWS------------------------>

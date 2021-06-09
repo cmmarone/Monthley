@@ -81,5 +81,22 @@ namespace Monthley.Services
                 return context.SaveChanges() == 1;
             }
         }
+
+        public void SeedPaymentMadeForTestUser(string categoryName, decimal amount, DateTime paymentDate)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var paymentMade = new PaymentMade()
+                {
+                    CategoryId = context.Categories.SingleOrDefault(c => c.Name == categoryName && c.UserId == _userId).Id,
+                    MonthId = context.Months.SingleOrDefault(m => m.BeginDate.Month == paymentDate.Month && m.BeginDate.Year == paymentDate.Year && m.UserId == _userId).Id,
+                    Amount = amount,
+                    PaymentDate = paymentDate,
+                    UserId = _userId
+                };
+                context.PaymentsMade.Add(paymentMade);
+                context.SaveChanges();
+            }
+        }
     }
 }

@@ -18,6 +18,17 @@ namespace Monthley.Data.Migrations
 
         protected override void Seed(Monthley.Data.ApplicationDbContext context)
         {
+            /* 
+             
+            
+            OLD SEEDING APPROACH-->
+
+
+
+
+
+
+             
             // Seeding a demo account
             var userManager = new UserManager<ApplicationUser>(new UserStore<ApplicationUser>(context));
             if (userManager.FindByEmail("efa@monthley.com") == null)
@@ -257,7 +268,7 @@ namespace Monthley.Data.Migrations
                 SeedExpense("Car Lease", 151.39m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 16), new DateTime(2023, 8, 31), userId);
                 SeedExpense("Comcast ISP/TV", 116.01m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 24), new DateTime(2022, 2, 24), userId);
                 SeedExpense("Spotify", 9.99m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 10), new DateTime(2050, 12, 31), userId);
-                SeedExpense("Hulu", 710.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 16), new DateTime(2050, 12, 31), userId);
+                SeedExpense("Hulu", 11.99m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 16), new DateTime(2050, 12, 31), userId);
                 SeedExpense("Daycare", 151.00m, ExpenseFreqType.ByWeek, 1, new DateTime(2021, 3, 1), new DateTime(2022, 5, 31), userId);
                 SeedExpense("General savings", 100.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 15), new DateTime(2050, 12, 31), userId);
                 SeedExpense("College fund", 50.00m, ExpenseFreqType.ByMonth, 1, new DateTime(2021, 3, 15), new DateTime(2035, 06, 30), userId);
@@ -280,7 +291,6 @@ namespace Monthley.Data.Migrations
                 SeedDueDates("General savings", new DateTime(2021, 3, 15), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 100.00m, userId);
                 SeedDueDates("College fund", new DateTime(2021, 3, 15), new DateTime(2035, 06, 30), ExpenseFreqType.ByMonth, 1, 50.00m, userId);
                 SeedDueDates("Groceries", new DateTime(2021, 3, 4), new DateTime(2050, 12, 31), ExpenseFreqType.ByWeek, 1, 80.00m, userId);
-                SeedDueDates("Gasoline", new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 50.00m, userId);
                 SeedDueDates("New clothes", new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 50.00m, userId);
                 SeedDueDates("Entertainment", new DateTime(2021, 3, 31), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 50.00m, userId);
                 SeedDueDates("Gas bill", new DateTime(2021, 3, 22), new DateTime(2050, 12, 31), ExpenseFreqType.ByMonth, 1, 30.00m, userId);
@@ -426,7 +436,17 @@ namespace Monthley.Data.Migrations
                 SeedPaymentMade("Miscellaneous", 2.11m, new DateTime(2021, 5, 26), userId);
                 // <-------------------------------------------------------------------------------------END SEEDING EXAMPLES OF USER DATA
             }
+            */
         }
+
+
+        /*
+        
+        OLD SEEDING APPROACH-->
+
+
+
+
 
         // helpers
         private void SeedIncome(string sourceName, decimal amount, PayFreqType payFreqType, int frequencyFactor, DateTime initialPayDate, DateTime lastPayDate, Guid userId)
@@ -569,5 +589,7 @@ namespace Monthley.Data.Migrations
                 context.SaveChanges();
             }
         }
+
+        */
     }
 }
