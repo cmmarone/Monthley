@@ -28,7 +28,7 @@ namespace Monthley.Services
 
             var payFreqType = model.PayFreqType ?? PayFreqType.Once;
 
-            DateTime lastPayDate = model.LastPayDate ?? new DateTime(2050, 12, 31);
+            DateTime lastPayDate = model.LastPayDate ?? new DateTime(2035, 12, 31);
             if (payFreqType == PayFreqType.Once)
                 lastPayDate = model.InitialPayDate;
 
@@ -131,7 +131,7 @@ namespace Monthley.Services
         public bool UpdateIncome(IncomeEdit model)
         {
             if (model.LastPayDate == null)
-                model.LastPayDate = new DateTime(2050, 12, 31);
+                model.LastPayDate = new DateTime(2035, 12, 31);
             if (model.PayFreqType == PayFreqType.Once)
                 model.LastPayDate = model.InitialPayDate;
 

@@ -46,6 +46,52 @@
             </div>
         </div>
 
+        <div>
+            <div class="col-md-6"><b>How often are you budgeting to spend this much on the category?</b></div>
+            <div class="col-md-6"></div>
+            <br />
+        </div>
+        <table>
+            <tr>
+                <td class="col-md-1 text-right"></td>
+                <td class="col-md-1 text-right"><small>Ex: &nbsp;<i>Every</i></small></td>
+                <td class="col-md-1 text-center"><small><i>1</i></small></td>
+                <td class="col-md-3">&nbsp;&nbsp;<small><i>month(s)</i></small></td>
+                <td class="col-md-6"></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-1 text-right"></td>
+                <td class="col-md-1 text-right"><small>Ex: &nbsp;<i>Every</i></small></td>
+                <td class="col-md-1 text-center"><small><i>4</i></small></td>
+                <td class="col-md-3">&nbsp;&nbsp;<small><i>week(s)</i></small></td>
+                <td class="col-md-6"></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-1"></td>
+                <td class="col-md-1 text-right">Every</td>
+                <td class="col-md-1">
+                    @Html.EditorFor(model => model.FrequencyFactor, new { htmlAttributes = new { @class = "form-control" } })
+                </td>
+                <td class="col-md-3">
+                    @Html.EnumDropDownListFor(model => model.ExpenseFreqType, "-- Select --", new { @class = "form-control", @id = "expenseFreqType" })
+                </td>
+                <td class="col-md-6"></td>
+            </tr>
+
+            <tr>
+                <td class="col-md-1"></td>
+                <td class="col-md-1"></td>
+                <td class="col-md-1">
+                    @Html.ValidationMessageFor(model => model.FrequencyFactor, "", new { @class = "text-danger" })
+                </td>
+                <td class="col-md-3"></td>
+                <td class="col-md-6"></td>
+            </tr>
+        </table>
+        <br />
+
         <div class="form-group">
             <div class="col-md-offset-2 col-md-10">
                 <input type="submit" value="Create" class="btn btn-default" />

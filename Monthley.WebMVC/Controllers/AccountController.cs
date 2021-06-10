@@ -239,7 +239,7 @@ namespace Monthley.WebMVC.Controllers
                     PayFreqType = PayFreqType.ByWeek,
                     FrequencyFactor = 1,
                     InitialPayDate = new DateTime(2021, 3, 4),
-                    LastPayDate = new DateTime(2025, 12, 31)
+                    LastPayDate = new DateTime(2035, 12, 31)
                 });
                 incomeService.CreateIncome(new IncomeCreate
                 {
@@ -248,7 +248,7 @@ namespace Monthley.WebMVC.Controllers
                     PayFreqType = PayFreqType.ByWeek,
                     FrequencyFactor = 2,
                     InitialPayDate = new DateTime(2021, 3, 14),
-                    LastPayDate = new DateTime(2025, 12, 31)
+                    LastPayDate = new DateTime(2035, 12, 31)
                 });
 
 
@@ -272,7 +272,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 3),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -302,7 +302,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 10),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -312,7 +312,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 16),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -332,7 +332,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 15),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -342,7 +342,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 15),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -352,7 +352,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByWeek,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 4),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -362,7 +362,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 31),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -372,7 +372,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 31),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -382,7 +382,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 31),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -392,7 +392,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 22),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -402,7 +402,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 11),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
                 expenseService.CreateExpense(new ExpenseCreate
                 {
@@ -412,7 +412,7 @@ namespace Monthley.WebMVC.Controllers
                     ExpenseFreqType = ExpenseFreqType.ByMonth,
                     FrequencyFactor = 1,
                     InitialDueDate = new DateTime(2021, 3, 31),
-                    EndDate = new DateTime(2025, 12, 31)
+                    EndDate = new DateTime(2035, 12, 31)
                 });
 
                 // seed test PaymentReceived entities
@@ -443,6 +443,45 @@ namespace Monthley.WebMVC.Controllers
                     .SeedPaymentReceivedForTestUser("My full-time job", 713.40m, new DateTime(2021, 5, 21));
                 paymentReceivedService
                     .SeedPaymentReceivedForTestUser("My full-time job", 700.41m, new DateTime(2021, 5, 27));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 3)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 705.91m, new DateTime(2021, 6, 3));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 10)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 691.13m, new DateTime(2021, 6, 10));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 17)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 701.55m, new DateTime(2021, 6, 17));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 24)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 718.41m, new DateTime(2021, 6, 24));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 1)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 709.01m, new DateTime(2021, 7, 1));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 8)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 698.12m, new DateTime(2021, 7, 8));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 15)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 704.90m, new DateTime(2021, 7, 15));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 22)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 702.14m, new DateTime(2021, 7, 22));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 29)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 734.98m, new DateTime(2021, 7, 29));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 5)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 700.51m, new DateTime(2021, 8, 5));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 12)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 709.82m, new DateTime(2021, 8, 12));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 19)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 681.91m, new DateTime(2021, 8, 19));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 26)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("My full-time job", 700.33m, new DateTime(2021, 8, 26));
                 paymentReceivedService
                     .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 3, 14));
                 paymentReceivedService
@@ -455,6 +494,27 @@ namespace Monthley.WebMVC.Controllers
                     .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 5, 10));
                 paymentReceivedService
                     .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 5, 24));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 7)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 6, 7));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 21)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 6, 21));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 5)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 7, 5));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 19)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 7, 19));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 2)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 8, 2));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 16)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 8, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 30)) >= 0)
+                    paymentReceivedService
+                    .SeedPaymentReceivedForTestUser("Private teaching gig", 36.00m, new DateTime(2021, 8, 30));
 
                 // seed test PaymentMade entities
                 var paymentMadeService = new PaymentMadeService(userId);
@@ -464,36 +524,90 @@ namespace Monthley.WebMVC.Controllers
                     .SeedPaymentMadeForTestUser("Rent", 710.00m, new DateTime(2021, 4, 1));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Rent", 710.00m, new DateTime(2021, 5, 1));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 1)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Rent", 710.00m, new DateTime(2021, 6, 1));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 1)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Rent", 710.00m, new DateTime(2021, 7, 1));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 1)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Rent", 710.00m, new DateTime(2021, 8, 1));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Car Insurance", 92.33m, new DateTime(2021, 3, 3));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Car Insurance", 92.33m, new DateTime(2021, 4, 3));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Car Insurance", 92.33m, new DateTime(2021, 5, 3));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 3)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Insurance", 92.33m, new DateTime(2021, 6, 3));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 3)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Insurance", 92.33m, new DateTime(2021, 7, 3));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 3)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Insurance", 92.33m, new DateTime(2021, 8, 3));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Car Lease", 151.39m, new DateTime(2021, 3, 16));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Car Lease", 151.39m, new DateTime(2021, 4, 16));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Car Lease", 151.39m, new DateTime(2021, 5, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Lease", 151.39m, new DateTime(2021, 6, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Lease", 151.39m, new DateTime(2021, 7, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Car Lease", 151.39m, new DateTime(2021, 8, 16));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Comcast ISP/TV", 116.01m, new DateTime(2021, 3, 24));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Comcast ISP/TV", 116.01m, new DateTime(2021, 4, 24));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Comcast ISP/TV", 116.01m, new DateTime(2021, 5, 24));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 24)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Comcast ISP/TV", 116.01m, new DateTime(2021, 6, 24));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 24)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Comcast ISP/TV", 116.01m, new DateTime(2021, 7, 24));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 24)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Comcast ISP/TV", 116.01m, new DateTime(2021, 8, 24));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Spotify", 9.99m, new DateTime(2021, 3, 10));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Spotify", 9.99m, new DateTime(2021, 4, 10));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Spotify", 9.99m, new DateTime(2021, 5, 10));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 10)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Spotify", 9.99m, new DateTime(2021, 6, 10));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 10)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Spotify", 9.99m, new DateTime(2021, 7, 10));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 10)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Spotify", 9.99m, new DateTime(2021, 8, 10));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Hulu", 11.99m, new DateTime(2021, 3, 16));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Hulu", 11.99m, new DateTime(2021, 4, 16));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Hulu", 11.99m, new DateTime(2021, 5, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Hulu", 11.99m, new DateTime(2021, 6, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Hulu", 11.99m, new DateTime(2021, 7, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Hulu", 11.99m, new DateTime(2021, 8, 16));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 3, 1));
                 paymentMadeService
@@ -522,18 +636,75 @@ namespace Monthley.WebMVC.Controllers
                     .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 5, 24));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 5, 31));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 7)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 6, 7));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 14)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 6, 14));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 21)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 6, 21));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 28)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 6, 28));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 5)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 7, 5));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 12)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 7, 12));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 19)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 7, 19));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 26)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 7, 26));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 2)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 8, 2));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 9)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 8, 9));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 8, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 23)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 8, 23));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 30)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Daycare", 151.00m, new DateTime(2021, 8, 30));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("General savings", 100.00m, new DateTime(2021, 3, 15));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("General savings", 100.00m, new DateTime(2021, 4, 15));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("General savings", 100.00m, new DateTime(2021, 5, 15));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 15)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("General savings", 100.00m, new DateTime(2021, 6, 15));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 15)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("General savings", 100.00m, new DateTime(2021, 7, 15));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 15)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("General savings", 100.00m, new DateTime(2021, 8, 15));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("College fund", 50.00m, new DateTime(2021, 3, 15));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("College fund", 50.00m, new DateTime(2021, 4, 15));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("College fund", 50.00m, new DateTime(2021, 5, 15));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 15)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("College fund", 50.00m, new DateTime(2021, 6, 15));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 15)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("College fund", 50.00m, new DateTime(2021, 7, 15));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 15)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("College fund", 50.00m, new DateTime(2021, 8, 15));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Groceries", 81.43m, new DateTime(2021, 3, 4));
                 paymentMadeService
@@ -560,6 +731,45 @@ namespace Monthley.WebMVC.Controllers
                     .SeedPaymentMadeForTestUser("Groceries", 79.18m, new DateTime(2021, 5, 20));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Groceries", 73.24m, new DateTime(2021, 5, 27));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 3)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 81.43m, new DateTime(2021, 6, 3));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 10)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 83.89m, new DateTime(2021, 6, 10));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 17)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 72.32m, new DateTime(2021, 6, 17));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 24)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 76.23m, new DateTime(2021, 6, 24));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 1)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 89.55m, new DateTime(2021, 7, 1));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 8)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 59.14m, new DateTime(2021, 7, 8));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 15)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 84.92m, new DateTime(2021, 7, 15));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 22)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 81.36m, new DateTime(2021, 7, 22));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 29)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 80.61m, new DateTime(2021, 7, 29));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 5)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 93.90m, new DateTime(2021, 8, 5));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 12)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 76.92m, new DateTime(2021, 8, 12));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 19)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 79.18m, new DateTime(2021, 8, 19));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 26)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Groceries", 73.24m, new DateTime(2021, 8, 26));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Gasoline", 20.04m, new DateTime(2021, 3, 5));
                 paymentMadeService
@@ -578,6 +788,30 @@ namespace Monthley.WebMVC.Controllers
                     .SeedPaymentMadeForTestUser("Gasoline", 20.55m, new DateTime(2021, 5, 17));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Gasoline", 18.18m, new DateTime(2021, 5, 26));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 7)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 28.10m, new DateTime(2021, 6, 7));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 19)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 10.58m, new DateTime(2021, 6, 19));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 29)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 23.78m, new DateTime(2021, 6, 29));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 9)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 14.76m, new DateTime(2021, 7, 9));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 21)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 24.44m, new DateTime(2021, 7, 21));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 4)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 13.31m, new DateTime(2021, 8, 4));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 17)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 24.76m, new DateTime(2021, 8, 17));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 26)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gasoline", 11.34m, new DateTime(2021, 8, 26));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("New clothes", 31.18m, new DateTime(2021, 3, 1));
                 paymentMadeService
@@ -590,6 +824,21 @@ namespace Monthley.WebMVC.Controllers
                     .SeedPaymentMadeForTestUser("New clothes", 25.98m, new DateTime(2021, 5, 4));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("New clothes", 20.48m, new DateTime(2021, 5, 22));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 5)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 33.77m, new DateTime(2021, 6, 5));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 23)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 11.66m, new DateTime(2021, 6, 23));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 10)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 29.09m, new DateTime(2021, 7, 10));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 4)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 24.98m, new DateTime(2021, 8, 4));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 13)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("New clothes", 21.48m, new DateTime(2021, 8, 13));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Entertainment", 45.28m, new DateTime(2021, 3, 14));
                 paymentMadeService
@@ -600,24 +849,63 @@ namespace Monthley.WebMVC.Controllers
                     .SeedPaymentMadeForTestUser("Entertainment", 12.00m, new DateTime(2021, 5, 4));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Entertainment", 40.43m, new DateTime(2021, 5, 21));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 6)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Entertainment", 48.00m, new DateTime(2021, 6, 6));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 11)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Entertainment", 30.43m, new DateTime(2021, 7, 11));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 24)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Entertainment", 20.00m, new DateTime(2021, 7, 24));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 4)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Entertainment", 51.11m, new DateTime(2021, 8, 4));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Gas bill", 85.13m, new DateTime(2021, 3, 22));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Gas bill", 52.43m, new DateTime(2021, 4, 22));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Gas bill", 37.43m, new DateTime(2021, 5, 22));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 22)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gas bill", 21.05m, new DateTime(2021, 6, 22));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 22)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gas bill", 22.43m, new DateTime(2021, 7, 22));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 22)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Gas bill", 20.89m, new DateTime(2021, 8, 22));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Electric bill", 38.43m, new DateTime(2021, 3, 11));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Electric bill", 58.97m, new DateTime(2021, 4, 11));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Electric bill", 82.51m, new DateTime(2021, 5, 11));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 11)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Electric bill", 92.13m, new DateTime(2021, 6, 11));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 11)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Electric bill", 118.99m, new DateTime(2021, 7, 11));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 11)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Electric bill", 112.58m, new DateTime(2021, 8, 11));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Haircuts", 15.00m, new DateTime(2021, 3, 10));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Haircuts", 15.00m, new DateTime(2021, 4, 13));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Haircuts", 15.00m, new DateTime(2021, 5, 21));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 20)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Haircuts", 15.00m, new DateTime(2021, 6, 20));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 21)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Haircuts", 15.00m, new DateTime(2021, 7, 21));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Haircuts", 15.00m, new DateTime(2021, 8, 16));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 3, 3));
                 paymentMadeService
@@ -684,6 +972,102 @@ namespace Monthley.WebMVC.Controllers
                     .SeedPaymentMadeForTestUser("Miscellaneous", 22.02m, new DateTime(2021, 5, 26));
                 paymentMadeService
                     .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 5, 26));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 2)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 3.98m, new DateTime(2021, 6, 2));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 9)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 13.86m, new DateTime(2021, 6, 9));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 9)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 4.13m, new DateTime(2021, 6, 9));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 5.41m, new DateTime(2021, 6, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 17)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 4.98m, new DateTime(2021, 6, 17));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 19)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 20.11m, new DateTime(2021, 6, 19));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 6, 24)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 13.08m, new DateTime(2021, 6, 24));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 2)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 12.63m, new DateTime(2021, 7, 2));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 5)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 24.11m, new DateTime(2021, 7, 5));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 5)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 3.87m, new DateTime(2021, 7, 5));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 8)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 16.55m, new DateTime(2021, 7, 8));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 10)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 9.89m, new DateTime(2021, 7, 10));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 11)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 29.11m, new DateTime(2021, 7, 11));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 11)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 10.32m, new DateTime(2021, 7, 11));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 18)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 3.55m, new DateTime(2021, 7, 18));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 22)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 18.45m, new DateTime(2021, 7, 22));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 7, 27)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 5.33m, new DateTime(2021, 7, 27));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 2)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 8, 2));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 2)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 26.73m, new DateTime(2021, 8, 2));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 2)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 17.33m, new DateTime(2021, 8, 2));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 6)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 8.19m, new DateTime(2021, 8, 6));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 9)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 8, 9));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 11)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 8, 11));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 25.13m, new DateTime(2021, 8, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 16)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 4.77m, new DateTime(2021, 8, 16));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 18)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 6.13m, new DateTime(2021, 8, 18));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 19)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 19.21m, new DateTime(2021, 8, 19));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 20)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 8, 20));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 22)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 4.55m, new DateTime(2021, 8, 22));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 22)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 14.51m, new DateTime(2021, 8, 22));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 25)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 20.21m, new DateTime(2021, 8, 25));
+                if (DateTime.Compare(DateTime.Now, new DateTime(2021, 8, 27)) >= 0)
+                    paymentMadeService
+                    .SeedPaymentMadeForTestUser("Miscellaneous", 2.11m, new DateTime(2021, 8, 27));
 
                 return RedirectToAction("CurrentBudget", "Month");
             }

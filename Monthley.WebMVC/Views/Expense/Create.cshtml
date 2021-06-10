@@ -83,6 +83,11 @@
             <div class="col-md-9"></div>
             <br />
         </div>
+        <div id="budgetedExpenseFrequency" style="display:none">
+            <div class="col-md-6"><b>How often are you budgeting to spend this much on the category?</b></div>
+            <div class="col-md-6"></div>
+            <br />
+        </div>
         <table id="expenseCreateTable" style="display:none">
             <tr>
                 <td class="col-md-1 text-right"></td>
@@ -181,7 +186,7 @@
                 dateFormat: "MM d, yy",
                 changeMonth: true,
                 changeYear: true,
-                yearRange: "-10:+20"
+                yearRange: "-0:+14"
             });
         });
 
@@ -211,8 +216,12 @@
             var savingFrequency = document.getElementById("savingFrequency");
             savingFrequency.style.display = categoryType.value == 3 ? "block" : "none";
 
+            var budgetedExpenseFrequency = document.getElementById("budgetedExpenseFrequency");
+            budgetedExpenseFrequency.style.display = categoryType.value == 2 ? "block" : "none";
+            
             var expenseCreateTable = document.getElementById("expenseCreateTable");
-            expenseCreateTable.style.display = (categoryType.value == 1 || categoryType.value == 3) ? "block" : "none";
+            expenseCreateTable.style.display =
+                (categoryType.value == 1 || categoryType.value == 2 || categoryType.value == 3) ? "block" : "none";
 
             var endDateOption = document.getElementById("endDateOption");
             endDateOption.style.display = (categoryType.value == 1 || categoryType.value == 3) ? "block" : "none";

@@ -25,16 +25,15 @@ namespace Monthley.Services
             if (model.CategoryType == CategoryType.Once)
                 model.ExpenseFreqType = ExpenseFreqType.Once;
 
-            if (model.CategoryType == CategoryType.Expense)
-                model.ExpenseFreqType = ExpenseFreqType.ByMonth;
-
             // the only time model.InitialDueDate won't be filled out by user is if model.CategoryType == CategoryType.Expense,
             // in which case, start the due date on the last day of the current month
             DateTime lastDayCurrentMonth =
                 new DateTime(DateTime.Now.Year, DateTime.Now.Month, DateTime.DaysInMonth(DateTime.Now.Year, DateTime.Now.Month));
             DateTime initialDueDate = model.InitialDueDate ?? lastDayCurrentMonth;
+            if (model.ExpenseFreqType == ExpenseFreqType.ByWeek && model.CategoryType == CategoryType.Expense)
+                initialDueDate = DateTime.Now;
 
-            DateTime endDate = model.EndDate ?? new DateTime(2050, 12, 31);
+            DateTime endDate = model.EndDate ?? new DateTime(2035, 12, 31);
             if (model.CategoryType == CategoryType.Once)
                 endDate = initialDueDate;
 

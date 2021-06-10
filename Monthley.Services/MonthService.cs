@@ -338,8 +338,8 @@ namespace Monthley.Services
         public bool SeedMonthsForNewUser()
         {
             List<DateTime> dtList = new List<DateTime>();
-            var endDate = new DateTime(2050, 12, 1);
-            for (var date = new DateTime(2021, 3, 1);
+            var endDate = new DateTime(2035, 12, 1);
+            for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
                 (DateTime.Compare(date, endDate) <= 0);
                 date = date.AddMonths(1))
                 dtList.Add(date);
@@ -362,8 +362,8 @@ namespace Monthley.Services
         public void SeedMonthsForTestUser()
         {
             List<DateTime> dtList = new List<DateTime>();
-            var endDate = new DateTime(2025, 12, 1);
-            for (var date = new DateTime(DateTime.Now.Year, DateTime.Now.Month, 1);
+            var endDate = new DateTime(2035, 12, 1);
+            for (var date = new DateTime(2021, 3, 1);
                 (DateTime.Compare(date, endDate) <= 0);
                 date = date.AddMonths(1))
                 dtList.Add(date);
