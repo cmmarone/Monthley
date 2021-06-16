@@ -84,6 +84,7 @@ namespace Monthley.WebMVC.Models
     public class TestRegisterModel
     {
         [Required]
+        [RegularExpression(@"^\S*$", ErrorMessage = "No spaces allowed")]
         public string Name { get; set; }
     }
 
